@@ -1,0 +1,198 @@
+/**
+ * Grammar for the Oberon language.
+ *
+ * @author Wietse Venema
+ */
+
+module eu.wietsevenema.lang.oberon.Oberon;
+
+option withLocation, constant, main(Program);
+
+String Symbol = SymbolCharacters Spacing ;
+
+transient String SymbolCharacters =
+    <GreaterGreaterEqual> ">>="
+  / <LessLessEqual>       "<<="
+  / <GreaterGreater>      ">>"
+  / <LessLess>            "<<"
+  / <PlusEqual>           "+="
+  / <MinusEqual>          "-="
+  / <StarEqual>           "*="
+  / <SlashEqual>          "/="
+  / <PercentEqual>        "%="
+  / <AmpersandEqual>      "&="
+  / <CaretEqual>          "^="
+  / <BarEqual>            "|="
+  / <PlusPlus>            "++"
+  / <MinusMinus>          "--"
+  / <AmpersandAmpersand>  "&&"
+  / <BarBar>              "||"
+  / <LessEqual>           "<="
+  / <GreaterEqual>        ">="
+  / <EqualEqual>          "=="
+  / <BangEqual>           "!="
+  / <Semicolon>           ";"
+  / <Colon>               ":"
+  / <Comma>               ","
+  / <Period>              "."
+  / <OpenBrace>           "{"
+  / <CloseBrace>          "}"
+  / <OpenParenthesis>     "("
+  / <CloseParenthesis>    ")"
+  / <OpenBracket>         "["
+  / <CloseBracket>        "]"
+  / <Bang>                "!"
+  / <Tilde>               "~"
+  / <Plus>                "+"
+  / <Minus>               "-"
+  / <Star>                "*"
+  / <Slash>               "/"
+  / <Percent>             "%"
+  / <Less>                "<"
+  / <Greater>             ">"
+  / <Equal>               "="
+  / <Ampersand>           "&"
+  / <Caret>               "^"
+  / <Bar>                 "|"
+  / <Question>            "?"
+  ;
+
+
+//---Spacing---//
+
+transient void Spacing            =
+  ( Space / LineTerminator / TraditionalComment / EndOfLineComment )*
+  ;
+
+transient void Space              = ' ' / '\t' / '\f' ;
+transient void TraditionalComment = "/*" ( '*' !'/' / !'*' _ )* "*/" ;
+transient void EndOfLineComment   =
+  "//" ( ![\n\r] _ )* (LineTerminator / &EndOfFile) ;
+transient void LineTerminator     = '\r' '\n' / '\r' / '\n' ;
+transient void EndOfFile          = !_ ;
+
+
+//---Identifiers---//
+
+Node Identifier =
+    <VariableIdentifier>  VariableIdentifier
+  	;
+
+generic VariableIdentifier = VariableName Spacing;
+
+String VariableName = [A-Za-z][a-zA-Z0-9]* ;
+
+//---Constants---//
+
+Node Constant = 
+    IntegerConstant Spacing
+  / BooleanConstant 
+  ;
+
+generic IntegerConstant = DecimalNumeral ;
+
+transient String DecimalNumeral    = '0' / NonZeroDigit Digit* ;
+transient String NonZeroDigit      = [1-9] ;
+transient String Digit             = [0-9] ;
+
+String Word = WordCharacters Spacing ;
+transient String WordCharacters = [A-Z][A-Z0-9]* ;
+
+generic BooleanConstant =
+    "TRUE":Word
+  / "FALSE":Word
+  ;
+
+//Expressions//
+
+public Node Program = Spacing EqualityExpression EndOfFile;
+
+/*
+All operators of the same precedence associate from left to right. 
+For example, x-y-z stands for (x-y)-z.
+
+Operator precedence in Oberon-0. 
+---------------------------------------------------------
+| Operator		| Description							|
+---------------------------------------------------------
+| ~ 			| Logical negation 						|
+---------------------------------------------------------
+| OR 			| Logical disjunction			 		|
+---------------------------------------------------------
+| &				| Logical conjunction			 		|
+---------------------------------------------------------
+| * DIV MOD 	| product, integer quotient, modulus	|
+---------------------------------------------------------
+| + -			| sum, difference						|
+---------------------------------------------------------
+| = # < <= > >= | equal, unequal, less, less or equal, 	|
+|				| greater, greater or equal				|
+---------------------------------------------------------
+*/
+
+
+generic EqualityExpression =
+    <Recursion>  EqualityExpression EqualityOperator AdditiveExpresssion
+  / <Base>      yyValue:AdditiveExpresssion 
+  ;
+
+generic AdditiveExpresssion = 
+	  <Recursion> AdditiveExpresssion AdditiveOperator MultiplicativeExpression
+	/ <Base> yyvalue:MultiplicativeExpression
+	;
+
+generic MultiplicativeExpression = 
+	  <Recursion> MultiplicativeExpression MultiplicativeOperator LogicalConjunctiveExpression
+	/ <Base> yyvalue:LogicalConjunctiveExpression
+	;
+
+generic LogicalConjunctiveExpression = 
+  	  <Recursion> LogicalConjunctiveExpression "OR":Symbol LogicalDisjunctiveExpression
+	/ <Base> yyvalue:LogicalDisjunctiveExpression
+	;
+
+generic LogicalDisjunctiveExpression = 
+  	  <Recursion> LogicalDisjunctiveExpression "&":Symbol UnaryExpression
+	/ <Base> yyvalue:UnaryExpression
+	;
+	
+generic LogicalNegationExpression =
+	void:"~":Symbol UnaryExpression
+	;
+	
+String MultiplicativeOperator = 
+	  <Product>		"*":Symbol 
+	/ <Quotient> 	"DIV":Symbol
+	/ <Modulus>		"MOD":Symbol 
+	;
+
+String AdditiveOperator = 
+	  <Sum>			"+":Symbol 
+	/ <Difference> 	"-":Symbol
+	;
+
+String EqualityOperator =
+    <Equal>       		"=":Symbol
+  / <NotEqual>    		"#":Symbol
+  / <Less> 		  		"<":Symbol
+  / <LessOrEqual> 		"<=":Symbol
+  / <Greater> 	  	 	">":Symbol
+  / <GreaterOrEqual> 	">=":Symbol
+  ;
+
+Node UnaryExpression =
+    <LogicalNot> LogicalNegationExpression
+  / <Base>       yyValue:PrimaryExpression
+  ;
+
+Node PrimaryExpression =
+   <Constant>                  Constant
+ / <Identifier>                Identifier 
+ / <ParenthesizedExpression>   ParenthesizedExpression
+ ;
+
+generic ParenthesizedExpression =
+  void:"(":Symbol EqualityExpression void:")":Symbol
+  ;
+
+
