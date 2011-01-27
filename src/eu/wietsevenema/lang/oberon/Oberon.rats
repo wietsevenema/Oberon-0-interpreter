@@ -6,6 +6,11 @@
 
 module eu.wietsevenema.lang.oberon.Oberon;
 
+header {
+   import xtc.util.Utilities;
+   import eu.wietsevenema.lang.oberon.ast.*;
+}
+
 option withLocation, constant, main(Program);
 
 String Symbol = SymbolCharacters Spacing ;
@@ -55,6 +60,10 @@ transient String SymbolCharacters =
   / <Caret>               "^"
   / <Bar>                 "|"
   / <Question>            "?"
+  / <Divison>             "DIV"
+  / <Modulus>             "MOD"
+  / <Or> 	  	          "OR"
+  / <Hash> 		          "#"
   ;
 
 
@@ -89,7 +98,16 @@ Node Constant =
   / BooleanConstant 
   ;
 
-generic IntegerConstant = DecimalNumeral ;
+IntegerConstant IntegerConstant = nr:DecimalNumeral 
+	 {
+		try {
+        	yyValue = new IntegerConstant(Integer.decode(nr));
+     	} catch (NumberFormatException x) {
+        	yyValue = null; 
+     	}
+	}
+	;
+
 
 transient String DecimalNumeral    = '0' / NonZeroDigit Digit* ;
 transient String NonZeroDigit      = [1-9] ;
@@ -132,12 +150,12 @@ Operator precedence in Oberon-0.
 
 
 generic EqualityExpression =
-    <Recursion>  EqualityExpression EqualityOperator AdditiveExpresssion
-  / <Base>      yyValue:AdditiveExpresssion 
+    <Recursion>  EqualityExpression EqualityOperator AdditiveExpression
+  / <Base>      yyValue:AdditiveExpression 
   ;
 
-generic AdditiveExpresssion = 
-	  <Recursion> AdditiveExpresssion AdditiveOperator MultiplicativeExpression
+generic AdditiveExpression = 
+	  <Recursion> AdditiveExpression AdditiveOperator MultiplicativeExpression
 	/ <Base> yyvalue:MultiplicativeExpression
 	;
 
