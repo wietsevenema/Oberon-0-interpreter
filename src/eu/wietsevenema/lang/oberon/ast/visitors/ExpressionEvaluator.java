@@ -22,8 +22,8 @@ public class ExpressionEvaluator extends Visitor {
 
 	SymbolTable symboltable;
 
-	public ExpressionEvaluator(SymbolTable symboltable) {
-		this.symboltable = symboltable;
+	public ExpressionEvaluator(SymbolTable symbolTable) {
+		this.symboltable = symbolTable;
 	}
 
 	public IntegerValue visit(AdditiveExpression ae) throws ClassCastException {

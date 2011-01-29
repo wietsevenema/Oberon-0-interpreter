@@ -5,9 +5,7 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import xtc.tree.VisitingException;
 import eu.wietsevenema.lang.oberon.ast.expressions.AdditiveExpression;
-import eu.wietsevenema.lang.oberon.ast.expressions.BooleanConstant;
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.expressions.IntegerConstant;
@@ -53,7 +51,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	}
 
 	@Test
-	public void testSimpleIdentifier() throws VariableNotDeclaredException{
+	public void testSimpleIdentifier() throws VariableNotDeclaredException, TypeMismatchException{
 		SymbolTable st = new SymbolTable();
 		st.getCurrent().defineType("a", new IntegerType());
 		st.getCurrent().defineValue("a", new IntegerValue(40));

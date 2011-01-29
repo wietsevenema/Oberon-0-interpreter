@@ -27,6 +27,10 @@ public class Declarations extends Node {
 		this.constants = cd;
 		this.types = td;
 		this.vars = vd;
+		
+		assert (this.constants != null);
+		assert (this.types != null);
+		assert (this.vars != null);
 	}
 
 }

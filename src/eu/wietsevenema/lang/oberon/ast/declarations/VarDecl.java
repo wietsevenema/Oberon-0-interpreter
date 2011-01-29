@@ -7,11 +7,19 @@ import eu.wietsevenema.lang.oberon.ast.types.Type;
 
 public class VarDecl extends Declaration {
 
-	List<Identifier> ids;
+	List<Identifier> identifiers;
 	Type type;
+
+	public List<Identifier> getIdentifiers() {
+		return identifiers;
+	}
+
+	public Type getType() {
+		return type;
+	}
 	
-	public VarDecl(List<Identifier> list, Type type) {
-		this.ids = list;
+	public VarDecl(List<Identifier> identifiers, Type type) {
+		this.identifiers = identifiers;
 		this.type = type;
 	}
 

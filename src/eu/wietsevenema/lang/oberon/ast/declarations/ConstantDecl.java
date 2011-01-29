@@ -3,7 +3,7 @@ package eu.wietsevenema.lang.oberon.ast.declarations;
 import xtc.tree.Node;
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
-import eu.wietsevenema.lang.oberon.parser.TransformGenerics;
+import eu.wietsevenema.lang.oberon.ast.visitors.TransformGenerics;
 
 public class ConstantDecl extends Declaration {
 

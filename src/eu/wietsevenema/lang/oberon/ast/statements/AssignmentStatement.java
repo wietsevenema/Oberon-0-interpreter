@@ -8,13 +8,28 @@ import eu.wietsevenema.lang.oberon.ast.visitors.TransformGenerics;
 
 public class AssignmentStatement extends Statement {
 
-	Identifier id;
-	Expression exp;
+	Identifier identifier;
+	Expression expression;
+
+	public Identifier getIdentifier() {
+		return identifier;
+	}
+
+	public Expression getExpression() {
+		return expression;
+	}
+
+	public AssignmentStatement(Identifier id, Expression expression){
+		this.identifier = id;
+		this.expression = expression;
+	}
 
 	public AssignmentStatement(Identifier id, Node exp) {
-		this.id = id;
 		TransformGenerics tg = new TransformGenerics();
-		this.exp = (Expression) tg.dispatch(exp);
+		Expression expression = (Expression) tg.dispatch(exp);
+		
+		this.identifier = id;
+		this.expression = expression;
 	}
 
 }

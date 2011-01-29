@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import eu.wietsevenema.lang.oberon.ast.types.Type;
+import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 
 public class SymbolTable {
@@ -35,7 +36,7 @@ public class SymbolTable {
 		public Value lookupValue(String symbol) {
 			Value result = lookupValueLocal(symbol);
 			if(result == null && this.parent != null){
-				return parent.lookupValue(symbol);
+				result = parent.lookupValue(symbol);
 			} 
 			return result;
 		}
@@ -43,7 +44,7 @@ public class SymbolTable {
 		public Type lookupType(String symbol) {
 			Type result = lookupTypeLocal(symbol);
 			if(result == null && this.parent != null){
-				return parent.lookupType(symbol);
+				result = parent.lookupType(symbol);
 			} 
 			return result;
 		}
@@ -57,9 +58,13 @@ public class SymbolTable {
 		}
 
 
-		public void defineValue(String symbol, Value value) throws VariableNotDeclaredException {
-			if(this.lookupType(symbol)==null){
+		public void defineValue(String symbol, Value value) throws VariableNotDeclaredException, TypeMismatchException {
+			Type type = this.lookupType(symbol);
+			if(type==null){
 				throw new VariableNotDeclaredException("Variable " + symbol + " has not yet been declared.");
+			}
+			if(!value.matchesType( type )){
+				throw new TypeMismatchException("Variable " + symbol + " has type " + type.getName());
 			}
 			symbols.put(symbol, value);
 		}
@@ -98,7 +103,7 @@ public class SymbolTable {
 		current = current.parent;
 	}
 
-	public void defineValue(String symbol, Value value ) throws VariableNotDeclaredException {
+	public void defineValue(String symbol, Value value ) throws VariableNotDeclaredException, TypeMismatchException {
 		this.getCurrent().defineValue(symbol, value);
 	}
 	

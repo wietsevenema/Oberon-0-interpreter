@@ -1,7 +1,5 @@
 package eu.wietsevenema.lang.oberon.tests;
 
-import static org.junit.Assert.fail;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,13 +38,13 @@ public class SymbolTableTest {
 	}
 	
 	@Test(expected=VariableNotDeclaredException.class)
-    public void testDeclareVariableBeforeType() throws VariableNotDeclaredException{
+    public void testDeclareVariableBeforeType() throws VariableNotDeclaredException, TypeMismatchException{
 		symbolTable.defineValue("a", new IntegerValue(1));	
 	}
 	 
 
 	@Test(expected=TypeMismatchException.class)
-	public void testDeclareVariableOfDifferentType() throws VariableNotDeclaredException{
+	public void testDeclareVariableOfDifferentType() throws VariableNotDeclaredException, TypeMismatchException{
 		symbolTable.defineType("b", new BooleanType());
 		symbolTable.defineValue("b", new IntegerValue(1));
 	}
