@@ -1,6 +1,6 @@
 package eu.wietsevenema.lang.oberon.ast.declarations;
 
-import eu.wietsevenema.lang.oberon.ast.types.Identifier;
+import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.types.Type;
 
 public class TypeDecl extends Declaration {

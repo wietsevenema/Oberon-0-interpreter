@@ -4,7 +4,7 @@
  * @author Wietse Venema
  */
 
-module eu.wietsevenema.lang.oberon.Oberon;
+module eu.wietsevenema.lang.oberon.parser.Oberon;
 
 header {
 	import eu.wietsevenema.lang.oberon.ast.declarations.*;
@@ -15,11 +15,10 @@ header {
 	import java.util.ArrayList;
 	import java.util.List;
 
-
 	//import xtc.util.Utilities;	
 }
 
-option withLocation, constant, main(Program), verbose;
+option withLocation, constant, main(Program);
 
 String Symbol = SymbolCharacters Spacing ;
 
@@ -131,14 +130,27 @@ transient String Digit             = [0-9] ;
 String Word = WordCharacters Spacing ;
 transient String WordCharacters = [A-Z][A-Z0-9]* ;
 
-generic BooleanConstant =
-    "TRUE":Word
+BooleanConstant BooleanConstant =
+    "TRUE":Word 
+	{
+		yyValue = new BooleanConstant( Boolean.TRUE );
+	}
   / "FALSE":Word
-  ;
+	{
+		yyValue = new BooleanConstant( Boolean.FALSE );
+	}
+	;
 
 //Expressions//
 
 public Node Program = Spacing Module EndOfFile;
+//Used in testsuite
+public TestExpression Expression = 
+	Spacing exp:EqualityExpression EndOfFile
+	{
+		yyValue= new TestExpression(exp);
+	}
+	;
 
 /*
 All operators of the same precedence associate from left to right. 
@@ -171,10 +183,15 @@ Declarations Declarations =
 	}
 	;
 		
-// | ArrayType | RecordType.
-Type Type = ti:TypeIdentifier
+//FIXME / ArrayType / RecordType.
+Type Type = 
+	"BOOLEAN":Word 
 	{
-		yyValue = new Type(ti);
+		yyValue = new BooleanType();
+	}
+  / "INTEGER":Word
+	{
+		yyValue = new IntegerType();
 	}
 	;
 
@@ -253,7 +270,6 @@ AssignmentStatement AssignmentStatement =
 			yyValue= new AssignmentStatement(id, exp);
 		}
 	;
-	
 
 generic EqualityExpression =
     <Recursion>  EqualityExpression EqualityOperator AdditiveExpression
@@ -308,9 +324,19 @@ String EqualityOperator =
   ;
 
 Node UnaryExpression =
-    <LogicalNot> yyValue:LogicalNegationExpression
-  / <Base>       yyValue:PrimaryExpression
+    <LogicalNot> 	yyValue:LogicalNegationExpression
+  / <UnaryPlusMin> 	yyValue:UnaryPlusMin
+  / <Base>       	yyValue:PrimaryExpression
   ;
+
+UnaryMin UnaryPlusMin = 
+	void:"-":Symbol ue:UnaryExpression 
+	{
+    	yyValue = new UnaryMin((Expression)ue);
+	}
+  / void:"+":Symbol yyValue:UnaryExpression  /* ignore */
+	;
+	
 
 Node PrimaryExpression =
    <Constant>                  yyValue:Constant

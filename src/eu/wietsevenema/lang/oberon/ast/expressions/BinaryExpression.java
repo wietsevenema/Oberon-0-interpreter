@@ -1,7 +1,7 @@
 package eu.wietsevenema.lang.oberon.ast.expressions;
 
 
-public class BinaryExpression extends Expression {
+abstract public class BinaryExpression extends Expression {
 
 	private Expression left, right;
 	private String token;

@@ -2,13 +2,31 @@ package eu.wietsevenema.lang.oberon.ast.declarations;
 
 import java.util.List;
 
+import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.statements.Statement;
-import eu.wietsevenema.lang.oberon.ast.types.Identifier;
 
 public class Module extends Declaration {
 
-	public Module(Identifier idstart, Declarations decls, List<Statement> stats) {
-		// TODO Auto-generated constructor stub
+	public Identifier getIdentifier() {
+		return identifier;
+	}
+
+	public Declarations getDecls() {
+		return decls;
+	}
+
+	public List<Statement> getStats() {
+		return stats;
+	}
+
+	Identifier identifier; 
+	Declarations decls; 
+	List<Statement> stats;
+	
+	public Module(Identifier identifier, Declarations decls, List<Statement> stats) {
+		this.identifier = identifier;
+		this.decls = decls;
+		this.stats = stats;
 	}
 
 }

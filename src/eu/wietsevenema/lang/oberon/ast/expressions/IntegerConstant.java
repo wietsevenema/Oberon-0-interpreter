@@ -14,8 +14,12 @@ public class IntegerConstant extends Expression {
 		this.integer = integer;
 	}
 
-	public Integer getInteger() {
+	public Integer getValue() {
 		return integer;
+	}
+	
+	public String toString(){
+		return this.integer.toString();
 	}
 
 }

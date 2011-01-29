@@ -6,6 +6,18 @@ import xtc.tree.Node;
 
 public class Declarations extends Node {
 
+	public List<ConstantDecl> getConstants() {
+		return constants;
+	}
+
+	public List<TypeDecl> getTypes() {
+		return types;
+	}
+
+	public List<VarDecl> getVars() {
+		return vars;
+	}
+
 	List<ConstantDecl> constants;
 	List<TypeDecl> types;
 	List<VarDecl> vars;

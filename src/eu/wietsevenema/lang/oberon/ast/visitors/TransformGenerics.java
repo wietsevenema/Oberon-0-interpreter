@@ -10,28 +10,16 @@ import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
 import eu.wietsevenema.lang.oberon.exceptions.ExpressionNotFoundException;
 import eu.wietsevenema.lang.oberon.exceptions.TransformedException;
 
-public class RemoveGenerics extends Visitor {
+public class TransformGenerics extends Visitor {
 
-	/** Transform the children of this node 
-	 * @throws TransformedException */
-	public GNode visit(GNode n) throws TransformedException {
-		for (int i = 0; i < n.size(); i++) {
-			Object o = n.get(i);
-			if (o instanceof Node) {
-				Object transformed = dispatch((Node) o);
-				if(transformed == null){
-					throw new TransformedException("Transforming node " + o.toString() + "failed");
-				}
-				n.set(i, dispatch((Node) o));
-			}
+	public Node visit(Node n) throws TransformedException {
+		if(n instanceof Expression){
+			return n;
+		} else {
+			throw new TransformedException("Expected expression but got " + n.getName());
 		}
-		return n;
 	}
 
-	public Node visit(Node n) {
-		return n;
-	}
-	
 	/**
 	 * Some magic to transform a generic expression node to it's static typed equivalent. 
 	 * @param n
@@ -41,15 +29,15 @@ public class RemoveGenerics extends Visitor {
 	private BinaryExpression createBinaryExpression(GNode n) throws ExpressionNotFoundException {
 		Expression left, right;
 		String token;
-		left = (Expression)dispatch(n.getNode(0)); 
+		left = (Expression)dispatch(n.getNode(0));
 		token = n.getString(1); 
 		right = (Expression)dispatch(n.getNode(2)); 
 		
 		try {
 			@SuppressWarnings("unchecked")
-			Class<BinaryExpression> expression = (Class<BinaryExpression>) Class.forName("eu.wietsevenema.lang.oberon.ast."+n.getName());
-			Class<?>[] args={ 	Class.forName("eu.wietsevenema.lang.oberon.ast.Expression"), 
-								Class.forName("eu.wietsevenema.lang.oberon.ast.Expression"),
+			Class<BinaryExpression> expression = (Class<BinaryExpression>) Class.forName("eu.wietsevenema.lang.oberon.ast.expressions."+n.getName());
+			Class<?>[] args={ 	Class.forName("eu.wietsevenema.lang.oberon.ast.expressions.Expression"), 
+								Class.forName("eu.wietsevenema.lang.oberon.ast.expressions.Expression"),
 								Class.forName("java.lang.String")
 								};
 			BinaryExpression result = (BinaryExpression)expression.getConstructor(args).newInstance(left, right, token);
@@ -92,8 +80,6 @@ public class RemoveGenerics extends Visitor {
 	public BinaryExpression visitLogicalDisjunctiveExpression(GNode n) throws ExpressionNotFoundException {
 		return createBinaryExpression(n);
 	}
-	
-	
 	
 	
 }
