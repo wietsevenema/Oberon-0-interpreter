@@ -9,6 +9,7 @@ import eu.wietsevenema.lang.oberon.ast.declarations.TypeDecl;
 import eu.wietsevenema.lang.oberon.ast.declarations.VarDecl;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.types.Type;
+import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 
 public class DeclarationEvaluator extends Visitor {
@@ -34,7 +35,7 @@ public class DeclarationEvaluator extends Visitor {
 		}
 	}
 	
-	public void visit( VarDecl varDecl ){
+	public void visit( VarDecl varDecl ) throws VariableAlreadyDeclaredException{
 		List<Identifier> identifiers = varDecl.getIdentifiers();
 		Type type = varDecl.getType();
 		for( Identifier id : identifiers){

@@ -44,19 +44,19 @@ public class SymbolTableTest {
 	 
 
 	@Test(expected=TypeMismatchException.class)
-	public void testDeclareVariableOfDifferentType() throws VariableNotDeclaredException, TypeMismatchException{
+	public void testDeclareVariableOfDifferentType() throws VariableNotDeclaredException, TypeMismatchException, VariableAlreadyDeclaredException{
 		symbolTable.defineType("b", new BooleanType());
 		symbolTable.defineValue("b", new IntegerValue(1));
 	}
 	
 	@Test(expected=VariableAlreadyDeclaredException.class)
-	public void testDoubleDeclare(){
+	public void testDoubleDeclare() throws VariableAlreadyDeclaredException{
 		symbolTable.defineType("c", new BooleanType());
 		symbolTable.defineType("c", new BooleanType());
 	}
-	
+
 	@Test
-	public void testVariableAlreadyDeclaredNotRaised(){
+	public void testDoubleDeclareScoped() throws VariableAlreadyDeclaredException{
 		symbolTable.defineType("c", new BooleanType());
 		symbolTable.enter();
 		symbolTable.defineType("c", new BooleanType());

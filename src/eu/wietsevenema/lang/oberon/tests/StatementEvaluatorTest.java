@@ -12,6 +12,7 @@ import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
 import eu.wietsevenema.lang.oberon.ast.types.BooleanType;
 import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
 import eu.wietsevenema.lang.oberon.ast.visitors.StatementEvaluator;
+import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.BooleanValue;
 import eu.wietsevenema.lang.oberon.interpreter.IntegerValue;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
@@ -26,7 +27,7 @@ public class StatementEvaluatorTest extends TestCase {
 	}
 
 	@Test
-	public void testAssignment() {
+	public void testAssignment() throws VariableAlreadyDeclaredException {
 		symbols.defineType("a", new IntegerType());
 		AssignmentStatement as1 = new AssignmentStatement(
 				new Identifier("a"),

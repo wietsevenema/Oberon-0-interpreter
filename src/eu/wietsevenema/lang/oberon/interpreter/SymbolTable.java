@@ -5,6 +5,7 @@ import java.util.Map;
 
 import eu.wietsevenema.lang.oberon.ast.types.Type;
 import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
+import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 
 public class SymbolTable {
@@ -69,7 +70,10 @@ public class SymbolTable {
 			symbols.put(symbol, value);
 		}
 		
-		public void defineType(String symbol, Type type) {
+		public void defineType(String symbol, Type type) throws VariableAlreadyDeclaredException {
+			if(this.lookupTypeLocal(symbol) != null){
+				throw new VariableAlreadyDeclaredException("Variable "+ symbol + " already declared in this scope.");
+			}
 			types.put(symbol, type);
 		}
 
@@ -107,7 +111,7 @@ public class SymbolTable {
 		this.getCurrent().defineValue(symbol, value);
 	}
 	
-	public void defineType(String symbol, Type type ) {
+	public void defineType(String symbol, Type type ) throws VariableAlreadyDeclaredException {
 		this.getCurrent().defineType(symbol, type);
 	}
 
