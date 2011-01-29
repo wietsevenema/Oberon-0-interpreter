@@ -1,1 +1,16 @@
-1 + 2 + 3
+MODULE QuickSort;
+
+CONST
+	INPUTLENGTH= 5;
+
+VAR
+	input, pivot, leftIdx, rightIdx: INTEGER;
+	i: INTEGER;
+
+BEGIN
+	temp := x;
+	x := y;
+	y := temp;
+	i := x + 3
+
+END QuickSort.

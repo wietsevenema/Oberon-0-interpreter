@@ -7,16 +7,30 @@
 module eu.wietsevenema.lang.oberon.Oberon;
 
 header {
-   import xtc.util.Utilities;
-   import eu.wietsevenema.lang.oberon.ast.*;
+	import eu.wietsevenema.lang.oberon.ast.declarations.*;
+	import eu.wietsevenema.lang.oberon.ast.expressions.*;
+	import eu.wietsevenema.lang.oberon.ast.statements.*;
+	import eu.wietsevenema.lang.oberon.ast.types.*;
+
+	import java.util.ArrayList;
+	import java.util.List;
+
+
+	//import xtc.util.Utilities;	
 }
 
-option withLocation, constant, main(Program);
+option withLocation, constant, main(Program), verbose;
 
 String Symbol = SymbolCharacters Spacing ;
 
+//TODO inherit van xtc. 
 transient String SymbolCharacters =
-    <GreaterGreaterEqual> ">>="
+	 <Divison>             "DIV"
+	/ <Modulus>             "MOD"
+	/ <Or> 	  	          "OR"
+	/ <Hash> 		          "#"
+	/ <Assign> 	          ":="
+  / <GreaterGreaterEqual> ">>="
   / <LessLessEqual>       "<<="
   / <GreaterGreater>      ">>"
   / <LessLess>            "<<"
@@ -60,10 +74,6 @@ transient String SymbolCharacters =
   / <Caret>               "^"
   / <Bar>                 "|"
   / <Question>            "?"
-  / <Divison>             "DIV"
-  / <Modulus>             "MOD"
-  / <Or> 	  	          "OR"
-  / <Hash> 		          "#"
   ;
 
 
@@ -83,13 +93,18 @@ transient void EndOfFile          = !_ ;
 
 //---Identifiers---//
 
-Node Identifier =
-    <VariableIdentifier>  VariableIdentifier
-  	;
+Identifier Identifier = vn:VariableName Spacing
+  	{
+		yyValue = new Identifier(vn);
+	}
+	;
 
-generic VariableIdentifier = VariableName Spacing;
+// String VariableIdentifier = VariableName Spacing;
 
-String VariableName = [A-Za-z][a-zA-Z0-9]* ;
+//FIXME
+String TypeIdentifier = VariableName Spacing;
+
+String VariableName = [a-zA-Z][a-zA-Z0-9]*;
 
 //---Constants---//
 
@@ -123,7 +138,7 @@ generic BooleanConstant =
 
 //Expressions//
 
-public Node Program = Spacing EqualityExpression EndOfFile;
+public Node Program = Spacing Module EndOfFile;
 
 /*
 All operators of the same precedence associate from left to right. 
@@ -148,6 +163,97 @@ Operator precedence in Oberon-0.
 ---------------------------------------------------------
 */
 
+//{ProcedureDeclaration ";"}.
+Declarations Declarations = 
+	cd:ConstantDecls? td:TypeDecls? vd:VarDecls? 
+	{
+		yyValue = new Declarations( cd, td, vd );
+	}
+	;
+		
+// | ArrayType | RecordType.
+Type Type = ti:TypeIdentifier
+	{
+		yyValue = new Type(ti);
+	}
+	;
+
+List<ConstantDecl> ConstantDecls = 
+	"CONST":Word cds:(ConstantDecl)+
+	{
+		yyValue = new ArrayList<ConstantDecl>(cds.list());
+	}
+	;
+
+ConstantDecl ConstantDecl = 
+	id:Identifier void:"=":Symbol exp:EqualityExpression void:";":Symbol 
+	{
+		yyValue = new ConstantDecl(id, exp);
+	}
+	;
+
+List<TypeDecl> TypeDecls = 
+	"TYPE":Word tds:(TypeDecl)+
+	{
+		yyValue = new ArrayList<TypeDecl>(tds.list());
+	}
+	;
+
+TypeDecl TypeDecl =
+	id:Identifier void:"=":Symbol type:Type void:";":Symbol 
+	{
+		yyValue = new TypeDecl(id, type);
+	}
+	;
+
+List<VarDecl> VarDecls = 
+	"VAR":Word vds:(VarDecl)+
+	{
+		yyValue = new ArrayList<VarDecl>(vds.list());
+	}
+	;
+
+VarDecl VarDecl = 
+	ids:IdentList void:":":Symbol type:Type void:";":Symbol
+	{
+		yyValue = new VarDecl(ids, type);
+	}
+	;
+	
+	
+List<Identifier> IdentList = 
+	 i:Identifier is:( void:",":Symbol Identifier)*
+     { 
+		yyValue = new Pair<Identifier>(i, is).list(); 
+	}
+	;
+
+//TODO valideer idstart == idend;
+Module Module = void:"MODULE":Word idstart:Identifier void:";":Symbol decls:Declarations 
+		 stats:( void:"BEGIN":Word StatementSequence)? void:"END":Word idend:Identifier void:".":Symbol
+		{
+			yyValue = new Module(idstart, decls, stats );
+		}
+		;
+
+List<Statement> StatementSequence = 
+		statement:Statement statements:( void:";":Symbol Statement)*
+        { 
+			yyValue = new Pair<Statement>(statement, statements).list(); 
+		}
+		;
+
+
+//| ProcedureCall | IfStatement | WhileStatement].
+Statement Statement = yyValue:AssignmentStatement; 
+
+AssignmentStatement AssignmentStatement = 
+	id:Identifier ":=":Symbol exp:EqualityExpression
+		{
+			yyValue= new AssignmentStatement(id, exp);
+		}
+	;
+	
 
 generic EqualityExpression =
     <Recursion>  EqualityExpression EqualityOperator AdditiveExpression
@@ -174,8 +280,11 @@ generic LogicalDisjunctiveExpression =
 	/ <Base> yyvalue:UnaryExpression
 	;
 	
-generic LogicalNegationExpression =
-	void:"~":Symbol UnaryExpression
+LogicalNegationExpression LogicalNegationExpression =
+	void:"~":Symbol ue:UnaryExpression 
+	{
+    	yyValue = new LogicalNegationExpression((Expression)ue);
+	}
 	;
 	
 String MultiplicativeOperator = 
@@ -199,18 +308,18 @@ String EqualityOperator =
   ;
 
 Node UnaryExpression =
-    <LogicalNot> LogicalNegationExpression
+    <LogicalNot> yyValue:LogicalNegationExpression
   / <Base>       yyValue:PrimaryExpression
   ;
 
 Node PrimaryExpression =
-   <Constant>                  Constant
- / <Identifier>                Identifier 
- / <ParenthesizedExpression>   ParenthesizedExpression
+   <Constant>                  yyValue:Constant
+ / <Identifier>                yyValue:Identifier 
+ / <ParenthesizedExpression>   yyValue:ParenthesizedExpression
  ;
 
 generic ParenthesizedExpression =
-  void:"(":Symbol EqualityExpression void:")":Symbol
+  void:"(":Symbol yyValue:EqualityExpression void:")":Symbol
   ;
 
 

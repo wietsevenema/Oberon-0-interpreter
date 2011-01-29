@@ -1,8 +1,8 @@
-package eu.wietsevenema.lang.oberon.ast;
+package eu.wietsevenema.lang.oberon.ast.expressions;
 
-import xtc.tree.Node;
 
-public class IntegerConstant extends Node {
+
+public class IntegerConstant extends Expression {
 
 	private Integer integer;
 

@@ -1,14 +1,20 @@
 package eu.wietsevenema.lang.oberon;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
+
+import eu.wietsevenema.lang.oberon.ast.visitors.PrettyPrinter;
+import eu.wietsevenema.lang.oberon.ast.visitors.RemoveGenerics;
 
 import xtc.parser.ParseError;
 import xtc.parser.Result;
 import xtc.parser.SemanticValue;
 import xtc.tree.Node;
+import xtc.tree.Printer;
 
 public class Interpreter {
 
@@ -35,7 +41,14 @@ public class Interpreter {
 	
 	            if (v.value instanceof Node) {
 	              RemoveGenerics e = new RemoveGenerics();
-	              System.out.println(e.dispatch((Node)v.value));
+	              Node result;
+	              result = (Node) e.dispatch((Node)v.value);
+	              Printer ptr = new
+	                Printer(new BufferedWriter(new OutputStreamWriter(System.out)));
+	              PrettyPrinter pp = new PrettyPrinter(ptr);
+	              pp.dispatch(result);
+	              ptr.flush();
+	              
 	            } else {
 	              System.out.println(v.value.toString());
 	            }
