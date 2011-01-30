@@ -1,0 +1,7 @@
+MODULE Procedure;
+PROCEDURE test; 
+	VAR i, k: INTEGER;
+	BEGIN 
+		i := 0;
+	END Ident;
+END Procedure.

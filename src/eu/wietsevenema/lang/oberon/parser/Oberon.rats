@@ -100,7 +100,7 @@ Identifier Identifier = vn:VariableName Spacing
 
 // String VariableIdentifier = VariableName Spacing;
 
-//FIXME
+//FIXME dit is geen typeid.
 String TypeIdentifier = VariableName Spacing;
 
 String VariableName = [a-zA-Z][a-zA-Z0-9]*;
@@ -175,11 +175,18 @@ Operator precedence in Oberon-0.
 ---------------------------------------------------------
 */
 
+FPSection = ["VAR"] IdentList ":" type. 
+FormalParameters = "(" [FPSection {";" FPSection}] ")". 
+ProcedureHeading = "PROCEDURE" ident [FormalParameters]. 
+ProcedureBody = declarations ["BEGIN" StatementSequence] "END". 
+ProcedureDeclaration = ProcedureHeading ";" ProcedureBody ident.
+
+
 //{ProcedureDeclaration ";"}.
 Declarations Declarations = 
-	cd:ConstantDecls? td:TypeDecls? vd:VarDecls? 
+	cd:ConstantDecls? td:TypeDecls? vd:VarDecls? pd:ProcedureDeclaration?
 	{
-		yyValue = new Declarations( cd, td, vd );
+		yyValue = new Declarations( cd, td, vd);
 	}
 	;
 		
@@ -245,6 +252,8 @@ List<Identifier> IdentList =
 	}
 	;
 
+	
+
 //TODO valideer idstart == idend;
 Module Module = void:"MODULE":Word idstart:Identifier void:";":Symbol decls:Declarations 
 		 stats:( void:"BEGIN":Word StatementSequence)? void:"END":Word idend:Identifier void:".":Symbol
@@ -260,9 +269,35 @@ List<Statement> StatementSequence =
 		}
 		;
 
+ProcedureCallStatement ProcedureCallStatement = 
+ 	id:Identifier params:( void:"(":Symbol (ActualParameters)? void:")":Symbol )?
+	{
+		yyValue = new ProcedureCallStatement(id, params);
+	}
+ 	;
 
-//| ProcedureCall | IfStatement | WhileStatement].
-Statement Statement = yyValue:AssignmentStatement; 
+
+
+List<Node> ActualParameters = 
+	act:EqualityExpression acts:( void:",":Symbol EqualityExpression)*
+       { 
+		yyValue = new Pair<Node>(act, acts).list(); 
+	}
+	;
+
+/*
+		IfStatement = "IF" expression "THEN" StatementSequence 
+			{"ELSIF" expression "THEN" StatementSequence}
+			["ELSE" StatementSequence] "END". 
+		WhileStatement = "WHILE" expression "DO" StatementSequence "END". 
+*/
+
+
+//FIXME IfStatement | WhileStatement.
+Statement Statement = 
+	yyValue:AssignmentStatement
+  / yyValue:ProcedureCallStatement
+	; 
 
 AssignmentStatement AssignmentStatement = 
 	id:Identifier ":=":Symbol exp:EqualityExpression

@@ -1,5 +1,6 @@
 package eu.wietsevenema.lang.oberon.ast.declarations;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import xtc.tree.Node;
@@ -18,9 +19,9 @@ public class Declarations extends Node {
 		return vars;
 	}
 
-	List<ConstantDecl> constants;
-	List<TypeDecl> types;
-	List<VarDecl> vars;
+	List<ConstantDecl> constants = new ArrayList<ConstantDecl>();
+	List<TypeDecl> types = new ArrayList<TypeDecl>();
+	List<VarDecl> vars = new ArrayList<VarDecl>();
 		
 	public Declarations(List<ConstantDecl> cd, List<TypeDecl> td,
 			List<VarDecl> vd) {
@@ -28,9 +29,6 @@ public class Declarations extends Node {
 		this.types = td;
 		this.vars = vd;
 		
-		assert (this.constants != null);
-		assert (this.types != null);
-		assert (this.vars != null);
 	}
 
 }
