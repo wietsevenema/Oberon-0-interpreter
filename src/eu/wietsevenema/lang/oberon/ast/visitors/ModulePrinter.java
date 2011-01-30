@@ -4,15 +4,22 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import xtc.tree.Node;
 import xtc.tree.Visitor;
+import eu.wietsevenema.lang.oberon.ast.declarations.ConstantDecl;
+import eu.wietsevenema.lang.oberon.ast.declarations.Declarations;
+import eu.wietsevenema.lang.oberon.ast.declarations.FormalVar;
+import eu.wietsevenema.lang.oberon.ast.declarations.FormalVarRef;
 import eu.wietsevenema.lang.oberon.ast.declarations.Module;
+import eu.wietsevenema.lang.oberon.ast.declarations.VarDecl;
 import eu.wietsevenema.lang.oberon.ast.expressions.BinaryExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
 import eu.wietsevenema.lang.oberon.ast.expressions.LogicalNegationExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.TestExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.UnaryMinExpression;
+import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.ProcedureCallStatement;
-import eu.wietsevenema.lang.oberon.ast.statements.Statement;
+import eu.wietsevenema.lang.oberon.parser.ProcedureDecl;
 
 /**
  * Deze moduleprinter is (nog) niet voor productiedoeleinden, alleen 
@@ -48,15 +55,56 @@ public class ModulePrinter extends Visitor {
 		return "(-"+dispatch(un.getChild())+")";
 	}
 	
+	public String visit(Declarations decls){
+		String result = "";
+		for( ConstantDecl cd : decls.getConstants()){
+			result += dispatch(cd);
+		}
+		
+		result += joinNodes(decls.getVars(), ";");
+		
+		for( ProcedureDecl pd : decls.getProcedures()){
+			result += dispatch(pd);
+		}
+		return result;
+	}
+	
+	public String visit(VarDecl vd){
+		String result = "VAR ";
+		result += joinNodes(vd.getIdentifiers(), ",");
+		result += ": "+vd.getType();
+		return result;
+	}
+
+	public String visit(ProcedureDecl pd){
+		String result = "PROCEDURE " + pd.getIdentifier().getName() + "(";
+		result += joinNodes(pd.getFormals(), ";");
+		result += ");";
+		
+		result += dispatch(pd.getDeclarations());
+		
+		result += joinNodes(pd.getStatements(), ";");
+		
+		return result;
+		
+	}
+	
+	public String visit(AssignmentStatement as){
+		return as.getIdentifier().getName() + ":=" + as.getExpression();
+	}
+	
+	public String visit(FormalVar fv){
+		return " "+fv.getIdentifier().getName()+" : "+fv.getType();
+	}
+	public String visit(FormalVarRef fv){
+		return "VAR "+fv.getIdentifier().getName()+" : "+fv.getType();
+	}
+	
 	public String visit(Module m){
 		String result = "MODULE "+m.getIdentifier().getName()+";";
-		//TODO Declarations
+		result += dispatch(m.getDeclarations());
 		result += "BEGIN";
-		ArrayList<String> stats = new ArrayList<String>();
-		for(Statement s : m.getStats()){
-			stats.add((String)dispatch(s));
-		}
-		result += join(stats, ";");
+		result += joinNodes(m.getStats(), ";");
 		result += "END "+m.getIdentifier().getName()+".";
 		return result;
 		
@@ -64,15 +112,21 @@ public class ModulePrinter extends Visitor {
 	
 	public String visit( ProcedureCallStatement pcs){
 		String result = pcs.getIdentifier().getName();
-		ArrayList<String> exps = new ArrayList<String>(); 
-		for(Expression e: pcs.getParameters())
-		{		
-			exps.add((String)dispatch(e));
-		}
-		result += "(" + join(exps, ",") + ")";
+		result += "(" + joinNodes(pcs.getParameters(), ",") + ")";
 		return result;
 	}
 	
+	
+	private String joinNodes(List<? extends Node> ns, String delimiter){
+		if(ns.isEmpty()) {
+			return "";
+		}
+		ArrayList<String> strings = new ArrayList<String>();
+		for( Object n : ns){
+			strings.add((String)dispatch((Node)n));
+		}
+		return join(strings, delimiter);
+	}
 	
 	private static String join(List<String> s, String delimiter) {
 	    if (s.isEmpty()) {

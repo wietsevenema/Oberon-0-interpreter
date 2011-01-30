@@ -22,6 +22,7 @@ import eu.wietsevenema.lang.oberon.ast.statements.Statement;
 import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
 import eu.wietsevenema.lang.oberon.ast.visitors.ModuleEvaluator;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.parser.ProcedureDecl;
 
 public class ModuleEvaluatorTest  {
 	
@@ -52,7 +53,8 @@ public class ModuleEvaluatorTest  {
 						new Declarations(
 								new ArrayList<ConstantDecl>(),
 								new ArrayList<TypeDecl>(),
-								decls
+								decls,
+								new ArrayList<ProcedureDecl>()
 								),
 						stats);
 		

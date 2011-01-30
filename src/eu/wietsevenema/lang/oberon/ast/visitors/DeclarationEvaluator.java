@@ -35,6 +35,14 @@ public class DeclarationEvaluator extends Visitor {
 		}
 	}
 	
+	public void visit( ConstantDecl constantDecl){
+		//FIXME
+	}
+	
+	public void visit( TypeDecl typeDecl){
+		//FIXME
+	}
+	
 	public void visit( VarDecl varDecl ) throws VariableAlreadyDeclaredException{
 		List<Identifier> identifiers = varDecl.getIdentifiers();
 		Type type = varDecl.getType();

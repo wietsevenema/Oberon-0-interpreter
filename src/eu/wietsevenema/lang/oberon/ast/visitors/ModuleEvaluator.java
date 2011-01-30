@@ -17,7 +17,7 @@ public class ModuleEvaluator extends Visitor {
 	}
 	
 	public void visit(Module module){
-		Declarations decls = module.getDecls();
+		Declarations decls = module.getDeclarations();
 		DeclarationEvaluator declEval = new DeclarationEvaluator(symbolTable);
 		declEval.dispatch(decls);
 		

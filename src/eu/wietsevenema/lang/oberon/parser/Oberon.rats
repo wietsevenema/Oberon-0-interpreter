@@ -175,18 +175,13 @@ Operator precedence in Oberon-0.
 ---------------------------------------------------------
 */
 
-FPSection = ["VAR"] IdentList ":" type. 
-FormalParameters = "(" [FPSection {";" FPSection}] ")". 
-ProcedureHeading = "PROCEDURE" ident [FormalParameters]. 
-ProcedureBody = declarations ["BEGIN" StatementSequence] "END". 
-ProcedureDeclaration = ProcedureHeading ";" ProcedureBody ident.
 
 
-//{ProcedureDeclaration ";"}.
+
 Declarations Declarations = 
-	cd:ConstantDecls? td:TypeDecls? vd:VarDecls? pd:ProcedureDeclaration?
+	cd:ConstantDecls? td:TypeDecls? vd:VarDecls? pds:(ProcedureDecl void:";":Symbol)*
 	{
-		yyValue = new Declarations( cd, td, vd);
+		yyValue = new Declarations( cd, td, vd, pds.list());
 	}
 	;
 		
@@ -201,6 +196,7 @@ Type Type =
 		yyValue = new IntegerType();
 	}
 	;
+
 
 List<ConstantDecl> ConstantDecls = 
 	"CONST":Word cds:(ConstantDecl)+
@@ -252,22 +248,50 @@ List<Identifier> IdentList =
 	}
 	;
 
-	
+
+generic FPSection = 
+	("VAR":Word)? IdentList void:":":Symbol Type
+	;
+
+List<Node> FormalParameters = 
+	fp:FPSection fps:(void:";":Symbol FPSection )*
+	{ 
+		yyValue = new Pair<Node>(fp, fps).list(); 
+	}
+	;
+
+
 
 //TODO valideer idstart == idend;
-Module Module = void:"MODULE":Word idstart:Identifier void:";":Symbol decls:Declarations 
-		 stats:( void:"BEGIN":Word StatementSequence)? void:"END":Word idend:Identifier void:".":Symbol
-		{
-			yyValue = new Module(idstart, decls, stats );
-		}
-		;
+ProcedureDecl ProcedureDecl = 
+	void:"PROCEDURE":Word idstart:Identifier 
+	formals:( void:"(":Symbol (FormalParameters)? void:")":Symbol )? void:";":Symbol 
+	decls:Declarations 
+	stats:(void:"BEGIN":Word StatementSequence)? 
+	void:"END":Word idend:Identifier  
+	{
+		yyValue = new ProcedureDecl(idstart, formals, decls, stats);
+	}
+	;
+
+
+//TODO valideer idstart == idend;
+Module Module = 
+	void:"MODULE":Word idstart:Identifier void:";":Symbol 
+	decls:Declarations 
+	stats:( void:"BEGIN":Word StatementSequence)? 
+	void:"END":Word idend:Identifier void:".":Symbol
+	{
+		yyValue = new Module(idstart, decls, stats );
+	}
+	;
 
 List<Statement> StatementSequence = 
-		statement:Statement statements:( void:";":Symbol Statement)*
-        { 
-			yyValue = new Pair<Statement>(statement, statements).list(); 
-		}
-		;
+	statement:Statement statements:( void:";":Symbol Statement)*
+       { 
+		yyValue = new Pair<Statement>(statement, statements).list(); 
+	}
+	;
 
 ProcedureCallStatement ProcedureCallStatement = 
  	id:Identifier params:( void:"(":Symbol (ActualParameters)? void:")":Symbol )?

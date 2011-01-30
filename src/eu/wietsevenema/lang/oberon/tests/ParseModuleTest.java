@@ -23,11 +23,15 @@ public class ParseModuleTest extends ParserTest {
 	}
 	
 	@Test
-	public void testProcedureDef() throws IOException, InvalidInputException, ParseException{
-//		Node result = parseModuleFile(getAbsFilename("oberon/parser/proceduredef.o0"));
-//		ModulePrinter printer = new ModulePrinter();
-//		String actual = (String)printer.dispatch(result);
-//		assertEquals("MODULE Procedure;BEGINProcedure1();Procedure2();Procedure3(a,1,(a+2))END Procedure.", actual);
+	public void testProcedureDecl() throws IOException, InvalidInputException, ParseException{
+		Node result = parseModuleFile(getAbsFilename("oberon/parser/proceduredef.o0"));
+		ModulePrinter printer = new ModulePrinter();
+		String actual = (String)printer.dispatch(result);
+		//FIXME nicer print. 
+		assertEquals("MODULE Procedure;PROCEDURE test" +
+					"(VAR i : INTEGER;VAR k : INTEGER; x : BOOLEAN; y : BOOLEAN);VAR t: INTEGER;VAR q,r: BOOLEANi:=0"+
+					"PROCEDURE test2();VAR x: INTEGERBEGINEND Procedure."
+					, actual);
 	}
 	
 
