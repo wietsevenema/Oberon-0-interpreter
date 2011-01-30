@@ -18,7 +18,7 @@ public class StatementEvaluator extends Visitor {
 	public void visit(AssignmentStatement assign) throws VariableNotDeclaredException, TypeMismatchException{
 		ExpressionEvaluator eval = new ExpressionEvaluator(symbolTable);
 		Value value = (Value)eval.dispatch(assign.getExpression());
-		symbolTable.defineValue(
+		symbolTable.declareValue(
 						assign.getIdentifier().getName(),
 						value
 						);	

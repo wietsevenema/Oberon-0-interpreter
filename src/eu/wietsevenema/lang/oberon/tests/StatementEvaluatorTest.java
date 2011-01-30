@@ -1,6 +1,6 @@
 package eu.wietsevenema.lang.oberon.tests;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +17,7 @@ import eu.wietsevenema.lang.oberon.interpreter.BooleanValue;
 import eu.wietsevenema.lang.oberon.interpreter.IntegerValue;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 
-public class StatementEvaluatorTest extends TestCase {
+public class StatementEvaluatorTest  {
 
 	private SymbolTable symbols;
 
@@ -28,12 +28,12 @@ public class StatementEvaluatorTest extends TestCase {
 
 	@Test
 	public void testAssignment() throws VariableAlreadyDeclaredException {
-		symbols.defineType("a", new IntegerType());
+		symbols.declareType("a", new IntegerType());
 		AssignmentStatement as1 = new AssignmentStatement(
 				new Identifier("a"),
 				new IntegerConstant(2));
 
-		symbols.defineType("b", new BooleanType());
+		symbols.declareType("b", new BooleanType());
 		AssignmentStatement as2 = new AssignmentStatement(
 				new Identifier("b"),
 				new BooleanConstant(true));
@@ -45,7 +45,24 @@ public class StatementEvaluatorTest extends TestCase {
 		assertEquals(((IntegerValue)symbols.lookupValue("a")).getValue(), new Integer(2));
 		assertEquals(((BooleanValue)symbols.lookupValue("b")).getValue(), new Boolean(true));
 	}
-
 	
+	@Test
+	public void testSecondAssignment() throws VariableAlreadyDeclaredException {
+		symbols.declareType("a", new IntegerType());
+		AssignmentStatement first = new AssignmentStatement(
+				new Identifier("a"),
+				new IntegerConstant(2));
 
+		AssignmentStatement second = new AssignmentStatement(
+				new Identifier("a"),
+				new IntegerConstant(3));
+
+		StatementEvaluator se = new StatementEvaluator(symbols);
+		se.dispatch(first);
+		assertEquals(((IntegerValue)symbols.lookupValue("a")).getValue(), new Integer(2));
+		se.dispatch(second);
+		assertEquals(((IntegerValue)symbols.lookupValue("a")).getValue(), new Integer(3));
+	}
+	
+	
 }

@@ -1,15 +1,16 @@
 package eu.wietsevenema.lang.oberon.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
-import junit.framework.TestCase;
-
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
 import xtc.parser.ParseError;
 import xtc.parser.Result;
@@ -20,7 +21,7 @@ import eu.wietsevenema.lang.oberon.exceptions.InvalidInputException;
 import eu.wietsevenema.lang.oberon.exceptions.ParseException;
 import eu.wietsevenema.lang.oberon.parser.Oberon;
 
-public class ParseExpressionTest extends TestCase {
+public class ParseExpressionTest {
 	
 	private String getAbsFilename( String relName){
 		return getClass().getResource(relName).getPath();
@@ -61,10 +62,12 @@ public class ParseExpressionTest extends TestCase {
 				
 	}
 
+	@Test
 	public void testAllOperatorsGetParsed() throws IOException, InvalidInputException, ParseException{
 		parseFile(getAbsFilename("oberon/expr/allops.expr"));
 	}
-	
+
+	@Test
 	public void testAdditionOpsLeftAssoc() throws IOException, InvalidInputException, ParseException{
 		Node result = parseFile(getAbsFilename("oberon/expr/additionopsleftassoc.expr"));
 		ExpressionPrinter printer = new ExpressionPrinter();
@@ -72,6 +75,7 @@ public class ParseExpressionTest extends TestCase {
 		assertEquals("(((2+3)-1)+41)", actual);
 	}
 	
+	@Test
 	public void testEqualityOpsLeftAssoc() throws IOException, InvalidInputException, ParseException{
 		Node result = parseFile(getAbsFilename("oberon/expr/equalityopsleftassoc.expr"));
 		ExpressionPrinter printer = new ExpressionPrinter();
@@ -79,6 +83,7 @@ public class ParseExpressionTest extends TestCase {
 		assertEquals("((((((true=false)#true)<2)<=3)>23)>=12)", actual);
 	}
 	
+	@Test
 	public void testMultiplicationOpsLeftAssoc() throws IOException, InvalidInputException, ParseException{
 		Node result = parseFile(getAbsFilename("oberon/expr/multiplicationopsleftassoc.expr"));
 		ExpressionPrinter printer = new ExpressionPrinter();
@@ -86,6 +91,7 @@ public class ParseExpressionTest extends TestCase {
 		assertEquals("(((2*3)DIV666)MOD12)", actual);
 	}
 	
+	@Test
 	public void testParenthesisedOpsBind() throws IOException, InvalidInputException, ParseException{
 		Node result = parseFile(getAbsFilename("oberon/expr/parenthesisedopsbind.expr"));
 		ExpressionPrinter printer = new ExpressionPrinter();
@@ -93,35 +99,37 @@ public class ParseExpressionTest extends TestCase {
 		assertEquals("((((2+1)-4)<false)>=3)", actual);
 	}
 	
+	@Test
 	public void testNegationStrongerThanUnaryMin(){
 		fail("Not implemented");
 	}
 	
+	@Test
 	public void testUnaryMinStrongerThanDisjunction(){
 		fail("Not implemented");
 	}
 
+	@Test
 	public void testDisjunctionStrongerThanConjunction(){
 		fail("Not implemented");
 	}
 
+	@Test
 	public void testConjunctionStrongerThanAddition(){
 		fail("Not implemented");
 	}
 
+	@Test
 	public void testAdditionStrongerThanEquality(){
 		fail("Not implemented");
 	}
 	
-
+	@Test
 	public void testUnaryMinOnlyFirst(){
 		// -2 * 2 mag, maar 2 * -2 moet een parse-error geven...
 		fail("Not implemented");
 	}
 	
 	
-	@After
-	public void tearDown() throws Exception {
-	}
 
 }

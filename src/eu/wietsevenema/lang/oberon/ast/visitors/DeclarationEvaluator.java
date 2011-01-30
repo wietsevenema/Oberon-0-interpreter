@@ -39,7 +39,7 @@ public class DeclarationEvaluator extends Visitor {
 		List<Identifier> identifiers = varDecl.getIdentifiers();
 		Type type = varDecl.getType();
 		for( Identifier id : identifiers){
-			symbolTable.defineType(id.getName(), type);
+			symbolTable.declareType(id.getName(), type);
 		}
 	}
 	

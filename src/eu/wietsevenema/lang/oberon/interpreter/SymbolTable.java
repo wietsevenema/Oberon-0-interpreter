@@ -59,7 +59,7 @@ public class SymbolTable {
 		}
 
 
-		public void defineValue(String symbol, Value value) throws VariableNotDeclaredException, TypeMismatchException {
+		public void declareValue(String symbol, Value value) throws VariableNotDeclaredException, TypeMismatchException {
 			Type type = this.lookupType(symbol);
 			if(type==null){
 				throw new VariableNotDeclaredException("Variable " + symbol + " has not yet been declared.");
@@ -70,11 +70,20 @@ public class SymbolTable {
 			symbols.put(symbol, value);
 		}
 		
-		public void defineType(String symbol, Type type) throws VariableAlreadyDeclaredException {
+		public void declareType(String symbol, Type type) throws VariableAlreadyDeclaredException {
 			if(this.lookupTypeLocal(symbol) != null){
 				throw new VariableAlreadyDeclaredException("Variable "+ symbol + " already declared in this scope.");
 			}
 			types.put(symbol, type);
+		}
+
+		public void declareValueReference(String symbol, ValueReference ref) {
+			//FIXME
+		}
+
+		public ValueReference lookupValueReference(String symbol) {
+			//FIXME
+			return null;
 		}
 
 	}
@@ -107,12 +116,25 @@ public class SymbolTable {
 		current = current.parent;
 	}
 
-	public void defineValue(String symbol, Value value ) throws VariableNotDeclaredException, TypeMismatchException {
-		this.getCurrent().defineValue(symbol, value);
+	public void declareValue(String symbol, Value value ) throws VariableNotDeclaredException, TypeMismatchException {
+		this.getCurrent().declareValue(symbol, value);
 	}
 	
-	public void defineType(String symbol, Type type ) throws VariableAlreadyDeclaredException {
-		this.getCurrent().defineType(symbol, type);
+	
+	public void declareType(String symbol, Type type ) throws VariableAlreadyDeclaredException {
+		this.getCurrent().declareType(symbol, type);
+	}
+
+	public ValueReference lookupValueReference(String symbol) {
+		return this.getCurrent().lookupValueReference(symbol);
+	}
+
+	public void declareValueReference(String symbol,ValueReference ref) {
+		this.getCurrent().declareValueReference(symbol, ref);
+	}
+
+	public Value lookupValueLocal(String symbol) {
+		return this.getCurrent().lookupValueLocal(symbol);
 	}
 
 }

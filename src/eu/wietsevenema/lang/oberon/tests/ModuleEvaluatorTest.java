@@ -1,10 +1,11 @@
 package eu.wietsevenema.lang.oberon.tests;
 
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +23,7 @@ import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
 import eu.wietsevenema.lang.oberon.ast.visitors.ModuleEvaluator;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 
-public class ModuleEvaluatorTest extends TestCase {
+public class ModuleEvaluatorTest  {
 	
 	SymbolTable symbolTable;
 		

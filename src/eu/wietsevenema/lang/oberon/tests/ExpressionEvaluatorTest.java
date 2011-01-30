@@ -1,7 +1,7 @@
 package eu.wietsevenema.lang.oberon.tests;
 
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -19,7 +19,7 @@ import eu.wietsevenema.lang.oberon.interpreter.IntegerValue;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 
 
-public class ExpressionEvaluatorTest extends TestCase {
+public class ExpressionEvaluatorTest  {
 
 	
 	@Test
@@ -79,8 +79,8 @@ public class ExpressionEvaluatorTest extends TestCase {
 	@Test
 	public void testSimpleIdentifier() throws VariableNotDeclaredException, TypeMismatchException, VariableAlreadyDeclaredException{
 		SymbolTable st = new SymbolTable();
-		st.getCurrent().defineType("a", new IntegerType());
-		st.getCurrent().defineValue("a", new IntegerValue(40));
+		st.getCurrent().declareType("a", new IntegerType());
+		st.getCurrent().declareValue("a", new IntegerValue(40));
 		
 		Expression exp = new AdditiveExpression(new IntegerConstant(2), new Identifier("a"), "+");
 		

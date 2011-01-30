@@ -1,10 +1,10 @@
 package eu.wietsevenema.lang.oberon.tests;
 
 
+import static org.junit.Assert.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +15,7 @@ import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
 import eu.wietsevenema.lang.oberon.ast.visitors.DeclarationEvaluator;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 
-public class DeclarationEvaluatorTest extends TestCase {
+public class DeclarationEvaluatorTest  {
 
 	SymbolTable symbolTable;
 	
