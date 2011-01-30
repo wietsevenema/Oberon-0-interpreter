@@ -11,7 +11,7 @@ import eu.wietsevenema.lang.oberon.ast.expressions.LogicalConjunctiveExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.LogicalDisjunctiveExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.LogicalNegationExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.MultiplicativeExpression;
-import eu.wietsevenema.lang.oberon.ast.expressions.UnaryMin;
+import eu.wietsevenema.lang.oberon.ast.expressions.UnaryMinExpression;
 import eu.wietsevenema.lang.oberon.exceptions.VariableUndefinedException;
 import eu.wietsevenema.lang.oberon.interpreter.BooleanValue;
 import eu.wietsevenema.lang.oberon.interpreter.IntegerValue;
@@ -100,7 +100,7 @@ public class ExpressionEvaluator extends Visitor {
 		return new IntegerValue(result);
 	}
 
-	public IntegerValue visit(UnaryMin um) {
+	public IntegerValue visit(UnaryMinExpression um) {
 		IntegerValue result = (IntegerValue) dispatch(um.getChild());
 		return result;
 	}

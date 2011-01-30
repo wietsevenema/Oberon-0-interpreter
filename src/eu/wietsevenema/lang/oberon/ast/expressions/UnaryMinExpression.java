@@ -1,10 +1,10 @@
 package eu.wietsevenema.lang.oberon.ast.expressions;
 
-public class UnaryMin extends Expression {
+public class UnaryMinExpression extends Expression {
 
 	Expression child;
 	
-	public UnaryMin(Expression child){
+	public UnaryMinExpression(Expression child){
 		this.child = child;
 	}
 	

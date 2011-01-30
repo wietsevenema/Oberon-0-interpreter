@@ -57,10 +57,6 @@ public class ParseExpressionTest {
 		return result;
 	}
 	
-	@Before 
-	public void setUp() throws Exception {
-				
-	}
 
 	@Test
 	public void testAllOperatorsGetParsed() throws IOException, InvalidInputException, ParseException{
@@ -108,12 +104,30 @@ public class ParseExpressionTest {
 		assertEquals("(1#(1+(1DIV(1&(1OR(~1))))))", actual);
 	}
 	
-	@Test
-	public void testUnaryMinOnlyFirst(){
-		// -2 * 2 mag, maar 2 * -2 moet een parse-error geven...
-		fail("Not implemented");
+	@Test(expected=ParseException.class)
+	public void testUnaryMinOnlyLhs() throws IOException, InvalidInputException, ParseException{
+		
+		/* -2 * 2 mag, maar 2 * -2 moet een parse-error geven. Zie grammatica uit boek: 
+		 *
+		 * factor = ident selector | number | "(" expression ")" | "~" factor. 
+		 * term = factor {("*" | "DIV" | "MOD" | "&") factor}. 
+		 * SimpleExpression = ["+"|"-"] term {("+"|"-" | "OR") term}. 
+		 * expression = SimpleExpression [("=" | "#" | "<" | "<=" | ">" | ">=") SimpleExpression].
+		 * 
+		 */
+		
+		parseFile(getAbsFilename("oberon/expr/unaryminrhs.expr"));
 	}
 	
+	@Test
+	public void testUnaryMin() throws IOException, InvalidInputException, ParseException{
+		// -2 * 2
+		Node unaryMinLhs = parseFile(getAbsFilename("oberon/expr/unaryminlhs.expr"));
+		ExpressionPrinter printer = new ExpressionPrinter();
+		String actual = (String)printer.dispatch(unaryMinLhs);
+		assertEquals("((-3)*2)", actual);
+		
+	}
 	
 
 }

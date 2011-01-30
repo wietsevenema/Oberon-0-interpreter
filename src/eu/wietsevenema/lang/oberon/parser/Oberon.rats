@@ -329,12 +329,12 @@ Node UnaryExpression =
   / <Base>       	yyValue:PrimaryExpression
   ;
 
-UnaryMin UnaryPlusMin = 
+UnaryMinExpression UnaryPlusMin = 
 	void:"-":Symbol ue:UnaryExpression 
 	{
-    	yyValue = new UnaryMin((Expression)ue);
+    	yyValue = new UnaryMinExpression((Expression)ue);
 	}
-  / void:"+":Symbol yyValue:UnaryExpression  /* ignore */
+  / void:"+":Symbol yyValue:UnaryExpression  /* ignore unary plus */
 	;
 	
 

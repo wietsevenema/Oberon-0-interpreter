@@ -6,6 +6,7 @@ import eu.wietsevenema.lang.oberon.ast.expressions.BinaryExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
 import eu.wietsevenema.lang.oberon.ast.expressions.LogicalNegationExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.TestExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.UnaryMinExpression;
 import eu.wietsevenema.lang.oberon.exceptions.InvalidInputException;
 
 public class ExpressionPrinter extends Visitor {
@@ -37,6 +38,10 @@ public class ExpressionPrinter extends Visitor {
 	
 	public String visit(LogicalNegationExpression lne){
 		return "(~"+dispatch(lne.getChild())+")";
+	}
+	
+	public String visit(UnaryMinExpression un){
+		return "(-"+dispatch(un.getChild())+")";
 	}
 	
 }
