@@ -15,6 +15,7 @@ import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.BooleanValue;
 import eu.wietsevenema.lang.oberon.interpreter.IntegerValue;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 
 public class SymbolTableTest  {
 	
@@ -46,10 +47,13 @@ public class SymbolTableTest  {
 	
 	@Test
 	public void testValueReference(){
+		ValueReference referenceBool2 = symbolTable.lookupValueReference("bool2");
+		assertNotNull(referenceBool2);
 		symbolTable.declareValueReference(
 				"reference-bool2", 
-				symbolTable.lookupValueReference("bool2")
+				referenceBool2
 				);
+		assertEquals(symbolTable.lookupValueReference("reference-bool2"), referenceBool2);
 		assertEquals(symbolTable.lookupValue("bool2"), symbolTable.lookupValue("reference-bool2") );
 	}
 	

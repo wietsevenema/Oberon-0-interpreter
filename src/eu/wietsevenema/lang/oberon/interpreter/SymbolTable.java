@@ -15,13 +15,13 @@ public class SymbolTable {
 		String name;
 		Scope parent;
 
-		Map<String, Value> symbols = new HashMap<String, Value>();
+		Map<String, ValueReference> symbols = new HashMap<String, ValueReference>();
 		Map<String, Type> types = new HashMap<String, Type>();
 
-		Scope() {
+		public Scope() {
 		}
 		
-		Scope(Scope parent) {
+		public Scope(Scope parent) {
 			this.parent = parent;
 		}
 
@@ -35,11 +35,13 @@ public class SymbolTable {
 
 		
 		public Value lookupValue(String symbol) {
-			Value result = lookupValueLocal(symbol);
-			if(result == null && this.parent != null){
-				result = parent.lookupValue(symbol);
-			} 
-			return result;
+			ValueReference valueRef = this.lookupValueReference(symbol);
+			return (valueRef==null)?null:valueRef.getValue();
+		}
+		
+		public Value lookupValueLocal(String symbol) {
+			ValueReference valueRef = this.lookupValueReferenceLocal(symbol);
+			return (valueRef==null)?null:valueRef.getValue();
 		}
 		
 		public Type lookupType(String symbol) {
@@ -50,14 +52,22 @@ public class SymbolTable {
 			return result;
 		}
 
-		public Value lookupValueLocal(String symbol) {
-			return symbols.get(symbol);
-		}
-		
 		public Type lookupTypeLocal(String symbol) {
 			return types.get(symbol);
 		}
-
+		
+		public ValueReference lookupValueReference(String symbol) {
+			ValueReference result = this.lookupValueReferenceLocal(symbol);
+			if(result == null && this.parent != null){
+				result = parent.lookupValueReference(symbol);
+			}
+			return result;
+		}
+		
+		public ValueReference lookupValueReferenceLocal(String symbol) {
+			return symbols.get(symbol);
+		}
+		
 
 		public void declareValue(String symbol, Value value) throws VariableNotDeclaredException, TypeMismatchException {
 			Type type = this.lookupType(symbol);
@@ -65,9 +75,16 @@ public class SymbolTable {
 				throw new VariableNotDeclaredException("Variable " + symbol + " has not yet been declared.");
 			}
 			if(!value.matchesType( type )){
-				throw new TypeMismatchException("Variable " + symbol + " has type " + type.getName());
+				throw new TypeMismatchException("Variable " + symbol + " has declared type " + type.getName());
 			}
-			symbols.put(symbol, value);
+			
+			/* Check for existing reference */
+			ValueReference valueRef = this.lookupValueReference(symbol);
+			if(valueRef==null){
+				this.declareValueReference(symbol, new ValueReference(value));
+			} else {
+				valueRef.setValue(value); 
+			}
 		}
 		
 		public void declareType(String symbol, Type type) throws VariableAlreadyDeclaredException {
@@ -77,14 +94,12 @@ public class SymbolTable {
 			types.put(symbol, type);
 		}
 
-		public void declareValueReference(String symbol, ValueReference ref) {
-			//FIXME
+		public void declareValueReference(String symbol, ValueReference valueRef) {
+			assert valueRef!=null;
+			symbols.put(symbol, valueRef);
 		}
 
-		public ValueReference lookupValueReference(String symbol) {
-			//FIXME
-			return null;
-		}
+
 
 	}
 

@@ -4,7 +4,7 @@ import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
 
 public class ValueReference {
 
-	Value value;
+	private Value value;
 	
 	public ValueReference( Value value){
 		this.value = value;
