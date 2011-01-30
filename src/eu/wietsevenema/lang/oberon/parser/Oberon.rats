@@ -287,12 +287,12 @@ generic MultiplicativeExpression =
 	;
 
 generic LogicalConjunctiveExpression = 
-  	  <Recursion> LogicalConjunctiveExpression "OR":Symbol LogicalDisjunctiveExpression
+  	  <Recursion> LogicalConjunctiveExpression "&":Symbol LogicalDisjunctiveExpression
 	/ <Base> yyvalue:LogicalDisjunctiveExpression
 	;
 
 generic LogicalDisjunctiveExpression = 
-  	  <Recursion> LogicalDisjunctiveExpression "&":Symbol UnaryExpression
+  	  <Recursion> LogicalDisjunctiveExpression "OR":Symbol UnaryExpression
 	/ <Base> yyvalue:UnaryExpression
 	;
 	

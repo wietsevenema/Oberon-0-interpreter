@@ -4,6 +4,7 @@ import xtc.tree.Node;
 import xtc.tree.Visitor;
 import eu.wietsevenema.lang.oberon.ast.expressions.BinaryExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
+import eu.wietsevenema.lang.oberon.ast.expressions.LogicalNegationExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.TestExpression;
 import eu.wietsevenema.lang.oberon.exceptions.InvalidInputException;
 
@@ -32,6 +33,10 @@ public class ExpressionPrinter extends Visitor {
 	
 	public String visit(Expression exp){
 		return exp.toString();
+	}
+	
+	public String visit(LogicalNegationExpression lne){
+		return "(~"+dispatch(lne.getChild())+")";
 	}
 	
 }

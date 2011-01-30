@@ -100,28 +100,12 @@ public class ParseExpressionTest {
 	}
 	
 	@Test
-	public void testNegationStrongerThanUnaryMin(){
-		fail("Not implemented");
-	}
-	
-	@Test
-	public void testUnaryMinStrongerThanDisjunction(){
-		fail("Not implemented");
-	}
-
-	@Test
-	public void testDisjunctionStrongerThanConjunction(){
-		fail("Not implemented");
-	}
-
-	@Test
-	public void testConjunctionStrongerThanAddition(){
-		fail("Not implemented");
-	}
-
-	@Test
-	public void testAdditionStrongerThanEquality(){
-		fail("Not implemented");
+	public void testPrecedenceOrder() throws IOException, InvalidInputException, ParseException{
+		//1 # 1 + 1 DIV 1 & 1 OR 1 ~ 1
+		Node result = parseFile(getAbsFilename("oberon/expr/precedence.expr"));
+		ExpressionPrinter printer = new ExpressionPrinter();
+		String actual = (String)printer.dispatch(result);
+		assertEquals("(1#(1+(1DIV(1&(1OR(~1))))))", actual);
 	}
 	
 	@Test
