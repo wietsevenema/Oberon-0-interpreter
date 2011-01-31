@@ -12,11 +12,17 @@ import eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter;
 import eu.wietsevenema.lang.oberon.exceptions.InvalidInputException;
 import eu.wietsevenema.lang.oberon.exceptions.ParseException;
 
-public class ParseModuleTest extends ParserTest {
+public class ParseModuleTest {
 
+
+	public String getAbsFilename(String relName) {
+		return getClass().getResource(relName).getPath();
+	}
+
+	
 	@Test
 	public void testProcedureCall() throws IOException, InvalidInputException, ParseException{
-		Node result = parseModuleFile(getAbsFilename("oberon/parser/procedurecall.o0"));
+		Node result = Util.parseModuleFile(getAbsFilename("oberon/parser/procedurecall.o0"));
 		ModulePrinter printer = new ModulePrinter();
 		String actual = (String)printer.dispatch(result);
 		assertEquals("MODULE Procedure;BEGINProcedure1();Procedure2();Procedure3(a,1,(a+2))END Procedure.", actual);
@@ -24,7 +30,7 @@ public class ParseModuleTest extends ParserTest {
 	
 	@Test
 	public void testProcedureDecl() throws IOException, InvalidInputException, ParseException{
-		Node result = parseModuleFile(getAbsFilename("oberon/parser/proceduredef.o0"));
+		Node result = Util.parseModuleFile(getAbsFilename("oberon/parser/proceduredef.o0"));
 		ModulePrinter printer = new ModulePrinter();
 		String actual = (String)printer.dispatch(result);
 		//FIXME nicer print. 

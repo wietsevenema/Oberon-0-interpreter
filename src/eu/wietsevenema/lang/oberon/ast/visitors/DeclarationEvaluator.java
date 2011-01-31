@@ -11,6 +11,7 @@ import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.types.Type;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.parser.ProcedureDecl;
 
 public class DeclarationEvaluator extends Visitor {
 
@@ -25,14 +26,26 @@ public class DeclarationEvaluator extends Visitor {
 		for( VarDecl v : varDecls){
 			dispatch(v);
 		}
+		
 		List<ConstantDecl> constantDecls = decls.getConstants();
 		for( ConstantDecl c : constantDecls){
 			dispatch(c);
 		}
+		
 		List<TypeDecl> typeDecls = decls.getTypes();
 		for(TypeDecl t: typeDecls){
 			dispatch(t);
 		}
+		
+		List<ProcedureDecl> procDecls = decls.getProcedures();
+		for(ProcedureDecl p: procDecls){
+			dispatch(p);
+		}
+		
+	}
+	
+	public void visit( ProcedureDecl procDecl){
+		symbolTable.declareProc(procDecl.getIdentifier().getName(), procDecl);
 	}
 	
 	public void visit( ConstantDecl constantDecl){

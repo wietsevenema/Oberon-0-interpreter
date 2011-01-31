@@ -7,6 +7,7 @@ import eu.wietsevenema.lang.oberon.ast.types.Type;
 import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
+import eu.wietsevenema.lang.oberon.parser.ProcedureDecl;
 
 public class SymbolTable {
 
@@ -17,6 +18,7 @@ public class SymbolTable {
 
 		Map<String, ValueReference> symbols = new HashMap<String, ValueReference>();
 		Map<String, Type> types = new HashMap<String, Type>();
+		Map<String, ProcedureDecl> procs = new HashMap<String, ProcedureDecl>();
 
 		public Scope() {
 		}
@@ -32,8 +34,19 @@ public class SymbolTable {
 		public Scope getParent() {
 			return parent;
 		}
-
 		
+		public ProcedureDecl lookupProc(String symbol) {
+			ProcedureDecl result = this.lookupProcLocal(symbol);
+			if(result == null && this.parent != null){
+				result = parent.lookupProc(symbol);
+			} 
+			return result;
+		}
+		
+		private ProcedureDecl lookupProcLocal(String symbol) {
+			return procs.get(symbol);
+		}
+
 		public Value lookupValue(String symbol) {
 			ValueReference valueRef = this.lookupValueReference(symbol);
 			return (valueRef==null)?null:valueRef.getValue();
@@ -99,6 +112,10 @@ public class SymbolTable {
 			symbols.put(symbol, valueRef);
 		}
 
+		public void declareProc(String symbol, ProcedureDecl proc) {
+			assert proc!=null;
+			procs.put(symbol, proc);
+		}
 
 
 	}
@@ -135,9 +152,12 @@ public class SymbolTable {
 		this.getCurrent().declareValue(symbol, value);
 	}
 	
-	
 	public void declareType(String symbol, Type type ) throws VariableAlreadyDeclaredException {
 		this.getCurrent().declareType(symbol, type);
+	}
+	
+	public void declareProc(String symbol, ProcedureDecl proc ) {
+		this.getCurrent().declareProc(symbol, proc);
 	}
 
 	public ValueReference lookupValueReference(String symbol) {
@@ -150,6 +170,10 @@ public class SymbolTable {
 
 	public Value lookupValueLocal(String symbol) {
 		return this.getCurrent().lookupValueLocal(symbol);
+	}
+
+	public ProcedureDecl lookupProc(String name) {
+		return this.getCurrent().lookupProc(name);
 	}
 
 }
