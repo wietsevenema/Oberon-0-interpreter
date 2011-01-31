@@ -72,6 +72,7 @@ public void visit(ProcedureCallStatement pcs) throws WrongNumberOfArgsException,
 				ValueReference reference = symbolTable.lookupValueReference( ((Identifier)param).getName() );
 				
 				// 3. And assign in local scope with symbol defined in formal.
+				//FIXME zou eerst type moeten declareren in local scope!!??
 				symbolTable.declareValueReference(formal.getIdentifier().getName(), reference);
 				
 			} else {

@@ -65,12 +65,14 @@ public class ExpressionEvaluator extends Visitor {
 		return new BooleanValue(result);
 	}
 
+	//FIXME lazy eval
 	public BooleanValue visit(LogicalConjunctiveExpression lce) {
 		Boolean left 	= ((BooleanValue) dispatch(lce.getLeft()	)).getValue();
 		Boolean right 	= ((BooleanValue) dispatch(lce.getRight()	)).getValue();
 		return new BooleanValue(left && right);
 	}
 
+	//FIXME lazy eval
 	public BooleanValue visit(LogicalDisjunctiveExpression lde) {
 		Boolean left 	= ((BooleanValue) dispatch(lde.getLeft()	)).getValue();
 		Boolean right 	= ((BooleanValue) dispatch(lde.getRight()	)).getValue();

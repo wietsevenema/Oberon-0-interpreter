@@ -1,5 +1,6 @@
 package eu.wietsevenema.lang.oberon.tests;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
@@ -63,30 +64,18 @@ public class ParseExpressionTest {
 		assertEquals("(1#(1+(1DIV(1&(1OR(~1))))))", actual);
 	}
 	
-	@Test(expected=ParseException.class)
-	public void testUnaryMinOnlyLhs() throws IOException, InvalidInputException, ParseException{
-		
-		/* -2 * 2 mag, maar 2 * -2 moet een parse-error geven. Zie grammatica uit boek: 
-		 *
-		 * factor = ident selector | number | "(" expression ")" | "~" factor. 
-		 * term = factor {("*" | "DIV" | "MOD" | "&") factor}. 
-		 * SimpleExpression = ["+"|"-"] term {("+"|"-" | "OR") term}. 
-		 * expression = SimpleExpression [("=" | "#" | "<" | "<=" | ">" | ">=") SimpleExpression].
-		 * 
-		 */
-		
-		Util.parseExpressionFile(getAbsFilename("oberon/expr/unaryminrhs.expr"));
+	@Test
+	public void testUnaryMin() throws IOException, InvalidInputException, ParseException{
+		// -3 * 2 bind als -(3*2)!! 
+		Node unaryMinLhs = Util.parseExpressionFile(getAbsFilename("oberon/expr/unarymin.expr"));
+		ModulePrinter printer = new ModulePrinter();
+		String actual = (String)printer.dispatch(unaryMinLhs);
+		assertEquals("-(3*2)", actual);
 	}
 	
 	@Test
-	public void testUnaryMin() throws IOException, InvalidInputException, ParseException{
-		// -2 * 2
-		Node unaryMinLhs = Util.parseExpressionFile(getAbsFilename("oberon/expr/unaryminlhs.expr"));
-		ModulePrinter printer = new ModulePrinter();
-		String actual = (String)printer.dispatch(unaryMinLhs);
-		assertEquals("((-3)*2)", actual);
-		
+	public void logicalConnectivesEvaluateLazy(){
+		fail("Not implemented");
 	}
-	
 
 }

@@ -1,0 +1,50 @@
+module eu.wietsevenema.lang.oberon.parser.Statement(
+	Symbol, Identifier, Expression);
+
+import Symbol;
+import Identifier;
+import Expression;
+
+List<Statement> StatementSequence = 
+	statement:Statement statements:( void:";":Symbol Statement)*
+       { 
+		yyValue = new Pair<Statement>(statement, statements).list(); 
+	}
+	;
+
+ProcedureCallStatement ProcedureCallStatement = 
+ 	id:Identifier params:( void:"(":Symbol (ActualParameters)? void:")":Symbol )?
+	{
+		yyValue = new ProcedureCallStatement(id, params);
+	}
+ 	;
+
+
+
+List<Node> ActualParameters = 
+	act:EqualityExpression acts:( void:",":Symbol EqualityExpression)*
+       { 
+		yyValue = new Pair<Node>(act, acts).list(); 
+	}
+	;
+
+/*
+		IfStatement = "IF" expression "THEN" StatementSequence 
+			{"ELSIF" expression "THEN" StatementSequence}
+			["ELSE" StatementSequence] "END". 
+		WhileStatement = "WHILE" expression "DO" StatementSequence "END". 
+*/
+
+
+//FIXME IfStatement | WhileStatement.
+Statement Statement = 
+	yyValue:AssignmentStatement
+  / yyValue:ProcedureCallStatement
+	; 
+
+AssignmentStatement AssignmentStatement = 
+	id:Identifier ":=":Symbol exp:EqualityExpression
+		{
+			yyValue= new AssignmentStatement(id, exp);
+		}
+	;

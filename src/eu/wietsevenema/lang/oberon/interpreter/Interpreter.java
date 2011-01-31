@@ -18,6 +18,9 @@ public class Interpreter {
 
 	/**
 	 * @param args
+	 * 
+	 * FIXME foutmeldingen met locatie erbij. 
+	 * 
 	 */
 	public static void main(String[] args) {
 		if ((null == args) || (0 == args.length)) {

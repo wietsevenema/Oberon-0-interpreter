@@ -16,7 +16,8 @@ public class Declarations extends Node {
 
 	public Declarations(List<ConstantDecl> cd, List<TypeDecl> td,
 			List<VarDecl> vd, List<ProcedureDecl> pd) {
-		
+
+		//FIXME dit kan 1 array zijn!
 		this.constants = (cd!=null)
 							? cd
 							: new ArrayList<ConstantDecl>();
