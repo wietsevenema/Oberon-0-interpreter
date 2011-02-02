@@ -40,5 +40,23 @@ public class ParseModuleTest {
 					, actual);
 	}
 	
+	
+	@Test
+	public void testWhileStatement() throws IOException, InvalidInputException, ParseException{
+		Node result = Util.parseModuleFile(getAbsFilename("oberon/parser/whilestatement.o0"));
+		ModulePrinter printer = new ModulePrinter();
+		String actual = (String)printer.dispatch(result);
+		
+		assertEquals("MODULE While;VAR t1: INTEGER;" +
+				     "VAR t2: BOOLEAN" +
+				     "BEGIN" +
+				     "WHILE(t1<=5)" +
+				     "DO" +
+				     "t:=(t+1);" +
+				     "t2:=true" +
+				     "END" +
+				     "END While."
+				, actual);		
+	}
 
 }

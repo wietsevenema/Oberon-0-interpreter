@@ -120,5 +120,9 @@ public class ExpressionEvaluator extends Visitor {
 		}
 		return result;
 	}
+	
+//	private Boolean getBoolean( Value<?> value){
+//		
+//	}
 
 }

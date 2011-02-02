@@ -31,7 +31,6 @@ import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 import eu.wietsevenema.lang.oberon.interpreter.Value;
 import eu.wietsevenema.lang.oberon.parser.ProcedureDecl;
 
-//FIXME PHP interpreter in Java bekijken
 public class ModuleEvaluatorTest  {
 	
 	SymbolTable symbolTable;
@@ -82,10 +81,10 @@ public class ModuleEvaluatorTest  {
 	public void testModuleWithConstants(){
 		fail("Not implemented");
 	}
-	
-	@SuppressWarnings("unchecked")
+
+
 	@Test
-	public void testSwap() throws IOException, InvalidInputException, ParseException, ValueUndefinedException, VariableNotDeclaredException{
+	public void testSwapProcedure() throws IOException, InvalidInputException, ParseException, ValueUndefinedException, VariableNotDeclaredException{
 		Node result = Util.parseModuleFile(getAbsFilename("oberon/swap.o0"));
 		SymbolTable st = new SymbolTable();
 		ModuleEvaluator me = new ModuleEvaluator(st);
@@ -97,8 +96,8 @@ public class ModuleEvaluatorTest  {
 		 * 	Swap(x, y)
 		 */
 		
-		assertEquals( new Integer(2), ((Value<Integer>)st.lookupValue("x")).getValue() );
-		assertEquals( new Integer(1), ((Value<Integer>)st.lookupValue("y")).getValue() );
+		assertEquals( new Integer(2), (st.lookupValue("x")).getValue() );
+		assertEquals( new Integer(1), (st.lookupValue("y")).getValue() );
 		
 	}
 	

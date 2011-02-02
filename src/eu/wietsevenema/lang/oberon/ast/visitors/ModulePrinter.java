@@ -19,6 +19,7 @@ import eu.wietsevenema.lang.oberon.ast.expressions.TestExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.UnaryMinExpression;
 import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.ProcedureCallStatement;
+import eu.wietsevenema.lang.oberon.ast.statements.WhileStatement;
 import eu.wietsevenema.lang.oberon.parser.ProcedureDecl;
 
 /**
@@ -89,8 +90,9 @@ public class ModulePrinter extends Visitor {
 		
 	}
 	
+	
 	public String visit(AssignmentStatement as){
-		return as.getIdentifier().getName() + ":=" + as.getExpression();
+		return as.getIdentifier().getName() + ":=" + dispatch(as.getExpression());
 	}
 	
 	public String visit(FormalVar fv){
@@ -127,6 +129,16 @@ public class ModulePrinter extends Visitor {
 		}
 		return join(strings, delimiter);
 	}
+	
+	public String visit(WhileStatement whileStat){
+		String result = "WHILE";
+		result += dispatch(whileStat.getCondition());
+		result += "DO";
+		result += joinNodes(whileStat.getStatements(), ";");
+		result += "END";
+		return result;
+	}
+	
 	
 	private static String join(List<String> s, String delimiter) {
 	    if (s.isEmpty()) {

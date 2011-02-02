@@ -32,13 +32,24 @@ List<Node> ActualParameters =
 		IfStatement = "IF" expression "THEN" StatementSequence 
 			{"ELSIF" expression "THEN" StatementSequence}
 			["ELSE" StatementSequence] "END". 
-		WhileStatement = "WHILE" expression "DO" StatementSequence "END". 
+
 */
 
+WhileStatement WhileStatement = 
+	"WHILE":Word 
+	exp:EqualityExpression
+	"DO":Word 
+	stats:StatementSequence 
+	"END":Word
+	{
+		yyValue = new WhileStatement( exp, stats );
+	}
+	;
 
-//FIXME IfStatement | WhileStatement.
+//FIXME IfStatement.
 Statement Statement = 
 	yyValue:AssignmentStatement
+  / yyValue:WhileStatement
   / yyValue:ProcedureCallStatement
 	; 
 
