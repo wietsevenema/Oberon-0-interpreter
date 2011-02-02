@@ -1,6 +1,5 @@
 package eu.wietsevenema.lang.oberon.tests;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
@@ -73,9 +72,10 @@ public class ParseExpressionTest {
 		assertEquals("-(3*2)", actual);
 	}
 	
+	
 	@Test
 	public void logicalConnectivesEvaluateLazy(){
-		fail("Not implemented");
+		
 	}
 
 }

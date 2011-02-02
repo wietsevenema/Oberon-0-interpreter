@@ -11,15 +11,11 @@ import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.ProcedureCallStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.Statement;
-import eu.wietsevenema.lang.oberon.ast.types.BooleanType;
-import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
 import eu.wietsevenema.lang.oberon.exceptions.IdentifierExpectedInParamList;
 import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.WrongNumberOfArgsException;
-import eu.wietsevenema.lang.oberon.interpreter.BooleanValue;
-import eu.wietsevenema.lang.oberon.interpreter.IntegerValue;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 import eu.wietsevenema.lang.oberon.interpreter.Value;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
@@ -34,12 +30,27 @@ public class StatementEvaluator extends Visitor {
 	}
 	
 	public void visit(AssignmentStatement assign) throws VariableNotDeclaredException, TypeMismatchException{
+		//1. Retrieve existing reference.
+		String symbol = assign.getIdentifier().getName();
+		ValueReference currentValRef = symbolTable.lookupValueReference(symbol);
+
+		if(currentValRef == null){
+			throw new VariableNotDeclaredException("Variable '" + symbol + "' not declared.");
+		}
+		
+		Value<?> currentVal = currentValRef.getValue();
+		
+		//2. Evaluate expression
 		ExpressionEvaluator eval = new ExpressionEvaluator(symbolTable);
-		Value value = (Value)eval.dispatch(assign.getExpression());
-		symbolTable.declareValue(
-						assign.getIdentifier().getName(),
-						value
-						);	
+		Value<?> value = (Value<?>)eval.dispatch(assign.getExpression());
+		
+		//3. Assign new value
+		if(currentVal.matchesType(value)){
+			currentValRef.setValue(value);
+		} else {
+			throw new TypeMismatchException();
+		}
+				
 	}
 	
 public void visit(ProcedureCallStatement pcs) throws WrongNumberOfArgsException, IdentifierExpectedInParamList, VariableAlreadyDeclaredException, VariableNotDeclaredException, TypeMismatchException  {
@@ -80,16 +91,11 @@ public void visit(ProcedureCallStatement pcs) throws WrongNumberOfArgsException,
 				// 1. Parameter is expression, evaluate
 				ExpressionEvaluator expressionEval = new ExpressionEvaluator(symbolTable);
 				Expression param = parameters.get(i);
-				Value result = (Value) expressionEval.dispatch(param);
+				Value<?> result = (Value<?>) expressionEval.dispatch(param);
 				
 				// 2. Declare type and assign value in local scope 
 				// with symbol defined in formal.
 				String symbol = formal.getIdentifier().getName();
-				if( result instanceof IntegerValue ){ //FIXME annotate value with type of make value responsible.
-					symbolTable.declareType(symbol, new IntegerType());
-				} else if ( result instanceof BooleanValue ){
-					symbolTable.declareType(symbol, new BooleanType());
-				}
 				symbolTable.declareValue(symbol, result);
 				
 			}

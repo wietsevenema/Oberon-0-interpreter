@@ -10,7 +10,7 @@ import eu.wietsevenema.lang.oberon.ast.declarations.FormalVar;
 import eu.wietsevenema.lang.oberon.ast.declarations.FormalVarRef;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.statements.Statement;
-import eu.wietsevenema.lang.oberon.ast.types.Type;
+import eu.wietsevenema.lang.oberon.ast.types.VarType;
 
 public class ProcedureDecl extends Declaration {
 	
@@ -71,7 +71,7 @@ public class ProcedureDecl extends Declaration {
 							result.add(
 								new FormalVar(
 									(Identifier)identifier, 
-									(Type)n.get(2)
+									(VarType)n.get(2)
 									)
 								);
 						}
@@ -84,7 +84,7 @@ public class ProcedureDecl extends Declaration {
 							result.add(
 							new FormalVarRef(
 									(Identifier)identifier, 
-									(Type)n.get(2)
+									(VarType)n.get(2)
 									)
 							);
 						}

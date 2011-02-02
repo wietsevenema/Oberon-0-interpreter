@@ -14,14 +14,14 @@ Declarations Declarations =
 	;
 		
 //FIXME / ArrayType / RecordType.
-Type Type = 
+VarType Type = 
 	"BOOLEAN":Word 
 	{
-		yyValue = new BooleanType();
+		yyValue = new VarType("BOOLEAN");
 	}
   / "INTEGER":Word
 	{
-		yyValue = new IntegerType();
+		yyValue = new VarType("INTEGER");
 	}
 	;
 

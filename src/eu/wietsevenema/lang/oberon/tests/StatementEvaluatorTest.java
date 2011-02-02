@@ -9,13 +9,12 @@ import eu.wietsevenema.lang.oberon.ast.expressions.BooleanConstant;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.expressions.IntegerConstant;
 import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
-import eu.wietsevenema.lang.oberon.ast.types.BooleanType;
-import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
 import eu.wietsevenema.lang.oberon.ast.visitors.StatementEvaluator;
+import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
-import eu.wietsevenema.lang.oberon.interpreter.BooleanValue;
-import eu.wietsevenema.lang.oberon.interpreter.IntegerValue;
+import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.interpreter.Value;
 
 public class StatementEvaluatorTest  {
 
@@ -26,14 +25,18 @@ public class StatementEvaluatorTest  {
 		this.symbols = new SymbolTable();
 	}
 
+	
 	@Test
-	public void testAssignment() throws VariableAlreadyDeclaredException {
-		symbols.declareType("a", new IntegerType());
+	public void testAssignment() throws VariableAlreadyDeclaredException, ValueUndefinedException, VariableNotDeclaredException  {
+		//Declare vars
+		symbols.declareValue("a", Value.fromTypeName("INTEGER"));
+		symbols.declareValue("b", Value.fromTypeName("BOOLEAN"));
+		
+		//Construct assignment statements
 		AssignmentStatement as1 = new AssignmentStatement(
 				new Identifier("a"),
 				new IntegerConstant(2));
-
-		symbols.declareType("b", new BooleanType());
+		
 		AssignmentStatement as2 = new AssignmentStatement(
 				new Identifier("b"),
 				new BooleanConstant(true));
@@ -42,13 +45,14 @@ public class StatementEvaluatorTest  {
 		se.dispatch(as1);
 		se.dispatch(as2);
 		
-		assertEquals(((IntegerValue)symbols.lookupValue("a")).getValue(), new Integer(2));
-		assertEquals(((BooleanValue)symbols.lookupValue("b")).getValue(), new Boolean(true));
+		assertEquals((symbols.lookupValue("a")).getValue(), new Integer(2));
+		assertEquals((symbols.lookupValue("b")).getValue(), new Boolean(true));
 	}
 	
+	
 	@Test
-	public void testSecondAssignment() throws VariableAlreadyDeclaredException {
-		symbols.declareType("a", new IntegerType());
+	public void testSecondAssignment() throws ValueUndefinedException, VariableNotDeclaredException, VariableAlreadyDeclaredException {
+		symbols.declareValue("a", Value.fromTypeName("INTEGER"));
 		AssignmentStatement first = new AssignmentStatement(
 				new Identifier("a"),
 				new IntegerConstant(2));
@@ -59,9 +63,9 @@ public class StatementEvaluatorTest  {
 
 		StatementEvaluator se = new StatementEvaluator(symbols);
 		se.dispatch(first);
-		assertEquals(((IntegerValue)symbols.lookupValue("a")).getValue(), new Integer(2));
+		assertEquals((symbols.lookupValue("a")).getValue(), new Integer(2));
 		se.dispatch(second);
-		assertEquals(((IntegerValue)symbols.lookupValue("a")).getValue(), new Integer(3));
+		assertEquals((symbols.lookupValue("a")).getValue(), new Integer(3));
 	}
 	
 	

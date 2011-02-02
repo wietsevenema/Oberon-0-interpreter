@@ -1,14 +1,14 @@
 package eu.wietsevenema.lang.oberon.ast.declarations;
 
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
-import eu.wietsevenema.lang.oberon.ast.types.Type;
+import eu.wietsevenema.lang.oberon.ast.types.VarType;
 
 public class FormalVar extends Declaration {
 
 	private Identifier identifier;
-	private Type type;
+	private VarType type;
 		
-	public FormalVar(Identifier identifier, Type type){
+	public FormalVar(Identifier identifier, VarType type){
 		this.identifier = identifier;
 		this.type = type;
 	}
@@ -17,7 +17,7 @@ public class FormalVar extends Declaration {
 		return identifier;
 	}
 
-	public Type getType() {
+	public VarType getType() {
 		return type;
 	}
 	

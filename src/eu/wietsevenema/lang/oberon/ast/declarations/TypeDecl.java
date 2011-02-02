@@ -1,15 +1,15 @@
 package eu.wietsevenema.lang.oberon.ast.declarations;
 
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
-import eu.wietsevenema.lang.oberon.ast.types.Type;
+import eu.wietsevenema.lang.oberon.ast.types.VarType;
 
 public class TypeDecl extends Declaration {
 
 	private Identifier identifier;
-	private Type type;
+	private VarType type;
 
 	//FIXME i'm wrong. 
-	public TypeDecl(Identifier identifier, Type type) {
+	public TypeDecl(Identifier identifier, VarType type) {
 		this.identifier = identifier;
 		this.type = type;
 	}
@@ -18,7 +18,7 @@ public class TypeDecl extends Declaration {
 		return identifier;
 	}
 
-	public Type getType() {
+	public VarType getType() {
 		return type;
 	}
 

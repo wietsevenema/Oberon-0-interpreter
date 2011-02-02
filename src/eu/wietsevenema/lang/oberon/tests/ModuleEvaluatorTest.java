@@ -21,12 +21,14 @@ import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.expressions.IntegerConstant;
 import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.Statement;
-import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
+import eu.wietsevenema.lang.oberon.ast.types.VarType;
 import eu.wietsevenema.lang.oberon.ast.visitors.ModuleEvaluator;
 import eu.wietsevenema.lang.oberon.exceptions.InvalidInputException;
 import eu.wietsevenema.lang.oberon.exceptions.ParseException;
-import eu.wietsevenema.lang.oberon.interpreter.IntegerValue;
+import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
+import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.interpreter.Value;
 import eu.wietsevenema.lang.oberon.parser.ProcedureDecl;
 
 //FIXME PHP interpreter in Java bekijken
@@ -44,18 +46,20 @@ public class ModuleEvaluatorTest  {
 	}
 	
 	@Test
-	public void testModuleWithDeclarations(){
-		List<Statement> stats = new ArrayList<Statement>();
-		stats.add(
-				new AssignmentStatement(new Identifier("a"), new IntegerConstant(1) )
-				);
+	public void testModuleWithVarDeclarations() throws VariableNotDeclaredException{
+		
 		
 		List<Identifier> ids = new ArrayList<Identifier>();
 		ids.add( new Identifier("a"));
 		
 		List<VarDecl> decls = new ArrayList<VarDecl>();
 		decls.add(
-				new VarDecl(ids, new IntegerType())
+				new VarDecl(ids, new VarType("INTEGER"))
+				);
+		
+		List<Statement> stats = new ArrayList<Statement>();
+		stats.add(
+				new AssignmentStatement(new Identifier("a"), new IntegerConstant(1) )
 				);
 		
 		Module m = new Module(
@@ -71,7 +75,6 @@ public class ModuleEvaluatorTest  {
 		ModuleEvaluator me = new ModuleEvaluator(symbolTable);
 		me.dispatch(m);
 		
-		assertNotNull(symbolTable.lookupType("a"));
 		assertNotNull(symbolTable.lookupValue("a"));
 	}
 	
@@ -80,8 +83,9 @@ public class ModuleEvaluatorTest  {
 		fail("Not implemented");
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
-	public void testSwap() throws IOException, InvalidInputException, ParseException{
+	public void testSwap() throws IOException, InvalidInputException, ParseException, ValueUndefinedException, VariableNotDeclaredException{
 		Node result = Util.parseModuleFile(getAbsFilename("oberon/swap.o0"));
 		SymbolTable st = new SymbolTable();
 		ModuleEvaluator me = new ModuleEvaluator(st);
@@ -93,8 +97,8 @@ public class ModuleEvaluatorTest  {
 		 * 	Swap(x, y)
 		 */
 		
-		assertEquals( new Integer(2), ((IntegerValue)st.lookupValue("x")).getValue() );
-		assertEquals( new Integer(1), ((IntegerValue)st.lookupValue("y")).getValue() );
+		assertEquals( new Integer(2), ((Value<Integer>)st.lookupValue("x")).getValue() );
+		assertEquals( new Integer(1), ((Value<Integer>)st.lookupValue("y")).getValue() );
 		
 	}
 	

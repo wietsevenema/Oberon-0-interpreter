@@ -12,9 +12,9 @@ import eu.wietsevenema.lang.oberon.ast.expressions.LogicalDisjunctiveExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.LogicalNegationExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.MultiplicativeExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.UnaryMinExpression;
+import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
+import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableUndefinedException;
-import eu.wietsevenema.lang.oberon.interpreter.BooleanValue;
-import eu.wietsevenema.lang.oberon.interpreter.IntegerValue;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 import eu.wietsevenema.lang.oberon.interpreter.Value;
 
@@ -26,26 +26,27 @@ public class ExpressionEvaluator extends Visitor {
 		this.symboltable = symbolTable;
 	}
 
-	public IntegerValue visit(AdditiveExpression ae) throws ClassCastException {
-		Integer left 	= ((IntegerValue) dispatch(ae.getLeft()	)).getValue();
-		Integer right 	= ((IntegerValue) dispatch(ae.getRight())).getValue();
-
+	
+	public Value<Integer> visit(AdditiveExpression ae) throws ClassCastException, ValueUndefinedException {
+		Integer left 	= ((Value<Integer>) dispatch(ae.getLeft()	)).getValue();
+		Integer right 	= ((Value<Integer>) dispatch(ae.getRight()	)).getValue();
+				
 		if (ae.getToken() == "+") {
-			return new IntegerValue(left + right);
+			return new Value<Integer>(left + right);
 		} else if (ae.getToken() == "-") {
-			return new IntegerValue(left - right);
+			return new Value<Integer>(left - right);
 		} else {
 			throw new IllegalStateException("Token not recognized");
 		}
 	}
 
-	public BooleanValue visit(BooleanConstant bc) {
-		return new BooleanValue(bc.getValue());
+	public Value<Boolean> visit(BooleanConstant bc) {
+		return new Value<Boolean>(bc.getValue());
 	}
 
-	public BooleanValue visit(EqualityExpression ee) {
-		Integer left 	= ((IntegerValue) dispatch(ee.getLeft()	)).getValue();
-		Integer right 	= ((IntegerValue) dispatch(ee.getRight())).getValue();
+	public Value<Boolean> visit(EqualityExpression ee) throws ValueUndefinedException {
+		Integer left 	= ((Value<Integer>) dispatch(ee.getLeft()	)).getValue();
+		Integer right 	= ((Value<Integer>) dispatch(ee.getRight())).getValue();
 		boolean result;
 		if(ee.getToken() == "="){
 			result = left == right;
@@ -62,32 +63,32 @@ public class ExpressionEvaluator extends Visitor {
 		} else {
 			throw new IllegalStateException("Token not recognized");
 		}
-		return new BooleanValue(result);
+		return new Value<Boolean>(result);
 	}
 
 	//FIXME lazy eval
-	public BooleanValue visit(LogicalConjunctiveExpression lce) {
-		Boolean left 	= ((BooleanValue) dispatch(lce.getLeft()	)).getValue();
-		Boolean right 	= ((BooleanValue) dispatch(lce.getRight()	)).getValue();
-		return new BooleanValue(left && right);
+	public Value<Boolean> visit(LogicalConjunctiveExpression lce) throws ValueUndefinedException {
+		Boolean left 	= ((Value<Boolean>) dispatch(lce.getLeft()	)).getValue();
+		Boolean right 	= ((Value<Boolean>) dispatch(lce.getRight()	)).getValue();
+		return new Value<Boolean>(left && right);
 	}
 
 	//FIXME lazy eval
-	public BooleanValue visit(LogicalDisjunctiveExpression lde) {
-		Boolean left 	= ((BooleanValue) dispatch(lde.getLeft()	)).getValue();
-		Boolean right 	= ((BooleanValue) dispatch(lde.getRight()	)).getValue();
-		return new BooleanValue(left || right);
+	public Value<Boolean> visit(LogicalDisjunctiveExpression lde) throws ValueUndefinedException {
+		Boolean left 	= ((Value<Boolean>) dispatch(lde.getLeft()	)).getValue();
+		Boolean right 	= ((Value<Boolean>) dispatch(lde.getRight()	)).getValue();
+		return new Value<Boolean>(left || right);
 	}
 
-	public BooleanValue visit(LogicalNegationExpression lne) {
+	public Value<Boolean> visit(LogicalNegationExpression lne) throws ValueUndefinedException {
 		Expression exp = lne.getChild();
-		Boolean value = ((BooleanValue) dispatch(exp)).getValue();
-		return new BooleanValue(!value);
+		Boolean value = ((Value<Boolean>) dispatch(exp)).getValue();
+		return new Value<Boolean>(!value);
 	}
 
-	public IntegerValue visit(MultiplicativeExpression me) {
-		Integer left 	= ((IntegerValue) dispatch(me.getLeft()	)).getValue();
-		Integer right 	= ((IntegerValue) dispatch(me.getRight())).getValue();
+	public Value<Integer> visit(MultiplicativeExpression me) throws ValueUndefinedException {
+		Integer left 	= ((Value<Integer>) dispatch(me.getLeft()	)).getValue();
+		Integer right 	= ((Value<Integer>) dispatch(me.getRight())).getValue();
 
 		Integer result; 
 		if (me.getToken() == "*") {
@@ -99,21 +100,21 @@ public class ExpressionEvaluator extends Visitor {
 		} else {
 			throw new IllegalStateException("Token not recognized");
 		}
-		return new IntegerValue(result);
+		return new Value<Integer>(result);
 	}
 
-	public IntegerValue visit(UnaryMinExpression um) {
-		IntegerValue result = (IntegerValue) dispatch(um.getChild());
+	public Value<Integer> visit(UnaryMinExpression um) {
+		Value<Integer> result = (Value<Integer>) dispatch(um.getChild());
 		return result;
 	}
 
-	public IntegerValue visit(IntegerConstant ic) {
-		return new IntegerValue(ic.getValue());
+	public Value<Integer> visit(IntegerConstant ic) {
+		return new Value<Integer>(ic.getValue());
 	}
 
-	public Value visit(Identifier id) throws VariableUndefinedException {
-		IntegerValue result = (IntegerValue) this.symboltable.lookupValue(id
-				.getName());
+	public Value<?> visit(Identifier id) throws VariableUndefinedException, VariableNotDeclaredException {
+		Value<?> result = (Value<?>) this.symboltable.lookupValue(id.getName());
+		
 		if (result == null) {
 			throw new VariableUndefinedException(id.getName() + "undefined.");
 		}
