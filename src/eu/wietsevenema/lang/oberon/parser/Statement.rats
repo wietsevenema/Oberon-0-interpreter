@@ -28,28 +28,44 @@ List<Node> ActualParameters =
 	}
 	;
 
-/*
-		IfStatement = "IF" expression "THEN" StatementSequence 
-			{"ELSIF" expression "THEN" StatementSequence}
-			["ELSE" StatementSequence] "END". 
+ElseIfStatement ElseIfStatement =  
+	"ELSIF":Word
+	cond:EqualityExpression
+	"THEN":Word
+	truestats: StatementSequence
+	{
+		yyValue = new ElseIfStatement( cond, truestats );
+	}
+	;
 
-*/
+IfStatement IfStatement = 
+	"IF":Word 
+	cond:EqualityExpression
+	"THEN":Word
+	truestats:StatementSequence 
+	elseifs:(ElseIfStatement)*
+	falsestats:(void:"ELSE":Word StatementSequence)? 
+	"END":Word
+	{
+		yyValue = new IfStatement( cond, truestats, elseifs.list(), falsestats);
+	}
+	; 
 
 WhileStatement WhileStatement = 
 	"WHILE":Word 
-	exp:EqualityExpression
+	cond:EqualityExpression
 	"DO":Word 
 	stats:StatementSequence 
 	"END":Word
 	{
-		yyValue = new WhileStatement( exp, stats );
+		yyValue = new WhileStatement( cond, stats );
 	}
 	;
 
-//FIXME IfStatement.
 Statement Statement = 
 	yyValue:AssignmentStatement
   / yyValue:WhileStatement
+  / yyValue:IfStatement
   / yyValue:ProcedureCallStatement
 	; 
 

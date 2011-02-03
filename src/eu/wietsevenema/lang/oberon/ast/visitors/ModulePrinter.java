@@ -19,8 +19,8 @@ import eu.wietsevenema.lang.oberon.ast.expressions.TestExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.UnaryMinExpression;
 import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.ProcedureCallStatement;
+import eu.wietsevenema.lang.oberon.ast.statements.ProcedureDecl;
 import eu.wietsevenema.lang.oberon.ast.statements.WhileStatement;
-import eu.wietsevenema.lang.oberon.parser.ProcedureDecl;
 
 /**
  * Deze moduleprinter is (nog) niet voor productiedoeleinden, alleen 

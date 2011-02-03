@@ -3,7 +3,7 @@ package eu.wietsevenema.lang.oberon.ast.declarations;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.wietsevenema.lang.oberon.parser.ProcedureDecl;
+import eu.wietsevenema.lang.oberon.ast.statements.ProcedureDecl;
 
 import xtc.tree.Node;
 

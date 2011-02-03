@@ -20,6 +20,7 @@ import eu.wietsevenema.lang.oberon.ast.declarations.VarDecl;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.expressions.IntegerConstant;
 import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
+import eu.wietsevenema.lang.oberon.ast.statements.ProcedureDecl;
 import eu.wietsevenema.lang.oberon.ast.statements.Statement;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
 import eu.wietsevenema.lang.oberon.ast.visitors.ModuleEvaluator;
@@ -29,7 +30,6 @@ import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 import eu.wietsevenema.lang.oberon.interpreter.Value;
-import eu.wietsevenema.lang.oberon.parser.ProcedureDecl;
 
 public class ModuleEvaluatorTest  {
 	
@@ -83,23 +83,7 @@ public class ModuleEvaluatorTest  {
 	}
 
 
-	@Test
-	public void testSwapProcedure() throws IOException, InvalidInputException, ParseException, ValueUndefinedException, VariableNotDeclaredException{
-		Node result = Util.parseModuleFile(getAbsFilename("oberon/swap.o0"));
-		SymbolTable st = new SymbolTable();
-		ModuleEvaluator me = new ModuleEvaluator(st);
-		me.dispatch(result);
-		
-		/*
-		 * 	x := 1;
-		 * 	y := 2;
-		 * 	Swap(x, y)
-		 */
-		
-		assertEquals( new Integer(2), (st.lookupValue("x")).getValue() );
-		assertEquals( new Integer(1), (st.lookupValue("y")).getValue() );
-		
-	}
+	
 	
 	public void testModuleWithTypes(){
 		fail("Not implemented");

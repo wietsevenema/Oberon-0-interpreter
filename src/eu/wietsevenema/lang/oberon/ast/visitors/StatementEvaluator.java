@@ -1,15 +1,18 @@
 package eu.wietsevenema.lang.oberon.ast.visitors;
 
+import java.util.Iterator;
 import java.util.List;
 
 import xtc.tree.Visitor;
-import eu.wietsevenema.lang.oberon.ast.declarations.Declarations;
 import eu.wietsevenema.lang.oberon.ast.declarations.FormalVar;
 import eu.wietsevenema.lang.oberon.ast.declarations.FormalVarRef;
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
+import eu.wietsevenema.lang.oberon.ast.statements.ElseIfStatement;
+import eu.wietsevenema.lang.oberon.ast.statements.IfStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.ProcedureCallStatement;
+import eu.wietsevenema.lang.oberon.ast.statements.ProcedureDecl;
 import eu.wietsevenema.lang.oberon.ast.statements.Statement;
 import eu.wietsevenema.lang.oberon.ast.statements.WhileStatement;
 import eu.wietsevenema.lang.oberon.exceptions.IdentifierExpectedInParamList;
@@ -21,7 +24,6 @@ import eu.wietsevenema.lang.oberon.exceptions.WrongNumberOfArgsException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 import eu.wietsevenema.lang.oberon.interpreter.Value;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
-import eu.wietsevenema.lang.oberon.parser.ProcedureDecl;
 
 public class StatementEvaluator extends Visitor {
 
@@ -57,43 +59,48 @@ public class StatementEvaluator extends Visitor {
 
 	}
 
-	public void visit(ProcedureCallStatement pcs)
+	public void visit(ProcedureCallStatement pCall)
 			throws WrongNumberOfArgsException, IdentifierExpectedInParamList,
 			VariableAlreadyDeclaredException, VariableNotDeclaredException,
 			TypeMismatchException {
 
 		// Find procedure node.
-		ProcedureDecl procDecl = (ProcedureDecl) symbolTable.lookupProc(pcs
+		ProcedureDecl procedure = (ProcedureDecl) symbolTable.lookupProc(pCall
 				.getIdentifier().getName());
-
+		
 		// Enter scope.
 		symbolTable.enter();
 
-		// Assign actual parameters in new scope. Discriminate between var and
-		// ref.
-		List<Expression> parameters = pcs.getParameters();
-		List<FormalVar> formals = procDecl.getFormals();
-
+		
+		List<Expression> parameters = pCall.getParameters();
+		List<FormalVar> formals = procedure.getFormals();
+		
+		
 		if (formals.size() != parameters.size()) {
 			throw new WrongNumberOfArgsException();
 		}
 		for (int i = 0; i < formals.size(); i++) {
 			FormalVar formal = formals.get(i);
 			if (formal instanceof FormalVarRef) {
-				// This is een variable parameter.
+				// Dit is een variable parameter.
 				// 1. Parameter should be variable,
 				Expression param = parameters.get(i);
 				if (!(param instanceof Identifier)) {
 					throw new IdentifierExpectedInParamList("Param " + (i + 1)
-							+ " of " + procDecl.getIdentifier().getName()
 							+ " should be variable, not expression");
 				}
-				// 2. get valueReference
-				ValueReference reference = symbolTable
-						.lookupValueReference(((Identifier) param).getName());
-
-				// 3. And assign in local scope with symbol defined in formal.
-				// FIXME zou eerst type moeten declareren in local scope!!??
+				
+				// 2. Get reference to value (from parent scope)
+				ValueReference reference = symbolTable.
+						lookupValueReference(((Identifier) param).getName());
+				
+				// 3. Check type.
+				String type = formal.getType().toString();
+				if(!reference.getValue().getType().equals(type)){
+					throw new TypeMismatchException();
+				}
+								
+				// 4. And assign in local scope with symbol defined in formal.
 				symbolTable.declareValueReference(formal.getIdentifier()
 						.getName(), reference);
 
@@ -104,31 +111,74 @@ public class StatementEvaluator extends Visitor {
 						symbolTable);
 				Expression param = parameters.get(i);
 				Value<?> result = (Value<?>) expressionEval.dispatch(param);
-
-				// 2. Declare type and assign value in local scope
-				// with symbol defined in formal.
+				
+				// 2. Check type.
+				String type = formal.getType().toString();
+				if(!result.getType().equals(type)){
+					throw new TypeMismatchException();
+				}
+				
+				// 3. Declare variable and assign in local scope.
+				//    With symbol defined in formal. 
 				String symbol = formal.getIdentifier().getName();
 				symbolTable.declareValue(symbol, result);
-
+			
 			}
 
 		}
+		
 
 		// Process declarations.
-		Declarations decls = procDecl.getDeclarations();
 		DeclarationEvaluator declEval = new DeclarationEvaluator(symbolTable);
-		declEval.dispatch(decls);
+		declEval.dispatch(procedure.getDeclarations());
 
 		// Execute statements.
-		List<Statement> statements = procDecl.getStatements();
 		StatementEvaluator statEval = new StatementEvaluator(symbolTable);
-		for (Statement stat : statements) {
-			statEval.dispatch(stat);
+		for( Statement s : procedure.getStatements()){
+			statEval.dispatch(s);
 		}
-
+		
+		
 		// Exit scope.
 		symbolTable.exit();
 
+	}
+
+	
+	public void visit(IfStatement ifStatement) throws TypeMismatchException, ValueUndefinedException{
+		
+		if(evalCondition(ifStatement.getCondition())){
+			//1. Als de if matched, evalueren we die statement en stoppen de evaluatie. 
+			evalStatements(ifStatement.getTrueStatements());
+			return; 
+		} else {
+			for (Iterator<ElseIfStatement> iterator = ifStatement.getElseIfs().iterator(); 
+				 iterator.hasNext();) {
+				ElseIfStatement elseif = (ElseIfStatement) iterator.next();
+				
+				if(evalCondition(elseif.getCondition())){
+					//2. Zodra er een elseif is gematched en uitgevoerd stopt de evaluatie.
+					evalStatements(elseif.getTrueStatements());
+					return;  
+				}
+			}
+			
+			//3. Finally, als zowel het if statement en de elseif's falen te matchen, voeren we de else uit. 
+			evalStatements(ifStatement.getFalseStatements());
+			return;
+			
+		}
+		
+		
+	}
+	
+	private void evalStatements( List<Statement> statements){
+		if(!statements.isEmpty()){
+			StatementEvaluator statEval = new StatementEvaluator(symbolTable);
+			for (Statement stat : statements) {
+				statEval.dispatch(stat);
+			}
+		}
 	}
 	
 	private boolean evalCondition(Expression exp) throws TypeMismatchException, ValueUndefinedException{

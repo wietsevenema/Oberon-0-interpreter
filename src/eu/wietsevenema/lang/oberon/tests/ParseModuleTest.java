@@ -8,9 +8,13 @@ import java.io.IOException;
 import org.junit.Test;
 
 import xtc.tree.Node;
+import eu.wietsevenema.lang.oberon.ast.visitors.ModuleEvaluator;
 import eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter;
 import eu.wietsevenema.lang.oberon.exceptions.InvalidInputException;
 import eu.wietsevenema.lang.oberon.exceptions.ParseException;
+import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
+import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
+import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 
 public class ParseModuleTest {
 
@@ -57,6 +61,24 @@ public class ParseModuleTest {
 				     "END" +
 				     "END While."
 				, actual);		
+	}
+	
+	@Test
+	public void testSwapProcedure() throws IOException, InvalidInputException, ParseException, ValueUndefinedException, VariableNotDeclaredException{
+		Node result = Util.parseModuleFile(getAbsFilename("oberon/swap.o0"));
+		SymbolTable st = new SymbolTable();
+		ModuleEvaluator me = new ModuleEvaluator(st);
+		me.dispatch(result);
+		
+		/*
+		 * 	x := 1;
+		 * 	y := 2;
+		 * 	Swap(x, y)
+		 */
+		
+		assertEquals( new Integer(2), (st.lookupValue("x")).getValue() );
+		assertEquals( new Integer(1), (st.lookupValue("y")).getValue() );
+		
 	}
 
 }

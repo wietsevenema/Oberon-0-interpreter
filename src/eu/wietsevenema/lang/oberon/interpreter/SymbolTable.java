@@ -3,9 +3,10 @@ package eu.wietsevenema.lang.oberon.interpreter;
 import java.util.HashMap;
 import java.util.Map;
 
+
+import eu.wietsevenema.lang.oberon.ast.statements.ProcedureDecl;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
-import eu.wietsevenema.lang.oberon.parser.ProcedureDecl;
 
 public class SymbolTable {
 
@@ -137,6 +138,10 @@ public class SymbolTable {
 
 	public Value<?> lookupValueLocal(String symbol) {
 		return this.getCurrent().lookupValueLocal(symbol);
+	}
+
+	public Scope getParent() {
+		return this.current.getParent();
 	}
 
 }

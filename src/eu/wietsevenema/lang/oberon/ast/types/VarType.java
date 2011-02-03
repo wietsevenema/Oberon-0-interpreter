@@ -4,18 +4,19 @@ import xtc.tree.Node;
 
 public class VarType extends Node {
 
-	private String identifier;
+	private String type;
 
-	public VarType(String identifier) {
-		this.identifier = identifier;
+	public VarType(String type) {
+		this.type = type;
 	}
 
 	public String toString(){
-		return this.getIdentifier();
+		return this.getTypename();
 	}
 
-	private String getIdentifier() {
-		return this.identifier;
+	private String getTypename() {
+		return this.type;
 	}
+	
 
 }

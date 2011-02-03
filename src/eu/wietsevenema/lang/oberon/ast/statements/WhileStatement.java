@@ -2,10 +2,8 @@ package eu.wietsevenema.lang.oberon.ast.statements;
 
 import java.util.List;
 
-import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
-import eu.wietsevenema.lang.oberon.ast.visitors.TransformGenerics;
-
 import xtc.tree.Node;
+import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
 
 public class WhileStatement extends Statement {
 
@@ -13,8 +11,7 @@ public class WhileStatement extends Statement {
 	private List<Statement> statements;
 
 	public WhileStatement(Node condition, List<Statement> statements) {
-		TransformGenerics tg = new TransformGenerics();
-		this.condition = (Expression)tg.dispatch(condition);
+		this.condition = this.transformExpression(condition);
 		this.statements = statements;
 	}
 
