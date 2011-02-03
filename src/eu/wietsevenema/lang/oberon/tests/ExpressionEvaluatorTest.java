@@ -14,7 +14,7 @@ import eu.wietsevenema.lang.oberon.ast.visitors.ExpressionEvaluator;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
-import eu.wietsevenema.lang.oberon.interpreter.Value;
+import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 
 
 public class ExpressionEvaluatorTest  {
@@ -24,7 +24,7 @@ public class ExpressionEvaluatorTest  {
 	public void testSimpleAddition() throws ValueUndefinedException{
 		Expression exp = new AdditiveExpression(new IntegerConstant(1), new IntegerConstant(3), "+");
 		ExpressionEvaluator evaluator = new ExpressionEvaluator(new SymbolTable());
-		Value<?> result = (Value<?>) evaluator.dispatch(exp);
+		IntegerValue result = (IntegerValue) evaluator.dispatch(exp);
 		assertEquals(new Integer(4), result.getValue());
 	}
 	
@@ -40,7 +40,7 @@ public class ExpressionEvaluatorTest  {
 				),
 				"+");
 		ExpressionEvaluator evaluator = new ExpressionEvaluator(new SymbolTable());
-		Value<?> result = (Value<?>) evaluator.dispatch(exp);
+		IntegerValue result = (IntegerValue) evaluator.dispatch(exp);
 		assertEquals(new Integer(1+(10-12)), result.getValue());
 	}
 	
@@ -63,8 +63,8 @@ public class ExpressionEvaluatorTest  {
 		
 		
 		ExpressionEvaluator evaluator = new ExpressionEvaluator(new SymbolTable());
-		Value<?> divResult = (Value<?>) evaluator.dispatch(div);
-		Value<?> modResult = (Value<?>) evaluator.dispatch(mod);
+		IntegerValue divResult = (IntegerValue) evaluator.dispatch(div);
+		IntegerValue modResult = (IntegerValue) evaluator.dispatch(mod);
 		
 		/*
 		 * 6 DIV 4 == 1
@@ -77,12 +77,12 @@ public class ExpressionEvaluatorTest  {
 	@Test
 	public void testSimpleIdentifier() throws ValueUndefinedException, VariableAlreadyDeclaredException{
 		SymbolTable st = new SymbolTable();
-		st.getCurrent().declareValue("a", new Value<Integer>(40));
+		st.getCurrent().declareValue("a", new IntegerValue(40));
 		
 		Expression exp = new AdditiveExpression(new IntegerConstant(2), new Identifier("a"), "+");
 		
 		ExpressionEvaluator evaluator = new ExpressionEvaluator(st);
-		Value<?> result = (Value<?>) evaluator.dispatch(exp);
+		IntegerValue result = (IntegerValue) evaluator.dispatch(exp);
 		assertEquals(new Integer(42), result.getValue());
 	}
 	

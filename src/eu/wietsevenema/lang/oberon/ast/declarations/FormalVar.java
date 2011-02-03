@@ -11,7 +11,8 @@ import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.Formal;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
-import eu.wietsevenema.lang.oberon.interpreter.Value;
+import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
+import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class FormalVar extends Declaration implements Formal {
 
@@ -38,17 +39,18 @@ public class FormalVar extends Declaration implements Formal {
 		// 1. Parameter is expression, evaluate
 		ExpressionEvaluator expressionEval = new ExpressionEvaluator(
 				symbolTable);
-		Value<?> result = (Value<?>) expressionEval.dispatch(param);
+		Value result = (Value) expressionEval.dispatch(param);
 		
 		// 2. Check type.
 		ValueBuilder builder = new ValueBuilder();
-		Value<?> value = (Value<?>) builder.dispatch(this.getType());
+		Value value = (Value) builder.dispatch(this.getType());
 		String symbol = this.getIdentifier().getName();
 		symbolTable.declareValue(symbol, value);
 		
 		// 3. Declare variable and assign in local scope.
-		//    With symbol defined in formal. 
-		value.setValue(result.getValue());
+		//    With symbol defined in formal.
+		ValueReference valRef = symbolTable.lookupValueReference(symbol);
+		valRef.setValue(result);
 		
 		
 	}

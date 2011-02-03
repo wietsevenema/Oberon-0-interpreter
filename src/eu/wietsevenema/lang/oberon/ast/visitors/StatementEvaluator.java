@@ -21,8 +21,9 @@ import eu.wietsevenema.lang.oberon.exceptions.WrongNumberOfArgsException;
 import eu.wietsevenema.lang.oberon.interpreter.Formal;
 import eu.wietsevenema.lang.oberon.interpreter.Procedure;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
-import eu.wietsevenema.lang.oberon.interpreter.Value;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
+import eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue;
+import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class StatementEvaluator extends Visitor {
 
@@ -45,7 +46,7 @@ public class StatementEvaluator extends Visitor {
 		
 		// 2. Evaluate expression
 		ExpressionEvaluator eval = new ExpressionEvaluator(symbolTable);
-		Value<?> value = (Value<?>) eval.dispatch(assign.getExpression());
+		Value value = (Value) eval.dispatch(assign.getExpression());
 
 		// 3. Assign new value
 		currentValRef.setValue(value);
@@ -126,8 +127,8 @@ public class StatementEvaluator extends Visitor {
 	
 	private boolean evalCondition(Expression exp) throws TypeMismatchException, ValueUndefinedException{
 		ExpressionEvaluator expEval = new ExpressionEvaluator(symbolTable);
-		Value<?> result = (Value<?>) expEval.dispatch(exp);
-		return (Boolean) result.getValue();		
+		BooleanValue result = (BooleanValue) expEval.dispatch(exp);
+		return result.getValue();		
 	}
 	
 	

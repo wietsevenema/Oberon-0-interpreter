@@ -12,7 +12,7 @@ import eu.wietsevenema.lang.oberon.ast.statements.ProcedureDecl;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
-import eu.wietsevenema.lang.oberon.interpreter.Value;
+import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class DeclarationEvaluator extends Visitor {
 
@@ -62,7 +62,7 @@ public class DeclarationEvaluator extends Visitor {
 		VarType type = varDecl.getType();
 		
 		ValueBuilder builder = new ValueBuilder();
-		Value<?> value = (Value<?>) builder.dispatch(type);
+		Value value = (Value) builder.dispatch(type);
 		
 		for( Identifier id : identifiers){
 			String symbol = id.getName();

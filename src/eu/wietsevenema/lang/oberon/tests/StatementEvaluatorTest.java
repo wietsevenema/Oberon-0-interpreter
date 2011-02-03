@@ -32,7 +32,8 @@ import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.BuiltIns;
 import eu.wietsevenema.lang.oberon.interpreter.Environment;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
-import eu.wietsevenema.lang.oberon.interpreter.Value;
+import eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue;
+import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 
 public class StatementEvaluatorTest  {
 
@@ -47,8 +48,8 @@ public class StatementEvaluatorTest  {
 	@Test
 	public void testAssignment() throws VariableAlreadyDeclaredException, ValueUndefinedException, VariableNotDeclaredException  {
 		//Declare vars
-		symbolTable.declareValue("a", new Value<Integer>(null));
-		symbolTable.declareValue("b", new Value<Boolean>(null));
+		symbolTable.declareValue("a", new IntegerValue(null));
+		symbolTable.declareValue("b", new BooleanValue(null));
 		
 		//Construct assignment statements
 		AssignmentStatement as1 = new AssignmentStatement(
@@ -63,14 +64,14 @@ public class StatementEvaluatorTest  {
 		se.dispatch(as1);
 		se.dispatch(as2);
 		
-		assertEquals((symbolTable.lookupValue("a")).getValue(), new Integer(2));
-		assertEquals((symbolTable.lookupValue("b")).getValue(), new Boolean(true));
+		assertEquals(((IntegerValue)symbolTable.lookupValue("a")).getValue(), new Integer(2));
+		assertEquals(((BooleanValue)symbolTable.lookupValue("b")).getValue(), new Boolean(true));
 	}
 	
 	
 	@Test
 	public void testSecondAssignment() throws ValueUndefinedException, VariableNotDeclaredException, VariableAlreadyDeclaredException {
-		symbolTable.declareValue("a",new Value<Integer>(null));
+		symbolTable.declareValue("a",new IntegerValue(null));
 		AssignmentStatement first = new AssignmentStatement(
 				new Identifier("a"),
 				new IntegerConstant(2));
@@ -81,9 +82,9 @@ public class StatementEvaluatorTest  {
 
 		StatementEvaluator se = new StatementEvaluator(symbolTable);
 		se.dispatch(first);
-		assertEquals((symbolTable.lookupValue("a")).getValue(), new Integer(2));
+		assertEquals(((IntegerValue)symbolTable.lookupValue("a")).getValue(), new Integer(2));
 		se.dispatch(second);
-		assertEquals((symbolTable.lookupValue("a")).getValue(), new Integer(3));
+		assertEquals(((IntegerValue)symbolTable.lookupValue("a")).getValue(), new Integer(3));
 	}
 	
 	@Test(expected=ProcedureUndefinedException.class) 
@@ -126,15 +127,15 @@ public class StatementEvaluatorTest  {
 		
 		WhileStatement whilestat = new WhileStatement(condition, statements);
 		
-		symbolTable.declareValue("count", new Value<Integer>(0));
-		symbolTable.declareValue("touch", new Value<Boolean>(false));
+		symbolTable.declareValue("count", new IntegerValue(0));
+		symbolTable.declareValue("touch", new BooleanValue(false));
 		
 		StatementEvaluator eval = new StatementEvaluator(symbolTable);
 		
 		eval.dispatch(whilestat);		
 		
-		assertEquals(new Integer(5), 		symbolTable.lookupValue("count").getValue());
-		assertEquals(new Boolean(true), 	symbolTable.lookupValue("touch").getValue());
+		assertEquals(new Integer(5), 		((IntegerValue)symbolTable.lookupValue("count")).getValue());
+		assertEquals(new Boolean(true), 	((BooleanValue)symbolTable.lookupValue("touch")).getValue());
 		
 	}
 	
@@ -155,8 +156,8 @@ public class StatementEvaluatorTest  {
 		ModuleEvaluator me = new ModuleEvaluator(symbolTable);
 		me.dispatch(Util.parseString(whileprog));
 		
-		assertEquals( new Boolean(true), symbolTable.lookupValue("t2").getValue());
-		assertEquals( new Integer(6), symbolTable.lookupValue("t1").getValue());
+		assertEquals( new Boolean(true), ((BooleanValue)symbolTable.lookupValue("t2")).getValue());
+		assertEquals( new Integer(6), 	 ((IntegerValue)symbolTable.lookupValue("t1")).getValue());
 	}
 	
 	

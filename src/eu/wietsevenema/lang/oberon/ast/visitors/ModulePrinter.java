@@ -73,7 +73,7 @@ public class ModulePrinter extends Visitor {
 	public String visit(VarDecl vd){
 		String result = "VAR ";
 		result += joinNodes(vd.getIdentifiers(), ",");
-		result += ": "+vd.getType();
+		result += ": "+ vd.getType();
 		return result;
 	}
 

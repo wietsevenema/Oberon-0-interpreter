@@ -7,14 +7,13 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.wietsevenema.lang.oberon.ast.types.BooleanType;
-import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
-import eu.wietsevenema.lang.oberon.interpreter.Value;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
+import eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue;
+import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 
 public class SymbolTableTest  {
 	
@@ -23,9 +22,9 @@ public class SymbolTableTest  {
 	@Before
 	public void setUp() throws Exception {
 		symbolTable = new SymbolTable();
-		symbolTable.declareValue("bool2", new Value<Boolean>(true));
+		symbolTable.declareValue("bool2", new BooleanValue(true));
 		symbolTable.enter();
-		symbolTable.declareValue("int2", new Value<Integer>(-1));
+		symbolTable.declareValue("int2", new IntegerValue(-1));
 		
 	}
 
@@ -56,21 +55,21 @@ public class SymbolTableTest  {
 	
 	@Test(expected=VariableAlreadyDeclaredException.class)
 	public void testDoubleDeclareFails() throws VariableAlreadyDeclaredException  {
-		symbolTable.declareValue("c", new Value<Boolean>(null));
-		symbolTable.declareValue("c", new Value<Boolean>(null));
+		symbolTable.declareValue("c", new BooleanValue(null));
+		symbolTable.declareValue("c", new BooleanValue(null));
 	}
 
 	@Test
 	public void testDoubleDeclareScoped() throws VariableAlreadyDeclaredException, VariableNotDeclaredException {
-		symbolTable.declareValue("c", new Value<Boolean>(true));
+		symbolTable.declareValue("c", new BooleanValue(true));
 		symbolTable.enter();
-		symbolTable.declareValue("c", new Value<Boolean>(false));
+		symbolTable.declareValue("c", new BooleanValue(false));
 	}
 	
 	@Test(expected=ValueUndefinedException.class)
 	public void testValueUndefined() throws VariableAlreadyDeclaredException, VariableNotDeclaredException, ValueUndefinedException{
-		symbolTable.declareValue("tve.a", new Value<Integer>(null));
-		symbolTable.lookupValue("tve.a").getValue();
+		symbolTable.declareValue("tve.a", new IntegerValue(null));
+		((IntegerValue)symbolTable.lookupValue("tve.a")).getValue();
 	}
 	
 	

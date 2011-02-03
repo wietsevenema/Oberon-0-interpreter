@@ -6,6 +6,7 @@ import eu.wietsevenema.lang.oberon.ast.visitors.ExpressionEvaluator;
 import eu.wietsevenema.lang.oberon.exceptions.IdentifierExpectedInParamList;
 import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
+import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 //FIXME ik ben een hack om procedure overloading mogelijk te maken bij builtins.
 public class TypeLessFormal implements Formal {
@@ -31,7 +32,7 @@ public class TypeLessFormal implements Formal {
 			VariableAlreadyDeclaredException {
 		
 		ExpressionEvaluator expressionEval = new ExpressionEvaluator(symbolTable);
-		Value<?> result = (Value<?>) expressionEval.dispatch(param);
+		Value result = (Value) expressionEval.dispatch(param);
 		String symbol = this.getIdentifier().getName();
 		symbolTable.declareValue(symbol, result);
 

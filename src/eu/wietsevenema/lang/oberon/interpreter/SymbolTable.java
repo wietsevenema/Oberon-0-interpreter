@@ -5,6 +5,7 @@ import java.util.Map;
 
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
+import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class SymbolTable {
 
@@ -43,7 +44,7 @@ public class SymbolTable {
 			return procs.get(symbol);
 		}
 
-		public Value<?> lookupValue(String symbol) throws VariableNotDeclaredException {
+		public Value lookupValue(String symbol) throws VariableNotDeclaredException {
 			ValueReference valueRef = this.lookupValueReference(symbol);
 			if (valueRef == null) {
 				throw new VariableNotDeclaredException();
@@ -51,7 +52,7 @@ public class SymbolTable {
 			return valueRef.getValue();
 		}
 		
-		public Value<?> lookupValueLocal(String symbol) {
+		public Value lookupValueLocal(String symbol) {
 			ValueReference valueRef = this.lookupValueReferenceLocal(symbol);
 			return (valueRef==null)?null:valueRef.getValue();
 		}
@@ -68,7 +69,7 @@ public class SymbolTable {
 			return symbols.get(symbol);
 		}
 		
-		public void declareValue(String symbol, Value<?> value) throws VariableAlreadyDeclaredException  {
+		public void declareValue(String symbol, Value value) throws VariableAlreadyDeclaredException  {
 			ValueReference valueRef = this.lookupValueReferenceLocal(symbol);
 			if(valueRef!=null){ // Variabele bestaat al in deze scope.
 				throw new VariableAlreadyDeclaredException();
@@ -110,7 +111,7 @@ public class SymbolTable {
 		current = current.parent;
 	}
 
-	public void declareValue(String symbol, Value<?> value ) throws VariableAlreadyDeclaredException  {
+	public void declareValue(String symbol, Value value ) throws VariableAlreadyDeclaredException  {
 		this.getCurrent().declareValue(symbol, value);
 	}
 	
@@ -126,7 +127,7 @@ public class SymbolTable {
 		this.getCurrent().declareValueReference(symbol, ref);
 	}
 
-	public Value<?> lookupValue(String symbol) throws VariableNotDeclaredException{
+	public Value lookupValue(String symbol) throws VariableNotDeclaredException{
 		return this.getCurrent().lookupValue(symbol);
 	}
 	
@@ -134,7 +135,7 @@ public class SymbolTable {
 		return this.getCurrent().lookupProc(name);
 	}
 
-	public Value<?> lookupValueLocal(String symbol) {
+	public Value lookupValueLocal(String symbol) {
 		return this.getCurrent().lookupValueLocal(symbol);
 	}
 

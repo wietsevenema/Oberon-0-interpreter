@@ -16,6 +16,7 @@ import eu.wietsevenema.lang.oberon.exceptions.ParseException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 
 public class ParserTest {
 
@@ -71,8 +72,8 @@ public class ParserTest {
 		 * 	Swap(x, y)
 		 */
 		
-		assertEquals( new Integer(2), (st.lookupValue("x")).getValue() );
-		assertEquals( new Integer(1), (st.lookupValue("y")).getValue() );
+		assertEquals( new Integer(2), ((IntegerValue)st.lookupValue("x")).getValue() );
+		assertEquals( new Integer(1), ((IntegerValue)st.lookupValue("y")).getValue() );
 		
 	}
 	

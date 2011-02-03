@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
-import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
+import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class BuiltIns {
 
@@ -40,19 +40,17 @@ public class BuiltIns {
 		@Override
 		public void execute(SymbolTable symbolTable) {
 			try {
-				Value<?> expected 	= symbolTable.lookupValue("expected");
-				Value<?> actual 	= symbolTable.lookupValue("actual");
+				Value expected 	= symbolTable.lookupValue("expected");
+				Value actual 	= symbolTable.lookupValue("actual");
 				if (expected == null && actual == null) {
                     return;
 				}
-				if (expected != null && expected.getValue().equals(actual.getValue())) {
+				if (expected != null && expected.equals(actual)) {
                     return;
 				}
-				throw new AssertionError("Expected "+expected.getValue() + " but got " + actual.getValue());
+				throw new AssertionError("Expected "+expected + " but got " + actual);
 				
 			} catch (VariableNotDeclaredException e) {
-				throw new IllegalStateException(e);
-			} catch (ValueUndefinedException e) {
 				throw new IllegalStateException(e);
 			}
 			
@@ -109,7 +107,7 @@ public class BuiltIns {
 		@Override
 		public void execute(SymbolTable symbolTable) {
 			try {
-				Value<?> result = symbolTable.lookupValue("out");
+				Value result = symbolTable.lookupValue("out");
 				this.out.print(result.toString());
 			} catch (VariableNotDeclaredException e) {
 				throw new IllegalStateException(e);
