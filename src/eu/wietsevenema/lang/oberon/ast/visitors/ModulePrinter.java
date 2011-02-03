@@ -79,7 +79,7 @@ public class ModulePrinter extends Visitor {
 
 	public String visit(ProcedureDecl pd){
 		String result = "PROCEDURE " + pd.getIdentifier().getName() + "(";
-		result += joinNodes(pd.getFormals(), ";");
+		result += joinNodes(pd.getFormalVars(), ";");
 		result += ");";
 		
 		result += dispatch(pd.getDeclarations());

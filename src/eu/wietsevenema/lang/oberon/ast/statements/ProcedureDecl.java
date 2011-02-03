@@ -10,8 +10,13 @@ import eu.wietsevenema.lang.oberon.ast.declarations.FormalVar;
 import eu.wietsevenema.lang.oberon.ast.declarations.FormalVarRef;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
+import eu.wietsevenema.lang.oberon.ast.visitors.DeclarationEvaluator;
+import eu.wietsevenema.lang.oberon.ast.visitors.StatementEvaluator;
+import eu.wietsevenema.lang.oberon.interpreter.Formal;
+import eu.wietsevenema.lang.oberon.interpreter.Procedure;
+import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 
-public class ProcedureDecl extends Declaration {
+public class ProcedureDecl extends Declaration implements Procedure {
 	
 	private Identifier identifier;
 	private List<FormalVar> formals;
@@ -31,12 +36,23 @@ public class ProcedureDecl extends Declaration {
 	}
 
 	
+	@Override
 	public Identifier getIdentifier() {
 		return identifier;
 	}
 
-	public List<FormalVar> getFormals() {
+	
+	public List<FormalVar> getFormalVars() {
 		return formals;
+	}
+	
+	@Override
+	public List<Formal> getFormals(){
+		ArrayList<Formal> result = new ArrayList<Formal>();
+		for(FormalVar fv: this.getFormalVars()){
+			result.add((Formal)fv);
+		}
+		return result;
 	}
 
 
@@ -93,9 +109,18 @@ public class ProcedureDecl extends Declaration {
 		return result;
 	}
 
+	@Override
+	public void execute(SymbolTable symbolTable) {
+		// Process declarations.
+		DeclarationEvaluator declEval = new DeclarationEvaluator(symbolTable);
+		declEval.dispatch(this.getDeclarations());
 
-	
-
+		// Execute statements.
+		StatementEvaluator statEval = new StatementEvaluator(symbolTable);
+		for( Statement s : this.getStatements()){
+			statEval.dispatch(s);
+		}
+	}
 	 
 	
 }

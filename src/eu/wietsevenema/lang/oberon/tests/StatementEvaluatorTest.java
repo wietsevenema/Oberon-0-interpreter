@@ -2,42 +2,53 @@ package eu.wietsevenema.lang.oberon.tests;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import xtc.tree.Node;
+import xtc.tree.VisitingException;
+import eu.wietsevenema.lang.oberon.ast.declarations.Module;
 import eu.wietsevenema.lang.oberon.ast.expressions.AdditiveExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.BooleanConstant;
 import eu.wietsevenema.lang.oberon.ast.expressions.EqualityExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.expressions.IntegerConstant;
+import eu.wietsevenema.lang.oberon.ast.expressions.ProcedureUndefinedException;
 import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
+import eu.wietsevenema.lang.oberon.ast.statements.ProcedureCallStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.Statement;
 import eu.wietsevenema.lang.oberon.ast.statements.WhileStatement;
+import eu.wietsevenema.lang.oberon.ast.visitors.ModuleEvaluator;
 import eu.wietsevenema.lang.oberon.ast.visitors.StatementEvaluator;
+import eu.wietsevenema.lang.oberon.exceptions.InvalidInputException;
+import eu.wietsevenema.lang.oberon.exceptions.ParseException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
+import eu.wietsevenema.lang.oberon.interpreter.BuiltIns;
+import eu.wietsevenema.lang.oberon.interpreter.Environment;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 import eu.wietsevenema.lang.oberon.interpreter.Value;
 
 public class StatementEvaluatorTest  {
 
-	private SymbolTable symbols;
+	private SymbolTable symbolTable;
 
 	@Before
 	public void setUp() {
-		this.symbols = new SymbolTable();
+		this.symbolTable = new SymbolTable();
 	}
 
 	
 	@Test
 	public void testAssignment() throws VariableAlreadyDeclaredException, ValueUndefinedException, VariableNotDeclaredException  {
 		//Declare vars
-		symbols.declareValue("a", Value.fromTypeName("INTEGER"));
-		symbols.declareValue("b", Value.fromTypeName("BOOLEAN"));
+		symbolTable.declareValue("a", Value.fromTypeName("INTEGER"));
+		symbolTable.declareValue("b", Value.fromTypeName("BOOLEAN"));
 		
 		//Construct assignment statements
 		AssignmentStatement as1 = new AssignmentStatement(
@@ -48,18 +59,18 @@ public class StatementEvaluatorTest  {
 				new Identifier("b"),
 				new BooleanConstant(true));
 
-		StatementEvaluator se = new StatementEvaluator(symbols);
+		StatementEvaluator se = new StatementEvaluator(symbolTable);
 		se.dispatch(as1);
 		se.dispatch(as2);
 		
-		assertEquals((symbols.lookupValue("a")).getValue(), new Integer(2));
-		assertEquals((symbols.lookupValue("b")).getValue(), new Boolean(true));
+		assertEquals((symbolTable.lookupValue("a")).getValue(), new Integer(2));
+		assertEquals((symbolTable.lookupValue("b")).getValue(), new Boolean(true));
 	}
 	
 	
 	@Test
 	public void testSecondAssignment() throws ValueUndefinedException, VariableNotDeclaredException, VariableAlreadyDeclaredException {
-		symbols.declareValue("a", Value.fromTypeName("INTEGER"));
+		symbolTable.declareValue("a", Value.fromTypeName("INTEGER"));
 		AssignmentStatement first = new AssignmentStatement(
 				new Identifier("a"),
 				new IntegerConstant(2));
@@ -68,11 +79,22 @@ public class StatementEvaluatorTest  {
 				new Identifier("a"),
 				new IntegerConstant(3));
 
-		StatementEvaluator se = new StatementEvaluator(symbols);
+		StatementEvaluator se = new StatementEvaluator(symbolTable);
 		se.dispatch(first);
-		assertEquals((symbols.lookupValue("a")).getValue(), new Integer(2));
+		assertEquals((symbolTable.lookupValue("a")).getValue(), new Integer(2));
 		se.dispatch(second);
-		assertEquals((symbols.lookupValue("a")).getValue(), new Integer(3));
+		assertEquals((symbolTable.lookupValue("a")).getValue(), new Integer(3));
+	}
+	
+	@Test(expected=ProcedureUndefinedException.class) 
+	public void testCallNotExistingProcedureFails() throws Throwable{
+		Statement call = new ProcedureCallStatement( new Identifier("idonotexist"), new ArrayList<Node>() );
+		StatementEvaluator statEval = new StatementEvaluator(symbolTable);
+		try {
+			statEval.dispatch(call);
+		} catch(VisitingException e){
+			throw e.getCause();
+		}
 	}
 	
 	@Test
@@ -104,18 +126,48 @@ public class StatementEvaluatorTest  {
 		
 		WhileStatement whilestat = new WhileStatement(condition, statements);
 		
-		symbols.declareValue("count", new Value<Integer>(0));
-		symbols.declareValue("touch", new Value<Boolean>(false));
+		symbolTable.declareValue("count", new Value<Integer>(0));
+		symbolTable.declareValue("touch", new Value<Boolean>(false));
 		
-		StatementEvaluator eval = new StatementEvaluator(symbols);
+		StatementEvaluator eval = new StatementEvaluator(symbolTable);
 		
 		eval.dispatch(whilestat);		
 		
-		assertEquals(new Integer(5), 		symbols.lookupValue("count").getValue());
-		assertEquals(new Boolean(true), 	symbols.lookupValue("touch").getValue());
+		assertEquals(new Integer(5), 		symbolTable.lookupValue("count").getValue());
+		assertEquals(new Boolean(true), 	symbolTable.lookupValue("touch").getValue());
 		
 	}
 	
+	@Test
+	public void testWhileStatement2() throws InvalidInputException, ParseException, IOException, ValueUndefinedException, VariableNotDeclaredException{
+		String whileprog = 
+		"MODULE While;	" +
+		"	VAR t1: INTEGER; t2 : BOOLEAN;" +
+		"BEGIN" +
+		" t1 := 0;" +
+		" WHILE t1 <= 5" +
+		" DO" +
+		"	t1  := t1 + 1;" +
+		"	t2 := TRUE" +
+		" END " +
+		"END While.";
 		
+		ModuleEvaluator me = new ModuleEvaluator(symbolTable);
+		me.dispatch(Util.parseString(whileprog));
+		
+		assertEquals( new Boolean(true), symbolTable.lookupValue("t2").getValue());
+		assertEquals( new Integer(6), symbolTable.lookupValue("t1").getValue());
+	}
+	
+	
+	@Test
+	public void testIfStatement() throws IOException, InvalidInputException, ParseException {
+		Module result = (Module)Util.parseModuleFile(Util.getAbsFilename("oberon/ifstatement.o0"));
+		Environment env = new Environment(System.in, System.out);
+		BuiltIns.inject(env);
+		env.runModule(result);
+	}
+	
+	
 	
 }

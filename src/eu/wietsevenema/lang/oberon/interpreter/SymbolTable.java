@@ -3,8 +3,6 @@ package eu.wietsevenema.lang.oberon.interpreter;
 import java.util.HashMap;
 import java.util.Map;
 
-
-import eu.wietsevenema.lang.oberon.ast.statements.ProcedureDecl;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 
@@ -16,7 +14,7 @@ public class SymbolTable {
 		Scope parent;
 
 		Map<String, ValueReference> symbols = new HashMap<String, ValueReference>();
-		Map<String, ProcedureDecl> procs = new HashMap<String, ProcedureDecl>();
+		Map<String, Procedure> procs = new HashMap<String, Procedure>();
 
 		public Scope() {
 		}
@@ -33,15 +31,15 @@ public class SymbolTable {
 			return parent;
 		}
 		
-		public ProcedureDecl lookupProc(String symbol) {
-			ProcedureDecl result = this.lookupProcLocal(symbol);
+		public Procedure lookupProc(String symbol) {
+			Procedure result = this.lookupProcLocal(symbol);
 			if(result == null && this.parent != null){
 				result = parent.lookupProc(symbol);
 			} 
 			return result;
 		}
 		
-		private ProcedureDecl lookupProcLocal(String symbol) {
+		private Procedure lookupProcLocal(String symbol) {
 			return procs.get(symbol);
 		}
 
@@ -83,7 +81,7 @@ public class SymbolTable {
 			symbols.put(symbol, valueRef);
 		}
 
-		public void declareProc(String symbol, ProcedureDecl proc) {
+		public void declareProc(String symbol, Procedure proc) {
 			assert proc!=null;
 			procs.put(symbol, proc);
 		}
@@ -116,7 +114,7 @@ public class SymbolTable {
 		this.getCurrent().declareValue(symbol, value);
 	}
 	
-	public void declareProc(String symbol, ProcedureDecl proc ) {
+	public void declareProc(String symbol, Procedure proc ) {
 		this.getCurrent().declareProc(symbol, proc);
 	}
 
@@ -132,7 +130,7 @@ public class SymbolTable {
 		return this.getCurrent().lookupValue(symbol);
 	}
 	
-	public ProcedureDecl lookupProc(String name) {
+	public Procedure lookupProc(String name) {
 		return this.getCurrent().lookupProc(name);
 	}
 

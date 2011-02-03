@@ -2,7 +2,7 @@ package eu.wietsevenema.lang.oberon.interpreter;
 
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 
-public class Value<T> {
+public class Value<T>  {
 
 	private T value;
 	//FIXME use enum; 
@@ -41,7 +41,9 @@ public class Value<T> {
 	public String getType(){
 		return this.typeName;
 	}
-
+	
+	
+	
 	public void setValue(T value){
 		this.value = value;
 	}

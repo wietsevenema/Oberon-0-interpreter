@@ -36,7 +36,6 @@ public class DeclarationEvaluatorTest  {
 		DeclarationEvaluator eval = new DeclarationEvaluator(symbolTable);
 		eval.dispatch(varDecl);
 		
-		
 		assertNotNull(symbolTable.lookupValue("a"));
 		assertNotNull(symbolTable.lookupValue("b"));
 		assertNotNull(symbolTable.lookupValue("c"));
