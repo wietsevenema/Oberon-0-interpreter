@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import eu.wietsevenema.lang.oberon.ast.declarations.VarDecl;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
-import eu.wietsevenema.lang.oberon.ast.types.VarType;
+import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
 import eu.wietsevenema.lang.oberon.ast.visitors.DeclarationEvaluator;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
@@ -31,7 +31,7 @@ public class DeclarationEvaluatorTest  {
 		identifiers.add(new Identifier("a"));
 		identifiers.add(new Identifier("b"));
 		identifiers.add(new Identifier("c"));
-		VarDecl varDecl = new VarDecl(identifiers, new VarType("INTEGER"));
+		VarDecl varDecl = new VarDecl(identifiers, new IntegerType());
 		
 		DeclarationEvaluator eval = new DeclarationEvaluator(symbolTable);
 		eval.dispatch(varDecl);

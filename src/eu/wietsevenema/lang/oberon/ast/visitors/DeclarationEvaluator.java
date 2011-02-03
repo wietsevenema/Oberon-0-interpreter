@@ -61,7 +61,8 @@ public class DeclarationEvaluator extends Visitor {
 		List<Identifier> identifiers = varDecl.getIdentifiers();
 		VarType type = varDecl.getType();
 		
-		Value<?> value = Value.fromTypeName(type.toString());
+		ValueBuilder builder = new ValueBuilder();
+		Value<?> value = (Value<?>) builder.dispatch(type);
 		
 		for( Identifier id : identifiers){
 			String symbol = id.getName();

@@ -25,10 +25,8 @@ public class FormalVarRef extends FormalVar {
 				lookupValueReference(((Identifier) param).getName());
 		
 		// 3. Check type.
-		String type = this.getType().toString();
-		if(!reference.getValue().getType().equals(type)){
-			throw new TypeMismatchException();
-		}
+		//It would be nice to check for the right type here. 
+		//But since Value has a static type, nothing can go wrong really.  
 		
 		// 4. And assign in local scope with symbol defined in formal.
 		symbolTable.declareValueReference(this.getIdentifier()

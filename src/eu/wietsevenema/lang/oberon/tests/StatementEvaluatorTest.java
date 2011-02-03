@@ -47,8 +47,8 @@ public class StatementEvaluatorTest  {
 	@Test
 	public void testAssignment() throws VariableAlreadyDeclaredException, ValueUndefinedException, VariableNotDeclaredException  {
 		//Declare vars
-		symbolTable.declareValue("a", Value.fromTypeName("INTEGER"));
-		symbolTable.declareValue("b", Value.fromTypeName("BOOLEAN"));
+		symbolTable.declareValue("a", new Value<Integer>(null));
+		symbolTable.declareValue("b", new Value<Boolean>(null));
 		
 		//Construct assignment statements
 		AssignmentStatement as1 = new AssignmentStatement(
@@ -70,7 +70,7 @@ public class StatementEvaluatorTest  {
 	
 	@Test
 	public void testSecondAssignment() throws ValueUndefinedException, VariableNotDeclaredException, VariableAlreadyDeclaredException {
-		symbolTable.declareValue("a", Value.fromTypeName("INTEGER"));
+		symbolTable.declareValue("a",new Value<Integer>(null));
 		AssignmentStatement first = new AssignmentStatement(
 				new Identifier("a"),
 				new IntegerConstant(2));

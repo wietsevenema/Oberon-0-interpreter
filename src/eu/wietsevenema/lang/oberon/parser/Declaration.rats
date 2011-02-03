@@ -17,11 +17,11 @@ Declarations Declarations =
 VarType Type = 
 	"BOOLEAN":Word 
 	{
-		yyValue = new VarType("BOOLEAN");
+		yyValue = new BooleanType();
 	}
   / "INTEGER":Word
 	{
-		yyValue = new VarType("INTEGER");
+		yyValue = new IntegerType();
 	}
 	;
 

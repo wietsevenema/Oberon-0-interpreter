@@ -42,26 +42,20 @@ public class StatementEvaluator extends Visitor {
 			throw new VariableNotDeclaredException("Variable '" + symbol
 					+ "' not declared. " + assign.getLocation().toString());
 		}
-
-		Value<?> currentVal = currentValRef.getValue();
-
+		
 		// 2. Evaluate expression
 		ExpressionEvaluator eval = new ExpressionEvaluator(symbolTable);
 		Value<?> value = (Value<?>) eval.dispatch(assign.getExpression());
 
 		// 3. Assign new value
-		if (currentVal.matchesType(value)) {
-			currentValRef.setValue(value);
-		} else {
-			throw new TypeMismatchException();
-		}
-
+		currentValRef.setValue(value);
+	
 	}
 
 	public void visit(ProcedureCallStatement pCall)
 			throws WrongNumberOfArgsException, IdentifierExpectedInParamList,
 			VariableAlreadyDeclaredException, VariableNotDeclaredException,
-			TypeMismatchException, ProcedureUndefinedException {
+			TypeMismatchException, ProcedureUndefinedException, ValueUndefinedException {
 
 		// Find procedure node.
 		Procedure procedure = (Procedure) symbolTable.lookupProc(pCall
@@ -133,11 +127,7 @@ public class StatementEvaluator extends Visitor {
 	private boolean evalCondition(Expression exp) throws TypeMismatchException, ValueUndefinedException{
 		ExpressionEvaluator expEval = new ExpressionEvaluator(symbolTable);
 		Value<?> result = (Value<?>) expEval.dispatch(exp);
-		if(result.getType() != "BOOLEAN"){
-			throw new TypeMismatchException("Boolean condition expected");
-		} else {
-			return (Boolean) result.getValue();
-		}
+		return (Boolean) result.getValue();		
 	}
 	
 	

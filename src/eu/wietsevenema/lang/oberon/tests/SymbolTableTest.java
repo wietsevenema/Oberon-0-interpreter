@@ -7,6 +7,8 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
+import eu.wietsevenema.lang.oberon.ast.types.BooleanType;
+import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
@@ -54,8 +56,8 @@ public class SymbolTableTest  {
 	
 	@Test(expected=VariableAlreadyDeclaredException.class)
 	public void testDoubleDeclareFails() throws VariableAlreadyDeclaredException  {
-		symbolTable.declareValue("c", Value.fromTypeName("BOOLEAN"));
-		symbolTable.declareValue("c", Value.fromTypeName("BOOLEAN"));
+		symbolTable.declareValue("c", new Value<Boolean>(null));
+		symbolTable.declareValue("c", new Value<Boolean>(null));
 	}
 
 	@Test
@@ -67,7 +69,7 @@ public class SymbolTableTest  {
 	
 	@Test(expected=ValueUndefinedException.class)
 	public void testValueUndefined() throws VariableAlreadyDeclaredException, VariableNotDeclaredException, ValueUndefinedException{
-		symbolTable.declareValue("tve.a", Value.fromTypeName("INTEGER"));
+		symbolTable.declareValue("tve.a", new Value<Integer>(null));
 		symbolTable.lookupValue("tve.a").getValue();
 	}
 	
