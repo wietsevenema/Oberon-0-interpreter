@@ -38,5 +38,34 @@ public class BuiltinsTest {
 		assertEquals(expected, actual);
 		
 	}
+	
+	
+	@Test
+	public void testQuicksort() throws IOException, InvalidInputException, ParseException{
+		String newLine = System.getProperty("line.separator");
+		String input = "";
+		for (int i = 5; i > 0; i--) {
+			input += i + newLine;
+		}
+		ByteArrayInputStream bis = new ByteArrayInputStream(input.getBytes());
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		
+		Module result = (Module)Util.parseModuleFile(Util.getAbsFilename("oberon/quicksort.o0"));
+		Environment env = new Environment(bis, bos);
+		BuiltIns.inject(env);
+		env.runModule(result);
+		
+		String actual = bos.toString();
+		
+		String expected = new String();
+		for (int i = 1; i <= 5; i++) {
+			expected += i + newLine;
+		}
+		
+		assertEquals(expected, actual);
+	}
+	
+
+	
 
 }

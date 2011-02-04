@@ -6,6 +6,7 @@ import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
+import eu.wietsevenema.lang.oberon.interpreter.values.ArrayValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 
 public class ValueReferenceResolver extends Visitor {

@@ -6,6 +6,7 @@ import eu.wietsevenema.lang.oberon.ast.types.BooleanType;
 import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.interpreter.values.ArrayValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.Value;

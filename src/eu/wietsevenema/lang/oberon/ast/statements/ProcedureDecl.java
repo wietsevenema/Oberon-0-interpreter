@@ -36,7 +36,6 @@ public class ProcedureDecl extends Declaration implements Procedure {
 	}
 
 	
-	@Override
 	public Identifier getIdentifier() {
 		return identifier;
 	}

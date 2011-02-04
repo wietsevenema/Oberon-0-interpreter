@@ -7,13 +7,21 @@ import eu.wietsevenema.lang.oberon.ast.visitors.TransformGenerics;
 
 public class ConstantDecl extends Declaration {
 
-	Identifier id;
-	Expression exp;
+	Identifier identifier;
+	Expression expression;
 	
-	public ConstantDecl(Node id, Node exp) {
-		this.id =(Identifier)id;
+	public ConstantDecl(Node identifier, Node expression) {
+		this.identifier =(Identifier)identifier;
 		TransformGenerics tg = new TransformGenerics();
-		this.exp = (Expression) tg.dispatch(exp);
+		this.expression = (Expression) tg.dispatch(expression);
+	}
+
+	public Identifier getIdentifier() {
+		return identifier;
+	}
+
+	public Expression getExpression() {
+		return expression;
 	}
 
 }

@@ -10,8 +10,6 @@ public class IntegerValue extends Value {
 		this.value = i;
 	}
 	
-	
-	
 	public void setValue(Integer value) {
 		this.value = value;
 	}
@@ -40,7 +38,7 @@ public class IntegerValue extends Value {
 		if(this.value != null){
 			return this.value.toString();
 		}
-		return null;
+		return "NULL";
 	}
 
 

@@ -13,6 +13,7 @@ import eu.wietsevenema.lang.oberon.ast.statements.ProcedureCallStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.Statement;
 import eu.wietsevenema.lang.oberon.ast.statements.WhileStatement;
 import eu.wietsevenema.lang.oberon.exceptions.IdentifierExpectedInParamList;
+import eu.wietsevenema.lang.oberon.exceptions.ImmutableException;
 import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
@@ -34,7 +35,7 @@ public class StatementEvaluator extends Visitor {
 	}
 
 	public void visit(AssignmentStatement assign)
-			throws VariableNotDeclaredException, TypeMismatchException {
+			throws VariableNotDeclaredException, TypeMismatchException, ImmutableException {
 		// 1. Retrieve existing reference.
 		ValueReferenceResolver resolv = new ValueReferenceResolver(symbolTable);
 		ValueReference currentValRef = (ValueReference) resolv.dispatch(assign.getIdentifier());
@@ -55,7 +56,7 @@ public class StatementEvaluator extends Visitor {
 	public void visit(ProcedureCallStatement pCall)
 			throws WrongNumberOfArgsException, IdentifierExpectedInParamList,
 			VariableAlreadyDeclaredException, VariableNotDeclaredException,
-			TypeMismatchException, ProcedureUndefinedException, ValueUndefinedException {
+			TypeMismatchException, ProcedureUndefinedException, ValueUndefinedException, ImmutableException {
 
 		// Find procedure node.
 		Procedure procedure = (Procedure) symbolTable.lookupProc(pCall

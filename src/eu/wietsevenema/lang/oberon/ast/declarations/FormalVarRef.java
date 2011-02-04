@@ -3,8 +3,10 @@ package eu.wietsevenema.lang.oberon.ast.declarations;
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
+import eu.wietsevenema.lang.oberon.ast.visitors.ValueReferenceResolver;
 import eu.wietsevenema.lang.oberon.exceptions.IdentifierExpectedInParamList;
 import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
+import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 
@@ -14,23 +16,18 @@ public class FormalVarRef extends FormalVar {
 		super(identifier, type);
 	}
 	
-	public void assignParameter(SymbolTable symbolTable, Expression param) throws TypeMismatchException, IdentifierExpectedInParamList {
-		// 1. Parameter should be variable,
-		if (!(param instanceof Identifier)) {
-			throw new IdentifierExpectedInParamList("Param should be variable, not expression");
-		}
+	public void assignParameter(SymbolTable symbolTable, Expression param) throws TypeMismatchException, IdentifierExpectedInParamList, VariableAlreadyDeclaredException {
+		// 1. Get reference from parameter symbol (from parent scope)
+		// 2. Assign in local scope with symbol defined in formal.
 		
-		// 2. Get reference from parameter symbol (from parent scope)
-		ValueReference reference = symbolTable.
-				lookupValueReference(((Identifier) param).getName());
+		// Note; I do runtime type checking. That is, when I assign a 
+		// value, i check if the type of the new value matches that of the old value.
 		
-		// 3. Check type.
-		//It would be nice to check for the right type here. 
-		//But since Value has a static type, nothing can go wrong really.  
+		ValueReferenceResolver resolv = new ValueReferenceResolver(symbolTable);
+		ValueReference reference = (ValueReference) resolv.dispatch(param);
 		
-		// 4. And assign in local scope with symbol defined in formal.
-		symbolTable.declareValueReference(this.getIdentifier()
-				.getName(), reference);
+		String symbol = this.getIdentifier().getName();
+		symbolTable.declareValueReference(symbol, reference);
 	}
 
 }

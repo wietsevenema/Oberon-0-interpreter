@@ -38,7 +38,7 @@ public class BooleanValue extends Value {
 		if(this.value != null){
 			return this.value.toString();
 		}
-		return null;
+		return "NULL";
 	}
 
 	@Override

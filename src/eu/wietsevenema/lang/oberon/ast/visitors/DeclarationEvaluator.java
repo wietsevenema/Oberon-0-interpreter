@@ -12,6 +12,7 @@ import eu.wietsevenema.lang.oberon.ast.statements.ProcedureDecl;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class DeclarationEvaluator extends Visitor {
@@ -23,11 +24,6 @@ public class DeclarationEvaluator extends Visitor {
 	}
 	
 	public void visit( Declarations decls ){
-		List<VarDecl> varDecls = decls.getVars();
-		for( VarDecl v : varDecls){
-			dispatch(v);
-		}
-		
 		List<ConstantDecl> constantDecls = decls.getConstants();
 		for( ConstantDecl c : constantDecls){
 			dispatch(c);
@@ -37,6 +33,12 @@ public class DeclarationEvaluator extends Visitor {
 		for(TypeDecl t: typeDecls){
 			dispatch(t);
 		}
+		
+		List<VarDecl> varDecls = decls.getVars();
+		for( VarDecl v : varDecls){
+			dispatch(v);
+		}
+				
 		
 		List<ProcedureDecl> procDecls = decls.getProcedures();
 		for(ProcedureDecl p: procDecls){
@@ -50,11 +52,17 @@ public class DeclarationEvaluator extends Visitor {
 	}
 	
 	public void visit( ConstantDecl constantDecl){
-		//FIXME
+		Identifier identifier = constantDecl.getIdentifier();
+		
+		ExpressionEvaluator exprEval = new ExpressionEvaluator(symbolTable);
+		Value value = (Value) exprEval.dispatch(constantDecl.getExpression());
+		
+		ValueReference constRef = ValueReference.createConstant(value);
+		symbolTable.declareValueReference(identifier.getName(), constRef );		
 	}
 	
 	public void visit( TypeDecl typeDecl){
-		//FIXME
+		throw new RuntimeException("Type declarations not yet implemented");
 	}
 	
 	public void visit( VarDecl varDecl ) throws VariableAlreadyDeclaredException{
