@@ -1,5 +1,6 @@
 package eu.wietsevenema.lang.oberon.interpreter;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -115,7 +116,39 @@ public class BuiltIns {
 		}
 		
 	}
-	
+	/*
+	public static class Read implements Procedure {
+		private BufferedReader in;
+
+		public Read(Environment environment){
+			this.in = new BufferedReader( new InputStreamReader(environment.getIn()));
+		}
+		
+		@Override
+		public Identifier getIdentifier() {
+			return new Identifier("Write");
+		}
+
+		@Override
+		public List<Formal> getFormals() {
+			ArrayList<Formal> formals = new ArrayList<Formal>();
+			formals.add(new TypeLessFormal(new Identifier("in")));
+			return formals;
+		}
+
+		@Override
+		public void execute(SymbolTable symbolTable) {
+			try {
+				Value result = symbolTable.lookupValue("in");
+				this.out.print(result.toString());
+			} catch (VariableNotDeclaredException e) {
+				throw new IllegalStateException(e);
+			}
+		}
+		
+		
+	}
+	*/
 	
 }
 

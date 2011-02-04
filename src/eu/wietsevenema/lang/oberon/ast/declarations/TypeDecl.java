@@ -1,5 +1,6 @@
 package eu.wietsevenema.lang.oberon.ast.declarations;
 
+import xtc.tree.Node;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
 
@@ -9,8 +10,8 @@ public class TypeDecl extends Declaration {
 	private VarType type;
 
 	//FIXME i'm wrong. 
-	public TypeDecl(Identifier identifier, VarType type) {
-		this.identifier = identifier;
+	public TypeDecl(Node id, VarType type) {
+		this.identifier = (Identifier)id;
 		this.type = type;
 	}
 

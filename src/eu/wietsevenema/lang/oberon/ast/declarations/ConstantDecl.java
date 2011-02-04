@@ -10,8 +10,8 @@ public class ConstantDecl extends Declaration {
 	Identifier id;
 	Expression exp;
 	
-	public ConstantDecl(Identifier id, Node exp) {
-		this.id = id;
+	public ConstantDecl(Node id, Node exp) {
+		this.id =(Identifier)id;
 		TransformGenerics tg = new TransformGenerics();
 		this.exp = (Expression) tg.dispatch(exp);
 	}

@@ -133,10 +133,26 @@ public class ParserTest {
 		assertEquals("-(3*2)", actual);
 	}
 	
+
 	
 	@Test
-	public void logicalConnectivesEvaluateLazy(){
-		fail("Not implemented");
+	public void arraySelectorTest() throws InvalidInputException, ParseException, IOException{
+		
+		ModulePrinter printer = new ModulePrinter();
+		
+		Node result = Util.parseExpressionString("a[1][2+3]");
+		String actual = (String)printer.dispatch(result);
+		assertEquals("a[1][(2+3)]", actual);
+		
+		result = Util.parseExpressionString("a[b]");
+		actual = (String)printer.dispatch(result);
+		assertEquals("a[b]", actual);
+		
+	}
+	
+	@Test(expected=ParseException.class)
+	public void emptyArraySelectorTest() throws InvalidInputException, ParseException, IOException{
+		Util.parseExpressionString("a[]");
 	}
 
 

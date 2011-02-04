@@ -154,7 +154,7 @@ public class StatementEvaluatorTest  {
 		"END While.";
 		
 		ModuleEvaluator me = new ModuleEvaluator(symbolTable);
-		me.dispatch(Util.parseString(whileprog));
+		me.dispatch(Util.parseModuleString(whileprog));
 		
 		assertEquals( new Boolean(true), ((BooleanValue)symbolTable.lookupValue("t2")).getValue());
 		assertEquals( new Integer(6), 	 ((IntegerValue)symbolTable.lookupValue("t1")).getValue());
@@ -169,6 +169,13 @@ public class StatementEvaluatorTest  {
 		env.runModule(result);
 	}
 	
+	@Test
+	public void testAssignStatement() throws IOException, InvalidInputException, ParseException {
+		Module result = (Module)Util.parseModuleFile(Util.getAbsFilename("oberon/statements/assignment.o0"));
+		Environment env = new Environment(System.in, System.out);
+		BuiltIns.inject(env);
+		env.runModule(result);
+	}
 	
 	
 }

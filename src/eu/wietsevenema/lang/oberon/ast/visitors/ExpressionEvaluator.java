@@ -2,6 +2,7 @@ package eu.wietsevenema.lang.oberon.ast.visitors;
 
 import xtc.tree.Visitor;
 import eu.wietsevenema.lang.oberon.ast.expressions.AdditiveExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.ArraySelector;
 import eu.wietsevenema.lang.oberon.ast.expressions.BooleanConstant;
 import eu.wietsevenema.lang.oberon.ast.expressions.EqualityExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
@@ -16,16 +17,17 @@ import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableUndefinedException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 import eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class ExpressionEvaluator extends Visitor {
 
-	SymbolTable symboltable;
+	SymbolTable symbolTable;
 
 	public ExpressionEvaluator(SymbolTable symbolTable) {
-		this.symboltable = symbolTable;
+		this.symbolTable = symbolTable;
 	}
 
 	
@@ -41,6 +43,7 @@ public class ExpressionEvaluator extends Visitor {
 			throw new IllegalStateException("Token not recognized");
 		}
 	}
+	
 
 	public BooleanValue visit(BooleanConstant bc) {
 		return new BooleanValue(bc.getValue());
@@ -104,6 +107,12 @@ public class ExpressionEvaluator extends Visitor {
 		}
 		return new IntegerValue(result);
 	}
+	
+	public Value visit( ArraySelector as ){
+		ValueReferenceResolver resolv = new ValueReferenceResolver(symbolTable);
+		ValueReference result = (ValueReference)resolv.dispatch(as);
+		return result.getValue();
+	}
 
 	public IntegerValue visit(UnaryMinExpression um) {
 		IntegerValue result = (IntegerValue) dispatch(um.getChild());
@@ -113,9 +122,10 @@ public class ExpressionEvaluator extends Visitor {
 	public IntegerValue visit(IntegerConstant ic) {
 		return new IntegerValue(ic.getValue());
 	}
-
+	
+	
 	public Value visit(Identifier id) throws VariableUndefinedException, VariableNotDeclaredException {
-		Value result = (Value) this.symboltable.lookupValue(id.getName());
+		Value result = (Value) this.symbolTable.lookupValue(id.getName());
 		
 		if (result == null) {
 			throw new VariableUndefinedException(id.getName() + "undefined.");

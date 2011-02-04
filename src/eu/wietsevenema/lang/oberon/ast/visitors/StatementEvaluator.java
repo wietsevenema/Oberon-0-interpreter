@@ -36,12 +36,11 @@ public class StatementEvaluator extends Visitor {
 	public void visit(AssignmentStatement assign)
 			throws VariableNotDeclaredException, TypeMismatchException {
 		// 1. Retrieve existing reference.
-		String symbol = assign.getIdentifier().getName();
-		ValueReference currentValRef = symbolTable.lookupValueReference(symbol);
+		ValueReferenceResolver resolv = new ValueReferenceResolver(symbolTable);
+		ValueReference currentValRef = (ValueReference) resolv.dispatch(assign.getIdentifier());
 
 		if (currentValRef == null) {
-			throw new VariableNotDeclaredException("Variable '" + symbol
-					+ "' not declared. " + assign.getLocation().toString());
+			throw new VariableNotDeclaredException("Variable not declared. " + assign.getLocation().toString());
 		}
 		
 		// 2. Evaluate expression
@@ -65,7 +64,6 @@ public class StatementEvaluator extends Visitor {
 		if(procedure == null){
 			throw new ProcedureUndefinedException("Procedure "+ pCall.getIdentifier().getName() + " undefined.");
 		}
-		
 		
 		// Enter scope.
 		symbolTable.enter();

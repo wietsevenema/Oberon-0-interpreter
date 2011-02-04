@@ -14,7 +14,7 @@ public class ProcedureCallStatement extends Statement {
 	Identifier identifier;
 	List<Expression> parameters;
 	
-	public ProcedureCallStatement(Identifier identifier, List<Node> nodes) {
+	public ProcedureCallStatement(Node id, List<Node> nodes) {
 		List<Expression> parameters = new ArrayList<Expression>();
 		TransformGenerics tg = new TransformGenerics();
 		if(nodes!=null){
@@ -31,7 +31,7 @@ public class ProcedureCallStatement extends Statement {
 			}
 		}
 		
-		this.identifier = identifier;
+		this.identifier = (Identifier)id;
 		this.parameters = parameters;
 	}
 

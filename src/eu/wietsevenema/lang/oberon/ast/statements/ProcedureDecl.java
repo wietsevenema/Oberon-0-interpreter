@@ -23,9 +23,9 @@ public class ProcedureDecl extends Declaration implements Procedure {
 	private Declarations declarations;
 	private List<Statement> statements;
 	
-	public ProcedureDecl(Identifier identifier, List<Node> formals,
+	public ProcedureDecl(Node idstart, List<Node> formals,
 			Declarations declarations, List<Statement> statements) {
-		this.identifier = identifier;
+		this.identifier = (Identifier)idstart;
 		this.formals = transformFormals(formals);
 		this.declarations = (declarations!=null)
 								? declarations

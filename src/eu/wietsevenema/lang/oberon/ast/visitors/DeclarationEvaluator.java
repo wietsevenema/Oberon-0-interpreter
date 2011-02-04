@@ -61,10 +61,10 @@ public class DeclarationEvaluator extends Visitor {
 		List<Identifier> identifiers = varDecl.getIdentifiers();
 		VarType type = varDecl.getType();
 		
-		ValueBuilder builder = new ValueBuilder();
-		Value value = (Value) builder.dispatch(type);
+		ValueBuilder builder = new ValueBuilder(symbolTable);
 		
 		for( Identifier id : identifiers){
+			Value value = (Value) builder.dispatch(type);
 			String symbol = id.getName();
 			symbolTable.declareValue(symbol, value);
 		}

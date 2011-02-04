@@ -13,7 +13,7 @@ Declarations Declarations =
 	}
 	;
 		
-//FIXME / ArrayType / RecordType.
+//FIXME  / RecordType.
 VarType Type = 
 	"BOOLEAN":Word 
 	{
@@ -23,8 +23,15 @@ VarType Type =
 	{
 		yyValue = new IntegerType();
 	}
+  / yyValue:ArrayType
 	;
 
+VarType ArrayType = 
+	"ARRAY":Word exp:EqualityExpression "OF":Word type:Type
+	{
+		yyValue = new ArrayType( exp, type);
+	}
+	;
 
 List<ConstantDecl> ConstantDecls = 
 	"CONST":Word cds:(ConstantDecl)+
@@ -65,14 +72,6 @@ VarDecl VarDecl =
 	ids:IdentList void:":":Symbol type:Type void:";":Symbol
 	{
 		yyValue = new VarDecl(ids, type);
-	}
-	;
-	
-	
-List<Identifier> IdentList = 
-	 i:Identifier is:( void:",":Symbol Identifier)*
-     { 
-		yyValue = new Pair<Identifier>(i, is).list(); 
 	}
 	;
 

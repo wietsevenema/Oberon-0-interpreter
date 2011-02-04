@@ -1,0 +1,42 @@
+MODULE TestArray;
+
+VAR
+	a1: ARRAY (1+1) OF INTEGER;
+	a2: ARRAY 100 OF INTEGER;
+	a3: ARRAY 10 OF
+  			ARRAY 10 OF
+    			ARRAY 10 OF BOOLEAN;    
+BEGIN
+	/*
+	a1[0] := 1;
+	AssertEquals(1, a1[0]);
+	
+	a1[1] := 2;
+	AssertEquals(1, a1[0]);
+	AssertEquals(2, a1[1]);
+	
+	a2[99] := 42;
+	AssertEquals(1, a1[0]);
+	AssertEquals(2, a1[1]);
+	AssertEquals(42, a2[99]);
+	*/
+	
+	a3[0][0][0] := FALSE
+	
+	/*;
+	a3[0][ a2[99] DIV 10 ][0] := TRUE; 
+	AssertEquals(1, a1[0]);
+	AssertEquals(2, a1[1]);
+	AssertEquals(42, a2[99]);
+	AssertEquals(TRUE, a3[0][4][0]);
+	
+	a3[9][9][9] := FALSE;
+	AssertEquals(1, a1[0]);
+	AssertEquals(2, a1[1]);
+	AssertEquals(42, a2[99]);
+	AssertEquals(TRUE, a3[0][4][0]);
+	AssertEquals(FALSE, a3[0][0][0])
+	*/
+	
+END TestArray.
+

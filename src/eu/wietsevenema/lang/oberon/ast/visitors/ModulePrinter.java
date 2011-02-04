@@ -12,6 +12,7 @@ import eu.wietsevenema.lang.oberon.ast.declarations.FormalVar;
 import eu.wietsevenema.lang.oberon.ast.declarations.FormalVarRef;
 import eu.wietsevenema.lang.oberon.ast.declarations.Module;
 import eu.wietsevenema.lang.oberon.ast.declarations.VarDecl;
+import eu.wietsevenema.lang.oberon.ast.expressions.ArraySelector;
 import eu.wietsevenema.lang.oberon.ast.expressions.BinaryExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
 import eu.wietsevenema.lang.oberon.ast.expressions.LogicalNegationExpression;
@@ -47,6 +48,11 @@ public class ModulePrinter extends Visitor {
 	public String visit(Expression exp){
 		return exp.toString();
 	}
+	
+	public String visit(ArraySelector as){
+		return dispatch(as.getLeft()) + "[" + dispatch(as.getIndex()) + "]";
+	}
+
 	
 	public String visit(LogicalNegationExpression lne){
 		return "(~"+dispatch(lne.getChild())+")";

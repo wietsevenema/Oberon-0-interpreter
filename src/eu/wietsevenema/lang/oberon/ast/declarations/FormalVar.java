@@ -41,8 +41,8 @@ public class FormalVar extends Declaration implements Formal {
 				symbolTable);
 		Value result = (Value) expressionEval.dispatch(param);
 		
-		// 2. Check type.
-		ValueBuilder builder = new ValueBuilder();
+		// 2. Declare type.
+		ValueBuilder builder = new ValueBuilder(symbolTable);
 		Value value = (Value) builder.dispatch(this.getType());
 		String symbol = this.getIdentifier().getName();
 		symbolTable.declareValue(symbol, value);

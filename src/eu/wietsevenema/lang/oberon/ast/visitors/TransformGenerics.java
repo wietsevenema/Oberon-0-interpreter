@@ -5,8 +5,10 @@ import java.lang.reflect.InvocationTargetException;
 import xtc.tree.GNode;
 import xtc.tree.Node;
 import xtc.tree.Visitor;
+import eu.wietsevenema.lang.oberon.ast.expressions.ArraySelector;
 import eu.wietsevenema.lang.oberon.ast.expressions.BinaryExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
+import eu.wietsevenema.lang.oberon.ast.expressions.Selector;
 import eu.wietsevenema.lang.oberon.exceptions.ExpressionNotFoundException;
 import eu.wietsevenema.lang.oberon.exceptions.TransformedException;
 
@@ -19,7 +21,21 @@ public class TransformGenerics extends Visitor {
 			throw new TransformedException("Expected expression but got " + n.getName());
 		}
 	}
-
+	
+	public Selector visitArraySelector(GNode n){
+		/* <Array> Selector void:"[":Symbol EqualityExpression void:"]":Symbol  
+		  /	<Record> Selector void:".":Symbol Identifier 
+		  / <Base> yyValue:Identifier
+		   * 
+		   */
+		
+		Expression left, right;
+		left   = (Expression)dispatch(n.getNode(0));
+		right  = (Expression)dispatch(n.getNode(1));
+		return new ArraySelector( left, right );
+		
+	}
+	
 	/**
 	 * Some magic to transform a generic expression node to it's static typed equivalent. 
 	 * @param n

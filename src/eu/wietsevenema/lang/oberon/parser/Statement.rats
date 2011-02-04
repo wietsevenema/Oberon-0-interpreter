@@ -70,7 +70,7 @@ Statement Statement =
 	; 
 
 AssignmentStatement AssignmentStatement = 
-	id:Identifier ":=":Symbol exp:EqualityExpression
+	id:Selector ":=":Symbol exp:EqualityExpression
 		{
 			yyValue= new AssignmentStatement(id, exp);
 		}

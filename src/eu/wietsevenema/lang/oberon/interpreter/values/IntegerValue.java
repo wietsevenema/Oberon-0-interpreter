@@ -42,5 +42,16 @@ public class IntegerValue extends Value {
 		}
 		return null;
 	}
+
+
+
+	@Override
+	public Object clone() {
+		if(value==null){
+			return new IntegerValue(null);
+		} else {
+			return new IntegerValue(value.intValue());
+		}
+	}
 	
 }

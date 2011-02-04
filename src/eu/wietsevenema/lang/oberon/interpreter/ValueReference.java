@@ -8,6 +8,7 @@ public class ValueReference {
 	private Value value;
 	
 	public ValueReference( Value value){
+		assert(value != null);
 		this.value = value;
 	}
 

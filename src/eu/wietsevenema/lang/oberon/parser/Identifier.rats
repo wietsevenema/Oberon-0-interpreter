@@ -4,15 +4,22 @@ module eu.wietsevenema.lang.oberon.parser.Identifier(
 import Spacing;
 import Symbol;
 
-Identifier Identifier = vn:VariableName Spacing
+Node Identifier = vn:VariableName Spacing
   	{
 		yyValue = new Identifier(vn);
 	}
 	;
+	
+List<Node> IdentList = 
+ 	i:Identifier is:( void:",":Symbol Identifier)*
+    { 
+		yyValue = new Pair<Node>(i, is).list(); 
+	}
+	;
 
-// String VariableIdentifier = VariableName Spacing;
 
-//FIXME dit is geen typeid.
+
+
 String TypeIdentifier = VariableName Spacing;
 
 String VariableName = [a-zA-Z][a-zA-Z0-9]*;

@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import xtc.tree.Node;
 import eu.wietsevenema.lang.oberon.ast.declarations.VarDecl;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
@@ -27,7 +28,7 @@ public class DeclarationEvaluatorTest  {
 	
 	@Test
 	public void testVarDeclaration() throws VariableNotDeclaredException{
-		List<Identifier> identifiers = new ArrayList<Identifier>();
+		List<Node> identifiers = new ArrayList<Node>();
 		identifiers.add(new Identifier("a"));
 		identifiers.add(new Identifier("b"));
 		identifiers.add(new Identifier("c"));

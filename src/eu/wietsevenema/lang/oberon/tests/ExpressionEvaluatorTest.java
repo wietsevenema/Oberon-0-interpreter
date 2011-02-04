@@ -2,17 +2,25 @@ package eu.wietsevenema.lang.oberon.tests;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.io.IOException;
 
 import org.junit.Test;
 
+import eu.wietsevenema.lang.oberon.ast.declarations.Module;
 import eu.wietsevenema.lang.oberon.ast.expressions.AdditiveExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.expressions.IntegerConstant;
 import eu.wietsevenema.lang.oberon.ast.expressions.MultiplicativeExpression;
 import eu.wietsevenema.lang.oberon.ast.visitors.ExpressionEvaluator;
+import eu.wietsevenema.lang.oberon.exceptions.InvalidInputException;
+import eu.wietsevenema.lang.oberon.exceptions.ParseException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
+import eu.wietsevenema.lang.oberon.interpreter.BuiltIns;
+import eu.wietsevenema.lang.oberon.interpreter.Environment;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 
@@ -44,6 +52,10 @@ public class ExpressionEvaluatorTest  {
 		assertEquals(new Integer(1+(10-12)), result.getValue());
 	}
 	
+	@Test
+	public void logicalConnectivesEvaluateLazy(){
+		fail("Not implemented");
+	}
 	
 	@Test
 	public void testDivisionModulus() throws ValueUndefinedException{
@@ -86,6 +98,14 @@ public class ExpressionEvaluatorTest  {
 		assertEquals(new Integer(42), result.getValue());
 	}
 	
+	
+	@Test
+	public void testArrays() throws IOException, InvalidInputException, ParseException{
+		Module result = (Module)Util.parseModuleFile(Util.getAbsFilename("oberon/expr/arrays.o0"));
+		Environment env = new Environment(System.in, System.out);
+		BuiltIns.inject(env);
+		env.runModule(result);
+	}
 	
 	
 }

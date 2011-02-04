@@ -41,4 +41,13 @@ public class BooleanValue extends Value {
 		return null;
 	}
 
+	@Override
+	public Object clone() {
+		if(value==null){
+			return new BooleanValue(null);
+		} else {
+			return new BooleanValue(value.booleanValue());
+		}
+	}
+
 }
