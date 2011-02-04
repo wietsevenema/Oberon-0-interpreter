@@ -33,6 +33,7 @@ VarType ArrayType =
 	}
 	;
 
+
 List<ConstantDecl> ConstantDecls = 
 	"CONST":Word cds:(ConstantDecl)+
 	{

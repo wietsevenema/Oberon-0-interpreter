@@ -17,9 +17,6 @@ List<Node> IdentList =
 	}
 	;
 
-
-
-
 String TypeIdentifier = VariableName Spacing;
 
 String VariableName = [a-zA-Z][a-zA-Z0-9]*;
