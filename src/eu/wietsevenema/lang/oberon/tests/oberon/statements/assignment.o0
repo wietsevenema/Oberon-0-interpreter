@@ -11,43 +11,43 @@ PROCEDURE test ( i, j: INTEGER; k: INTEGER);
 		i := 0;
 		j := 0;
 		k := 0;
-		AssertEquals(5,  a);
-		AssertEquals(2,  b);
-		AssertEquals(99, c);
+		AssertEqualsInt(5,  a);
+		AssertEqualsInt(2,  b);
+		AssertEqualsInt(99, c);
 		
-		AssertEquals(0, i);
-		AssertEquals(0, j);
-		AssertEquals(0, k)
+		AssertEqualsInt(0, i);
+		AssertEqualsInt(0, j);
+		AssertEqualsInt(0, k)
 	END test;
 
 BEGIN
 	a := 1;
-	AssertEquals(1, a);
+	AssertEqualsInt(1, a);
 	
 	b := 2;	
-	AssertEquals(1, a);
-	AssertEquals(2, b);
+	AssertEqualsInt(1, a);
+	AssertEqualsInt(2, b);
 	
 	c := 3;
-	AssertEquals(1, a);
-	AssertEquals(2, b);
-	AssertEquals(3, c);
+	AssertEqualsInt(1, a);
+	AssertEqualsInt(2, b);
+	AssertEqualsInt(3, c);
 	
 	
 	a := 5;
-	AssertEquals(5, a);
-	AssertEquals(2, b);
-	AssertEquals(3, c);
+	AssertEqualsInt(5, a);
+	AssertEqualsInt(2, b);
+	AssertEqualsInt(3, c);
 	
 	c := 99;
-	AssertEquals(5,  a);
-	AssertEquals(2,  b);
-	AssertEquals(99, c);
+	AssertEqualsInt(5,  a);
+	AssertEqualsInt(2,  b);
+	AssertEqualsInt(99, c);
 	
 	test(a,b,c);
-	AssertEquals(5,  a);
-	AssertEquals(2,  b);
-	AssertEquals(99, c)
+	AssertEqualsInt(5,  a);
+	AssertEqualsInt(2,  b);
+	AssertEqualsInt(99, c)
 		
 END Assignment.
 

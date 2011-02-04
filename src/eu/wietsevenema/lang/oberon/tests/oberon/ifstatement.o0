@@ -27,19 +27,19 @@ BEGIN
 	output := 0;
 	
 	IfTest(0, output);
-	AssertEquals(99, output);
+	AssertEqualsInt(99, output);
 	
 	IfTest(1, output);
-	AssertEquals(1, output);
+	AssertEqualsInt(1, output);
 	
 	IfTest(2, output);
-	AssertEquals(2, output);
+	AssertEqualsInt(2, output);
 	
 	IfTest(3, output);
-	AssertEquals(3, output);
+	AssertEqualsInt(3, output);
 	
 	IfTest(4, output);
-	AssertEquals(99, output)
+	AssertEqualsInt(99, output)
 	
 
 END TestIf.
