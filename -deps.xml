@@ -1,0 +1,803 @@
+<?xml version="1.0"?>
+<JDepend>
+    <Packages>
+
+        <Package name="eu.wietsevenema.lang.oberon.ast.declarations">
+            <Stats>
+                <TotalClasses>9</TotalClasses>
+                <ConcreteClasses>8</ConcreteClasses>
+                <AbstractClasses>1</AbstractClasses>
+                <Ca>5</Ca>
+                <Ce>9</Ce>
+                <A>0.11</A>
+                <I>0.64</I>
+                <D>0.25</D>
+                <V>1</V>
+            </Stats>
+
+            <AbstractClasses>
+                <Class sourceFile="Declaration.java">
+                    eu.wietsevenema.lang.oberon.ast.declarations.Declaration
+                </Class>
+            </AbstractClasses>
+
+            <ConcreteClasses>
+                <Class sourceFile="ConstantDecl.java">
+                    eu.wietsevenema.lang.oberon.ast.declarations.ConstantDecl
+                </Class>
+                <Class sourceFile="Declarations.java">
+                    eu.wietsevenema.lang.oberon.ast.declarations.Declarations
+                </Class>
+                <Class sourceFile="FormalParameter.java">
+                    eu.wietsevenema.lang.oberon.ast.declarations.FormalParameter
+                </Class>
+                <Class sourceFile="FormalVar.java">
+                    eu.wietsevenema.lang.oberon.ast.declarations.FormalVar
+                </Class>
+                <Class sourceFile="FormalVarRef.java">
+                    eu.wietsevenema.lang.oberon.ast.declarations.FormalVarRef
+                </Class>
+                <Class sourceFile="Module.java">
+                    eu.wietsevenema.lang.oberon.ast.declarations.Module
+                </Class>
+                <Class sourceFile="TypeDecl.java">
+                    eu.wietsevenema.lang.oberon.ast.declarations.TypeDecl
+                </Class>
+                <Class sourceFile="VarDecl.java">
+                    eu.wietsevenema.lang.oberon.ast.declarations.VarDecl
+                </Class>
+            </ConcreteClasses>
+
+            <DependsUpon>
+                <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.types</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+                <Package>eu.wietsevenema.lang.oberon.exceptions</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter.values</Package>
+                <Package>java.lang</Package>
+                <Package>java.util</Package>
+                <Package>xtc.tree</Package>
+            </DependsUpon>
+
+            <UsedBy>
+                <Package>eu.wietsevenema.lang.oberon.ast.statements</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter</Package>
+                <Package>eu.wietsevenema.lang.oberon.parser</Package>
+                <Package>eu.wietsevenema.lang.oberon.tests</Package>
+            </UsedBy>
+        </Package>
+
+        <Package name="eu.wietsevenema.lang.oberon.ast.expressions">
+            <Stats>
+                <TotalClasses>16</TotalClasses>
+                <ConcreteClasses>13</ConcreteClasses>
+                <AbstractClasses>3</AbstractClasses>
+                <Ca>7</Ca>
+                <Ce>3</Ce>
+                <A>0.19</A>
+                <I>0.3</I>
+                <D>0.51</D>
+                <V>1</V>
+            </Stats>
+
+            <AbstractClasses>
+                <Class sourceFile="BinaryExpression.java">
+                    eu.wietsevenema.lang.oberon.ast.expressions.BinaryExpression
+                </Class>
+                <Class sourceFile="Expression.java">
+                    eu.wietsevenema.lang.oberon.ast.expressions.Expression
+                </Class>
+                <Class sourceFile="Selector.java">
+                    eu.wietsevenema.lang.oberon.ast.expressions.Selector
+                </Class>
+            </AbstractClasses>
+
+            <ConcreteClasses>
+                <Class sourceFile="AdditiveExpression.java">
+                    eu.wietsevenema.lang.oberon.ast.expressions.AdditiveExpression
+                </Class>
+                <Class sourceFile="ArraySelector.java">
+                    eu.wietsevenema.lang.oberon.ast.expressions.ArraySelector
+                </Class>
+                <Class sourceFile="BooleanConstant.java">
+                    eu.wietsevenema.lang.oberon.ast.expressions.BooleanConstant
+                </Class>
+                <Class sourceFile="EqualityExpression.java">
+                    eu.wietsevenema.lang.oberon.ast.expressions.EqualityExpression
+                </Class>
+                <Class sourceFile="Identifier.java">
+                    eu.wietsevenema.lang.oberon.ast.expressions.Identifier
+                </Class>
+                <Class sourceFile="IntegerConstant.java">
+                    eu.wietsevenema.lang.oberon.ast.expressions.IntegerConstant
+                </Class>
+                <Class sourceFile="LogicalConjunctiveExpression.java">
+                    eu.wietsevenema.lang.oberon.ast.expressions.LogicalConjunctiveExpression
+                </Class>
+                <Class sourceFile="LogicalDisjunctiveExpression.java">
+                    eu.wietsevenema.lang.oberon.ast.expressions.LogicalDisjunctiveExpression
+                </Class>
+                <Class sourceFile="LogicalNegationExpression.java">
+                    eu.wietsevenema.lang.oberon.ast.expressions.LogicalNegationExpression
+                </Class>
+                <Class sourceFile="MultiplicativeExpression.java">
+                    eu.wietsevenema.lang.oberon.ast.expressions.MultiplicativeExpression
+                </Class>
+                <Class sourceFile="ProcedureUndefinedException.java">
+                    eu.wietsevenema.lang.oberon.ast.expressions.ProcedureUndefinedException
+                </Class>
+                <Class sourceFile="TestExpression.java">
+                    eu.wietsevenema.lang.oberon.ast.expressions.TestExpression
+                </Class>
+                <Class sourceFile="UnaryMinExpression.java">
+                    eu.wietsevenema.lang.oberon.ast.expressions.UnaryMinExpression
+                </Class>
+            </ConcreteClasses>
+
+            <DependsUpon>
+                <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+                <Package>java.lang</Package>
+                <Package>xtc.tree</Package>
+            </DependsUpon>
+
+            <UsedBy>
+                <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.statements</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.types</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter</Package>
+                <Package>eu.wietsevenema.lang.oberon.parser</Package>
+                <Package>eu.wietsevenema.lang.oberon.tests</Package>
+            </UsedBy>
+        </Package>
+
+        <Package name="eu.wietsevenema.lang.oberon.ast.statements">
+            <Stats>
+                <TotalClasses>7</TotalClasses>
+                <ConcreteClasses>6</ConcreteClasses>
+                <AbstractClasses>1</AbstractClasses>
+                <Ca>3</Ca>
+                <Ce>8</Ce>
+                <A>0.14</A>
+                <I>0.73</I>
+                <D>0.13</D>
+                <V>1</V>
+            </Stats>
+
+            <AbstractClasses>
+                <Class sourceFile="Statement.java">
+                    eu.wietsevenema.lang.oberon.ast.statements.Statement
+                </Class>
+            </AbstractClasses>
+
+            <ConcreteClasses>
+                <Class sourceFile="AssignmentStatement.java">
+                    eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement
+                </Class>
+                <Class sourceFile="ElseIfStatement.java">
+                    eu.wietsevenema.lang.oberon.ast.statements.ElseIfStatement
+                </Class>
+                <Class sourceFile="IfStatement.java">
+                    eu.wietsevenema.lang.oberon.ast.statements.IfStatement
+                </Class>
+                <Class sourceFile="ProcedureCallStatement.java">
+                    eu.wietsevenema.lang.oberon.ast.statements.ProcedureCallStatement
+                </Class>
+                <Class sourceFile="ProcedureDecl.java">
+                    eu.wietsevenema.lang.oberon.ast.statements.ProcedureDecl
+                </Class>
+                <Class sourceFile="WhileStatement.java">
+                    eu.wietsevenema.lang.oberon.ast.statements.WhileStatement
+                </Class>
+            </ConcreteClasses>
+
+            <DependsUpon>
+                <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.types</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter</Package>
+                <Package>java.lang</Package>
+                <Package>java.util</Package>
+                <Package>xtc.tree</Package>
+            </DependsUpon>
+
+            <UsedBy>
+                <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+                <Package>eu.wietsevenema.lang.oberon.parser</Package>
+                <Package>eu.wietsevenema.lang.oberon.tests</Package>
+            </UsedBy>
+        </Package>
+
+        <Package name="eu.wietsevenema.lang.oberon.ast.types">
+            <Stats>
+                <TotalClasses>4</TotalClasses>
+                <ConcreteClasses>3</ConcreteClasses>
+                <AbstractClasses>1</AbstractClasses>
+                <Ca>6</Ca>
+                <Ce>4</Ce>
+                <A>0.25</A>
+                <I>0.4</I>
+                <D>0.35</D>
+                <V>1</V>
+            </Stats>
+
+            <AbstractClasses>
+                <Class sourceFile="VarType.java">
+                    eu.wietsevenema.lang.oberon.ast.types.VarType
+                </Class>
+            </AbstractClasses>
+
+            <ConcreteClasses>
+                <Class sourceFile="ArrayType.java">
+                    eu.wietsevenema.lang.oberon.ast.types.ArrayType
+                </Class>
+                <Class sourceFile="BooleanType.java">
+                    eu.wietsevenema.lang.oberon.ast.types.BooleanType
+                </Class>
+                <Class sourceFile="IntegerType.java">
+                    eu.wietsevenema.lang.oberon.ast.types.IntegerType
+                </Class>
+            </ConcreteClasses>
+
+            <DependsUpon>
+                <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+                <Package>java.lang</Package>
+                <Package>xtc.tree</Package>
+            </DependsUpon>
+
+            <UsedBy>
+                <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.statements</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter</Package>
+                <Package>eu.wietsevenema.lang.oberon.parser</Package>
+                <Package>eu.wietsevenema.lang.oberon.tests</Package>
+            </UsedBy>
+        </Package>
+
+        <Package name="eu.wietsevenema.lang.oberon.ast.visitors">
+            <Stats>
+                <TotalClasses>8</TotalClasses>
+                <ConcreteClasses>8</ConcreteClasses>
+                <AbstractClasses>0</AbstractClasses>
+                <Ca>6</Ca>
+                <Ce>11</Ce>
+                <A>0</A>
+                <I>0.65</I>
+                <D>0.35</D>
+                <V>1</V>
+            </Stats>
+
+            <AbstractClasses>
+            </AbstractClasses>
+
+            <ConcreteClasses>
+                <Class sourceFile="DeclarationEvaluator.java">
+                    eu.wietsevenema.lang.oberon.ast.visitors.DeclarationEvaluator
+                </Class>
+                <Class sourceFile="ExpressionEvaluator.java">
+                    eu.wietsevenema.lang.oberon.ast.visitors.ExpressionEvaluator
+                </Class>
+                <Class sourceFile="ModuleEvaluator.java">
+                    eu.wietsevenema.lang.oberon.ast.visitors.ModuleEvaluator
+                </Class>
+                <Class sourceFile="ModulePrinter.java">
+                    eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter
+                </Class>
+                <Class sourceFile="StatementEvaluator.java">
+                    eu.wietsevenema.lang.oberon.ast.visitors.StatementEvaluator
+                </Class>
+                <Class sourceFile="TransformGenerics.java">
+                    eu.wietsevenema.lang.oberon.ast.visitors.TransformGenerics
+                </Class>
+                <Class sourceFile="ValueBuilder.java">
+                    eu.wietsevenema.lang.oberon.ast.visitors.ValueBuilder
+                </Class>
+                <Class sourceFile="ValueReferenceResolver.java">
+                    eu.wietsevenema.lang.oberon.ast.visitors.ValueReferenceResolver
+                </Class>
+            </ConcreteClasses>
+
+            <DependsUpon>
+                <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.statements</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.types</Package>
+                <Package>eu.wietsevenema.lang.oberon.exceptions</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter.values</Package>
+                <Package>java.lang</Package>
+                <Package>java.lang.reflect</Package>
+                <Package>java.util</Package>
+                <Package>xtc.tree</Package>
+            </DependsUpon>
+
+            <UsedBy>
+                <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.statements</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.types</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter</Package>
+                <Package>eu.wietsevenema.lang.oberon.tests</Package>
+            </UsedBy>
+        </Package>
+
+        <Package name="eu.wietsevenema.lang.oberon.exceptions">
+            <Stats>
+                <TotalClasses>12</TotalClasses>
+                <ConcreteClasses>12</ConcreteClasses>
+                <AbstractClasses>0</AbstractClasses>
+                <Ca>5</Ca>
+                <Ce>1</Ce>
+                <A>0</A>
+                <I>0.17</I>
+                <D>0.83</D>
+                <V>1</V>
+            </Stats>
+
+            <AbstractClasses>
+            </AbstractClasses>
+
+            <ConcreteClasses>
+                <Class sourceFile="ExpressionNotFoundException.java">
+                    eu.wietsevenema.lang.oberon.exceptions.ExpressionNotFoundException
+                </Class>
+                <Class sourceFile="IdentifierExpectedInParamList.java">
+                    eu.wietsevenema.lang.oberon.exceptions.IdentifierExpectedInParamList
+                </Class>
+                <Class sourceFile="ImmutableException.java">
+                    eu.wietsevenema.lang.oberon.exceptions.ImmutableException
+                </Class>
+                <Class sourceFile="InvalidInputException.java">
+                    eu.wietsevenema.lang.oberon.exceptions.InvalidInputException
+                </Class>
+                <Class sourceFile="ParseException.java">
+                    eu.wietsevenema.lang.oberon.exceptions.ParseException
+                </Class>
+                <Class sourceFile="TransformedException.java">
+                    eu.wietsevenema.lang.oberon.exceptions.TransformedException
+                </Class>
+                <Class sourceFile="TypeMismatchException.java">
+                    eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException
+                </Class>
+                <Class sourceFile="ValueUndefinedException.java">
+                    eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException
+                </Class>
+                <Class sourceFile="VariableAlreadyDeclaredException.java">
+                    eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException
+                </Class>
+                <Class sourceFile="VariableNotDeclaredException.java">
+                    eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException
+                </Class>
+                <Class sourceFile="VariableUndefinedException.java">
+                    eu.wietsevenema.lang.oberon.exceptions.VariableUndefinedException
+                </Class>
+                <Class sourceFile="WrongNumberOfArgsException.java">
+                    eu.wietsevenema.lang.oberon.exceptions.WrongNumberOfArgsException
+                </Class>
+            </ConcreteClasses>
+
+            <DependsUpon>
+                <Package>java.lang</Package>
+            </DependsUpon>
+
+            <UsedBy>
+                <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter.values</Package>
+                <Package>eu.wietsevenema.lang.oberon.tests</Package>
+            </UsedBy>
+        </Package>
+
+        <Package name="eu.wietsevenema.lang.oberon.interpreter">
+            <Stats>
+                <TotalClasses>12</TotalClasses>
+                <ConcreteClasses>10</ConcreteClasses>
+                <AbstractClasses>2</AbstractClasses>
+                <Ca>5</Ca>
+                <Ce>12</Ce>
+                <A>0.17</A>
+                <I>0.71</I>
+                <D>0.13</D>
+                <V>1</V>
+            </Stats>
+
+            <AbstractClasses>
+                <Class sourceFile="Formal.java">
+                    eu.wietsevenema.lang.oberon.interpreter.Formal
+                </Class>
+                <Class sourceFile="Procedure.java">
+                    eu.wietsevenema.lang.oberon.interpreter.Procedure
+                </Class>
+            </AbstractClasses>
+
+            <ConcreteClasses>
+                <Class sourceFile="BuiltIns.java">
+                    eu.wietsevenema.lang.oberon.interpreter.BuiltIns
+                </Class>
+                <Class sourceFile="BuiltIns.java">
+                    eu.wietsevenema.lang.oberon.interpreter.BuiltIns$AssertEquals
+                </Class>
+                <Class sourceFile="BuiltIns.java">
+                    eu.wietsevenema.lang.oberon.interpreter.BuiltIns$Read
+                </Class>
+                <Class sourceFile="BuiltIns.java">
+                    eu.wietsevenema.lang.oberon.interpreter.BuiltIns$Write
+                </Class>
+                <Class sourceFile="BuiltIns.java">
+                    eu.wietsevenema.lang.oberon.interpreter.BuiltIns$WriteLn
+                </Class>
+                <Class sourceFile="Environment.java">
+                    eu.wietsevenema.lang.oberon.interpreter.Environment
+                </Class>
+                <Class sourceFile="Interpreter.java">
+                    eu.wietsevenema.lang.oberon.interpreter.Interpreter
+                </Class>
+                <Class sourceFile="SymbolTable.java">
+                    eu.wietsevenema.lang.oberon.interpreter.SymbolTable
+                </Class>
+                <Class sourceFile="SymbolTable.java">
+                    eu.wietsevenema.lang.oberon.interpreter.SymbolTable$Scope
+                </Class>
+                <Class sourceFile="ValueReference.java">
+                    eu.wietsevenema.lang.oberon.interpreter.ValueReference
+                </Class>
+            </ConcreteClasses>
+
+            <DependsUpon>
+                <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.types</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+                <Package>eu.wietsevenema.lang.oberon.exceptions</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter.values</Package>
+                <Package>eu.wietsevenema.lang.oberon.parser</Package>
+                <Package>java.io</Package>
+                <Package>java.lang</Package>
+                <Package>java.util</Package>
+                <Package>xtc.parser</Package>
+                <Package>xtc.tree</Package>
+            </DependsUpon>
+
+            <UsedBy>
+                <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.statements</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter.values</Package>
+                <Package>eu.wietsevenema.lang.oberon.tests</Package>
+            </UsedBy>
+        </Package>
+
+        <Package name="eu.wietsevenema.lang.oberon.interpreter.values">
+            <Stats>
+                <TotalClasses>4</TotalClasses>
+                <ConcreteClasses>3</ConcreteClasses>
+                <AbstractClasses>1</AbstractClasses>
+                <Ca>4</Ca>
+                <Ce>3</Ce>
+                <A>0.25</A>
+                <I>0.43</I>
+                <D>0.32</D>
+                <V>1</V>
+            </Stats>
+
+            <AbstractClasses>
+                <Class sourceFile="Value.java">
+                    eu.wietsevenema.lang.oberon.interpreter.values.Value
+                </Class>
+            </AbstractClasses>
+
+            <ConcreteClasses>
+                <Class sourceFile="ArrayValue.java">
+                    eu.wietsevenema.lang.oberon.interpreter.values.ArrayValue
+                </Class>
+                <Class sourceFile="BooleanValue.java">
+                    eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue
+                </Class>
+                <Class sourceFile="IntegerValue.java">
+                    eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue
+                </Class>
+            </ConcreteClasses>
+
+            <DependsUpon>
+                <Package>eu.wietsevenema.lang.oberon.exceptions</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter</Package>
+                <Package>java.lang</Package>
+            </DependsUpon>
+
+            <UsedBy>
+                <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter</Package>
+                <Package>eu.wietsevenema.lang.oberon.tests</Package>
+            </UsedBy>
+        </Package>
+
+        <Package name="eu.wietsevenema.lang.oberon.metrics">
+            <Stats>
+                <TotalClasses>1</TotalClasses>
+                <ConcreteClasses>1</ConcreteClasses>
+                <AbstractClasses>0</AbstractClasses>
+                <Ca>0</Ca>
+                <Ce>6</Ce>
+                <A>0</A>
+                <I>1</I>
+                <D>0</D>
+                <V>1</V>
+            </Stats>
+
+            <AbstractClasses>
+            </AbstractClasses>
+
+            <ConcreteClasses>
+                <Class sourceFile="ComputeMetrics.java">
+                    eu.wietsevenema.lang.oberon.metrics.ComputeMetrics
+                </Class>
+            </ConcreteClasses>
+
+            <DependsUpon>
+                <Package>java.io</Package>
+                <Package>java.lang</Package>
+                <Package>java.util</Package>
+                <Package>javancss</Package>
+                <Package>jdepend.textui</Package>
+                <Package>jdepend.xmlui</Package>
+            </DependsUpon>
+
+            <UsedBy>
+            </UsedBy>
+        </Package>
+
+        <Package name="eu.wietsevenema.lang.oberon.parser">
+            <Stats>
+                <TotalClasses>11</TotalClasses>
+                <ConcreteClasses>11</ConcreteClasses>
+                <AbstractClasses>0</AbstractClasses>
+                <Ca>2</Ca>
+                <Ce>10</Ce>
+                <A>0</A>
+                <I>0.83</I>
+                <D>0.17</D>
+                <V>1</V>
+            </Stats>
+
+            <AbstractClasses>
+            </AbstractClasses>
+
+            <ConcreteClasses>
+                <Class sourceFile="Oberon.java">
+                    eu.wietsevenema.lang.oberon.parser.Oberon
+                </Class>
+                <Class sourceFile="Oberon.java">
+                    eu.wietsevenema.lang.oberon.parser.Oberon$1
+                </Class>
+                <Class sourceFile="Oberon.java">
+                    eu.wietsevenema.lang.oberon.parser.Oberon$2
+                </Class>
+                <Class sourceFile="Oberon.java">
+                    eu.wietsevenema.lang.oberon.parser.Oberon$3
+                </Class>
+                <Class sourceFile="Oberon.java">
+                    eu.wietsevenema.lang.oberon.parser.Oberon$4
+                </Class>
+                <Class sourceFile="Oberon.java">
+                    eu.wietsevenema.lang.oberon.parser.Oberon$5
+                </Class>
+                <Class sourceFile="Oberon.java">
+                    eu.wietsevenema.lang.oberon.parser.Oberon$6
+                </Class>
+                <Class sourceFile="Oberon.java">
+                    eu.wietsevenema.lang.oberon.parser.Oberon$7
+                </Class>
+                <Class sourceFile="Oberon.java">
+                    eu.wietsevenema.lang.oberon.parser.Oberon$Chunk1
+                </Class>
+                <Class sourceFile="Oberon.java">
+                    eu.wietsevenema.lang.oberon.parser.Oberon$Chunk2
+                </Class>
+                <Class sourceFile="Oberon.java">
+                    eu.wietsevenema.lang.oberon.parser.Oberon$OberonColumn
+                </Class>
+            </ConcreteClasses>
+
+            <DependsUpon>
+                <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.statements</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.types</Package>
+                <Package>java.io</Package>
+                <Package>java.lang</Package>
+                <Package>java.util</Package>
+                <Package>xtc.parser</Package>
+                <Package>xtc.tree</Package>
+                <Package>xtc.util</Package>
+            </DependsUpon>
+
+            <UsedBy>
+                <Package>eu.wietsevenema.lang.oberon.interpreter</Package>
+                <Package>eu.wietsevenema.lang.oberon.tests</Package>
+            </UsedBy>
+        </Package>
+
+        <Package name="eu.wietsevenema.lang.oberon.tests">
+            <Stats>
+                <TotalClasses>7</TotalClasses>
+                <ConcreteClasses>7</ConcreteClasses>
+                <AbstractClasses>0</AbstractClasses>
+                <Ca>0</Ca>
+                <Ce>16</Ce>
+                <A>0</A>
+                <I>1</I>
+                <D>0</D>
+                <V>1</V>
+            </Stats>
+
+            <AbstractClasses>
+            </AbstractClasses>
+
+            <ConcreteClasses>
+                <Class sourceFile="BuiltinsTest.java">
+                    eu.wietsevenema.lang.oberon.tests.BuiltinsTest
+                </Class>
+                <Class sourceFile="DeclarationEvaluatorTest.java">
+                    eu.wietsevenema.lang.oberon.tests.DeclarationEvaluatorTest
+                </Class>
+                <Class sourceFile="ExpressionEvaluatorTest.java">
+                    eu.wietsevenema.lang.oberon.tests.ExpressionEvaluatorTest
+                </Class>
+                <Class sourceFile="ParserTest.java">
+                    eu.wietsevenema.lang.oberon.tests.ParserTest
+                </Class>
+                <Class sourceFile="StatementEvaluatorTest.java">
+                    eu.wietsevenema.lang.oberon.tests.StatementEvaluatorTest
+                </Class>
+                <Class sourceFile="SymbolTableTest.java">
+                    eu.wietsevenema.lang.oberon.tests.SymbolTableTest
+                </Class>
+                <Class sourceFile="Util.java">
+                    eu.wietsevenema.lang.oberon.tests.Util
+                </Class>
+            </ConcreteClasses>
+
+            <DependsUpon>
+                <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.statements</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.types</Package>
+                <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+                <Package>eu.wietsevenema.lang.oberon.exceptions</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter</Package>
+                <Package>eu.wietsevenema.lang.oberon.interpreter.values</Package>
+                <Package>eu.wietsevenema.lang.oberon.parser</Package>
+                <Package>java.io</Package>
+                <Package>java.lang</Package>
+                <Package>java.net</Package>
+                <Package>java.util</Package>
+                <Package>org.junit</Package>
+                <Package>xtc.parser</Package>
+                <Package>xtc.tree</Package>
+            </DependsUpon>
+
+            <UsedBy>
+            </UsedBy>
+        </Package>
+
+        <Package name="java.io">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="java.lang">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="java.lang.reflect">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="java.net">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="java.util">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="javancss">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="jdepend.textui">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="jdepend.xmlui">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="org.junit">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="xtc.parser">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="xtc.tree">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="xtc.util">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+    </Packages>
+
+    <Cycles>
+        <Package Name="eu.wietsevenema.lang.oberon.ast.declarations">
+            <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+        </Package>
+
+        <Package Name="eu.wietsevenema.lang.oberon.ast.expressions">
+            <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+        </Package>
+
+        <Package Name="eu.wietsevenema.lang.oberon.ast.statements">
+            <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+        </Package>
+
+        <Package Name="eu.wietsevenema.lang.oberon.ast.types">
+            <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+        </Package>
+
+        <Package Name="eu.wietsevenema.lang.oberon.ast.visitors">
+            <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+        </Package>
+
+        <Package Name="eu.wietsevenema.lang.oberon.interpreter">
+            <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+        </Package>
+
+        <Package Name="eu.wietsevenema.lang.oberon.interpreter.values">
+            <Package>eu.wietsevenema.lang.oberon.interpreter</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+        </Package>
+
+        <Package Name="eu.wietsevenema.lang.oberon.parser">
+            <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+        </Package>
+
+        <Package Name="eu.wietsevenema.lang.oberon.tests">
+            <Package>eu.wietsevenema.lang.oberon.interpreter</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.expressions</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.visitors</Package>
+            <Package>eu.wietsevenema.lang.oberon.ast.declarations</Package>
+        </Package>
+
+    </Cycles>
+</JDepend>
