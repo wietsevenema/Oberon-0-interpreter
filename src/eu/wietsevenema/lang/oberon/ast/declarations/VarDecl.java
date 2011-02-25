@@ -19,7 +19,7 @@ public class VarDecl extends Declaration {
 	public VarType getType() {
 		return type;
 	}
-	
+
 	public VarDecl(List<Node> ids, VarType type) {
 		this.identifiers = castIds(ids);
 		this.type = type;

@@ -16,17 +16,16 @@ public class FormalVar extends Declaration implements Formal {
 
 	private Identifier identifier;
 	private VarType type;
-		
-	public FormalVar(Identifier identifier, VarType type){
+
+	public FormalVar(Identifier identifier, VarType type) {
 		this.identifier = identifier;
 		this.type = type;
 	}
-	
-	public FormalVar(String identifier, VarType type){
+
+	public FormalVar(String identifier, VarType type) {
 		this.identifier = new Identifier(identifier);
 		this.type = type;
 	}
-	
 
 	@Override
 	public Identifier getIdentifier() {
@@ -38,17 +37,19 @@ public class FormalVar extends Declaration implements Formal {
 	}
 
 	@Override
-	public void assignParameter(SymbolTable symbolTable, Expression param) throws TypeMismatchException, IdentifierExpectedInParamList, VariableAlreadyDeclaredException, ValueUndefinedException {
+	public void assignParameter(SymbolTable symbolTable, Expression param)
+			throws TypeMismatchException, IdentifierExpectedInParamList,
+			VariableAlreadyDeclaredException, ValueUndefinedException {
 		// This is a value parameter.
 		// 1. Parameter is expression, evaluate
 		// 3. Assign value in local scope.
 		ExpressionEvaluator exprEval = new ExpressionEvaluator(symbolTable);
 		Value result = (Value) exprEval.dispatch(param);
-		
+
 		String symbol = this.getIdentifier().getName();
-		symbolTable.declareValue(symbol, (Value)result.clone()); //Deep copy param. 
-		
+		symbolTable.declareValue(symbol, (Value) result.clone()); // Deep copy
+																	// param.
+
 	}
-	
-	
+
 }

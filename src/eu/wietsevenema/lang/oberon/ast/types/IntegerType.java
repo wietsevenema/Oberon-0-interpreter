@@ -6,5 +6,5 @@ public class IntegerType extends VarType {
 	public String toString() {
 		return "INTEGER";
 	}
-	
+
 }

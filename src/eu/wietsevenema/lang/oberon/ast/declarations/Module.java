@@ -10,21 +10,18 @@ import eu.wietsevenema.lang.oberon.ast.statements.Statement;
 
 public class Module extends Declaration {
 
-	Identifier identifier; 
-	Declarations decls; 
+	Identifier identifier;
+	Declarations decls;
 	List<Statement> stats;
-	
+
 	public Module(Node idstart, Declarations decls, List<Statement> stats) {
-		this.identifier = (Identifier)idstart;
-		this.decls = (decls!=null)
-						? decls
-						: new Declarations(null, null, null, null);
-		this.stats = (stats!=null)
-						? stats
-					    : new ArrayList<Statement>();
-		
+		this.identifier = (Identifier) idstart;
+		this.decls = (decls != null) ? decls : new Declarations(null, null,
+				null, null);
+		this.stats = (stats != null) ? stats : new ArrayList<Statement>();
+
 	}
-	
+
 	public Identifier getIdentifier() {
 		return identifier;
 	}

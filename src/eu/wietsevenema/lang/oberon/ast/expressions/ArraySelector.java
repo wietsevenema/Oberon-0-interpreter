@@ -17,5 +17,5 @@ public class ArraySelector extends Selector {
 	public Expression getIndex() {
 		return index;
 	}
-	
+
 }

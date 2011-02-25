@@ -37,7 +37,6 @@
 ./src/eu/wietsevenema/lang/oberon/ast/visitors/DeclarationEvaluator.java
 ./src/eu/wietsevenema/lang/oberon/ast/visitors/ExpressionEvaluator.java
 ./src/eu/wietsevenema/lang/oberon/ast/visitors/ModuleEvaluator.java
-./src/eu/wietsevenema/lang/oberon/ast/visitors/ModulePrinter.java
 ./src/eu/wietsevenema/lang/oberon/ast/visitors/StatementEvaluator.java
 ./src/eu/wietsevenema/lang/oberon/ast/visitors/TransformGenerics.java
 ./src/eu/wietsevenema/lang/oberon/ast/visitors/ValueBuilder.java
@@ -65,4 +64,3 @@
 ./src/eu/wietsevenema/lang/oberon/interpreter/values/BooleanValue.java
 ./src/eu/wietsevenema/lang/oberon/interpreter/values/IntegerValue.java
 ./src/eu/wietsevenema/lang/oberon/interpreter/values/Value.java
-./src/eu/wietsevenema/lang/oberon/metrics/ComputeMetrics.java

@@ -23,7 +23,7 @@ public class BooleanValue extends Value {
 
 	@Override
 	public boolean equals(Object o) {
-		if( o instanceof BooleanValue){
+		if (o instanceof BooleanValue) {
 			try {
 				return this.getValue().equals(((BooleanValue) o).getValue());
 			} catch (ValueUndefinedException e) {
@@ -35,7 +35,7 @@ public class BooleanValue extends Value {
 
 	@Override
 	public String toString() {
-		if(this.value != null){
+		if (this.value != null) {
 			return this.value.toString();
 		}
 		return "NULL";
@@ -43,7 +43,7 @@ public class BooleanValue extends Value {
 
 	@Override
 	public Object clone() {
-		if(value==null){
+		if (value == null) {
 			return new BooleanValue(null);
 		} else {
 			return new BooleanValue(value.booleanValue());

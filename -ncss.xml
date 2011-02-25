@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <javancss>
   <date>2011-02-21</date>
-  <time>10:32:19</time>
+  <time>11:35:27</time>
   <packages>
     <package>
       <name>eu.wietsevenema.lang.oberon.ast.declarations</name>
@@ -10,7 +10,7 @@
       <ncss>149</ncss>
       <javadocs>0</javadocs>
       <javadoc_lines>0</javadoc_lines>
-      <single_comment_lines>10</single_comment_lines>
+      <single_comment_lines>11</single_comment_lines>
       <multi_comment_lines>0</multi_comment_lines>
     </package>
     <package>
@@ -45,11 +45,11 @@
     </package>
     <package>
       <name>eu.wietsevenema.lang.oberon.ast.visitors</name>
-      <classes>8</classes>
-      <functions>59</functions>
-      <ncss>445</ncss>
-      <javadocs>2</javadocs>
-      <javadoc_lines>13</javadoc_lines>
+      <classes>7</classes>
+      <functions>42</functions>
+      <ncss>351</ncss>
+      <javadocs>1</javadocs>
+      <javadoc_lines>6</javadoc_lines>
       <single_comment_lines>13</single_comment_lines>
       <multi_comment_lines>5</multi_comment_lines>
     </package>
@@ -83,31 +83,21 @@
       <single_comment_lines>2</single_comment_lines>
       <multi_comment_lines>0</multi_comment_lines>
     </package>
-    <package>
-      <name>eu.wietsevenema.lang.oberon.metrics</name>
-      <classes>1</classes>
-      <functions>7</functions>
-      <ncss>33</ncss>
-      <javadocs>1</javadocs>
-      <javadoc_lines>3</javadoc_lines>
-      <single_comment_lines>0</single_comment_lines>
-      <multi_comment_lines>3</multi_comment_lines>
-    </package>
     <total>
-      <classes>73</classes>
-      <functions>239</functions>
-      <ncss>1346</ncss>
-      <javadocs>3</javadocs>
-      <javadoc_lines>16</javadoc_lines>
-      <single_comment_lines>41</single_comment_lines>
-      <multi_comment_lines>19</multi_comment_lines>
+      <classes>71</classes>
+      <functions>215</functions>
+      <ncss>1219</ncss>
+      <javadocs>1</javadocs>
+      <javadoc_lines>6</javadoc_lines>
+      <single_comment_lines>42</single_comment_lines>
+      <multi_comment_lines>16</multi_comment_lines>
     </total>
     <table>
       <tr><td>Packages</td><td>Classes</td><td>Functions</td><td>NCSS</td><td>Javadocs</td><td>per</td></tr>
-      <tr><td>9.00</td><td>73.00</td><td>239.00</td><td>1,346.00</td><td>3.00</td><td>Project</td></tr>
-      <tr><td></td><td>8.11</td><td>26.56</td><td>149.56</td><td>0.33</td><td>Package</td></tr>
-      <tr><td></td><td></td><td>3.27</td><td>18.44</td><td>0.04</td><td>Class</td></tr>
-      <tr><td></td><td></td><td></td><td>5.63</td><td>0.01</td><td>Function</td></tr>
+      <tr><td>8.00</td><td>71.00</td><td>215.00</td><td>1,219.00</td><td>1.00</td><td>Project</td></tr>
+      <tr><td></td><td>8.88</td><td>26.88</td><td>152.38</td><td>0.13</td><td>Package</td></tr>
+      <tr><td></td><td></td><td>3.03</td><td>17.17</td><td>0.01</td><td>Class</td></tr>
+      <tr><td></td><td></td><td></td><td>5.67</td><td>0.00</td><td>Function</td></tr>
     </table>
   </packages>
 
@@ -386,13 +376,6 @@
       <javadocs>0</javadocs>
     </object>
     <object>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter</name>
-      <ncss>72</ncss>
-      <functions>17</functions>
-      <classes>0</classes>
-      <javadocs>1</javadocs>
-    </object>
-    <object>
       <name>eu.wietsevenema.lang.oberon.ast.visitors.StatementEvaluator</name>
       <ncss>52</ncss>
       <functions>7</functions>
@@ -616,20 +599,13 @@
       <classes>0</classes>
       <javadocs>0</javadocs>
     </object>
-    <object>
-      <name>eu.wietsevenema.lang.oberon.metrics.ComputeMetrics</name>
-      <ncss>27</ncss>
-      <functions>7</functions>
-      <classes>0</classes>
-      <javadocs>1</javadocs>
-    </object>
     <averages>
-      <ncss>15.36</ncss>
-      <functions>3.27</functions>
+      <ncss>14.39</ncss>
+      <functions>3.03</functions>
       <classes>0.07</classes>
-      <javadocs>0.04</javadocs>
+      <javadocs>0.01</javadocs>
     </averages>
-    <ncss>1,346.00</ncss>
+    <ncss>1,219.00</ncss>
   </objects>
 
   <functions>
@@ -1282,108 +1258,6 @@
       <javadocs>0</javadocs>
     </function>
     <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.visit(BinaryExpression)</name>
-      <ncss>2</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.visit(TestExpression)</name>
-      <ncss>2</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.visit(Expression)</name>
-      <ncss>2</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.visit(ArraySelector)</name>
-      <ncss>2</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.visit(LogicalNegationExpression)</name>
-      <ncss>2</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.visit(UnaryMinExpression)</name>
-      <ncss>2</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.visit(Declarations)</name>
-      <ncss>8</ncss>
-      <ccn>3</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.visit(VarDecl)</name>
-      <ncss>5</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.visit(ProcedureDecl)</name>
-      <ncss>7</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.visit(AssignmentStatement)</name>
-      <ncss>2</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.visit(FormalVar)</name>
-      <ncss>2</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.visit(FormalVarRef)</name>
-      <ncss>2</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.visit(Module)</name>
-      <ncss>7</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.visit(ProcedureCallStatement)</name>
-      <ncss>4</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.joinNodes(Node,String)</name>
-      <ncss>7</ncss>
-      <ccn>4</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.visit(WhileStatement)</name>
-      <ncss>7</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.ast.visitors.ModulePrinter.join(String,String)</name>
-      <ncss>8</ncss>
-      <ccn>4</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
       <name>eu.wietsevenema.lang.oberon.ast.visitors.StatementEvaluator.StatementEvaluator(SymbolTable)</name>
       <ncss>2</ncss>
       <ccn>1</ccn>
@@ -2025,53 +1899,11 @@
       <ccn>1</ccn>
       <javadocs>0</javadocs>
     </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.metrics.ComputeMetrics.main(String[])</name>
-      <ncss>3</ncss>
-      <ccn>1</ccn>
-      <javadocs>1</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.metrics.ComputeMetrics.jDependMetrics()</name>
-      <ncss>4</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.metrics.ComputeMetrics.javaNCSSmetrics()</name>
-      <ncss>3</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.metrics.ComputeMetrics.fileList()</name>
-      <ncss>2</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.metrics.ComputeMetrics.javaNCSS(String)</name>
-      <ncss>3</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.metrics.ComputeMetrics.jDependConsole(String)</name>
-      <ncss>4</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
-    <function>
-      <name>eu.wietsevenema.lang.oberon.metrics.ComputeMetrics.jDependXML(String,String)</name>
-      <ncss>7</ncss>
-      <ccn>1</ccn>
-      <javadocs>0</javadocs>
-    </function>
     <function_averages>
-      <ncss>3.62</ncss>
-      <ccn>1.62</ccn>
-      <javadocs>0.01</javadocs>
+      <ncss>3.57</ncss>
+      <ccn>1.66</ccn>
+      <javadocs>0.00</javadocs>
     </function_averages>
-    <ncss>1,346.00</ncss>
+    <ncss>1,219.00</ncss>
   </functions>
 </javancss>

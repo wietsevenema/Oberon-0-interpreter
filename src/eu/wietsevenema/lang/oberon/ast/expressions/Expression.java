@@ -4,5 +4,4 @@ import xtc.tree.Node;
 
 abstract public class Expression extends Node {
 
-		
 }

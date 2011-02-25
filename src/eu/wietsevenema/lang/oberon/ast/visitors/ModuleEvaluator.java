@@ -11,24 +11,22 @@ import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 public class ModuleEvaluator extends Visitor {
 
 	SymbolTable symbolTable;
-	
-	public ModuleEvaluator( SymbolTable symbolTable){
+
+	public ModuleEvaluator(SymbolTable symbolTable) {
 		this.symbolTable = symbolTable;
 	}
-	
-	public void visit(Module module){
+
+	public void visit(Module module) {
 		Declarations decls = module.getDeclarations();
 		DeclarationEvaluator declEval = new DeclarationEvaluator(symbolTable);
 		declEval.dispatch(decls);
-		
+
 		List<Statement> statements = module.getStats();
 		StatementEvaluator statEval = new StatementEvaluator(symbolTable);
-		for(Statement stat : statements){
+		for (Statement stat : statements) {
 			statEval.dispatch(stat);
 		}
-		
+
 	}
-	
-	
-	
+
 }

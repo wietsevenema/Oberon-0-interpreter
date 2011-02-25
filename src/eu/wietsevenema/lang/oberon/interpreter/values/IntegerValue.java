@@ -9,7 +9,7 @@ public class IntegerValue extends Value {
 	public IntegerValue(Integer i) {
 		this.value = i;
 	}
-	
+
 	public void setValue(Integer value) {
 		this.value = value;
 	}
@@ -20,10 +20,10 @@ public class IntegerValue extends Value {
 		}
 		return value;
 	}
-	
-	@Override	
+
+	@Override
 	public boolean equals(Object o) {
-		if( o instanceof IntegerValue){
+		if (o instanceof IntegerValue) {
 			try {
 				return this.getValue().equals(((IntegerValue) o).getValue());
 			} catch (ValueUndefinedException e) {
@@ -35,21 +35,19 @@ public class IntegerValue extends Value {
 
 	@Override
 	public String toString() {
-		if(this.value != null){
+		if (this.value != null) {
 			return this.value.toString();
 		}
 		return "NULL";
 	}
 
-
-
 	@Override
 	public Object clone() {
-		if(value==null){
+		if (value == null) {
 			return new IntegerValue(null);
 		} else {
 			return new IntegerValue(value.intValue());
 		}
 	}
-	
+
 }

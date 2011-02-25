@@ -17,20 +17,12 @@ public class Declarations extends Node {
 	public Declarations(List<ConstantDecl> cd, List<TypeDecl> td,
 			List<VarDecl> vd, List<ProcedureDecl> pd) {
 
-		//FIXME dit kan 1 array zijn!
-		this.constants = (cd!=null)
-							? cd
-							: new ArrayList<ConstantDecl>();
-		this.types = (td!=null)
-							? td
-							: new ArrayList<TypeDecl>();
-		this.vars = (vd!=null)
-							? vd
-							: new ArrayList<VarDecl>();
-		this.procedures = (pd!=null)
-							? pd
-							: new ArrayList<ProcedureDecl>();
-		
+		// FIXME dit kan 1 array zijn!
+		this.constants = (cd != null) ? cd : new ArrayList<ConstantDecl>();
+		this.types = (td != null) ? td : new ArrayList<TypeDecl>();
+		this.vars = (vd != null) ? vd : new ArrayList<VarDecl>();
+		this.procedures = (pd != null) ? pd : new ArrayList<ProcedureDecl>();
+
 	}
 
 	public List<ConstantDecl> getConstants() {
@@ -44,7 +36,7 @@ public class Declarations extends Node {
 	public List<VarDecl> getVars() {
 		return vars;
 	}
-	
+
 	public List<ProcedureDecl> getProcedures() {
 		return procedures;
 	}

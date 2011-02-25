@@ -7,5 +7,4 @@ public class BooleanType extends VarType {
 		return "BOOLEAN";
 	}
 
-
 }

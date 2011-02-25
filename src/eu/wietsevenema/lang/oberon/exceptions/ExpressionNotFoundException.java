@@ -8,5 +8,4 @@ public class ExpressionNotFoundException extends Exception {
 		super(arg0);
 	}
 
-
 }

@@ -17,18 +17,20 @@ public class ValueReferenceResolver extends Visitor {
 		this.symbolTable = symbolTable;
 	}
 
-	public ValueReference visit( Identifier id ){
+	public ValueReference visit(Identifier id) {
 		return symbolTable.lookupValueReference(id.getName());
 	}
-	
-	public ValueReference visit( ArraySelector selector ) throws ValueUndefinedException{
+
+	public ValueReference visit(ArraySelector selector)
+			throws ValueUndefinedException {
 		// 1. Get reference to left ArrayValue.
 		ExpressionEvaluator exprEval = new ExpressionEvaluator(symbolTable);
 		ArrayValue left = (ArrayValue) exprEval.dispatch(selector.getLeft());
-		
+
 		// 2. Evaluate right side to get index
-		IntegerValue index = (IntegerValue) exprEval.dispatch(selector.getIndex());
-		
+		IntegerValue index = (IntegerValue) exprEval.dispatch(selector
+				.getIndex());
+
 		return left.getReference(index.getValue());
 	}
 }

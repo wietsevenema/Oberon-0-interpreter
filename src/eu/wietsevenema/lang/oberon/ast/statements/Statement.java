@@ -6,9 +6,9 @@ import eu.wietsevenema.lang.oberon.ast.visitors.TransformGenerics;
 
 public abstract class Statement extends Node {
 
-	protected Expression transformExpression(Node n){
+	protected Expression transformExpression(Node n) {
 		TransformGenerics tg = new TransformGenerics();
-		return (Expression)tg.dispatch(n);
+		return (Expression) tg.dispatch(n);
 	}
-	
+
 }

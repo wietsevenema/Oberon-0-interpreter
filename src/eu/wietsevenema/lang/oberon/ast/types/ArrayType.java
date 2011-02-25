@@ -25,7 +25,7 @@ public class ArrayType extends VarType {
 
 	@Override
 	public String toString() {
-		//FIXME
+		// FIXME
 		// Auto-generated method stub
 		return null;
 	}

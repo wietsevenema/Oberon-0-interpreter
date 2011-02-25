@@ -17,12 +17,10 @@ public class IfStatement extends Statement {
 			List<ElseIfStatement> elseIfs, List<Statement> falseStatements) {
 		this.condition = transformExpression(cond);
 		this.trueStatements = trueStatements;
-		this.elseIfs = (elseIfs!=null)
-						? elseIfs
-						: new ArrayList<ElseIfStatement>();
-		this.falseStatements = (falseStatements!=null)
-								? falseStatements
-								: new ArrayList<Statement>();
+		this.elseIfs = (elseIfs != null) ? elseIfs
+				: new ArrayList<ElseIfStatement>();
+		this.falseStatements = (falseStatements != null) ? falseStatements
+				: new ArrayList<Statement>();
 	}
 
 	public List<Statement> getTrueStatements() {
@@ -40,7 +38,5 @@ public class IfStatement extends Statement {
 	public Expression getCondition() {
 		return condition;
 	}
-
-	
 
 }

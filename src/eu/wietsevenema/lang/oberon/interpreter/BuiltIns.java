@@ -25,60 +25,63 @@ public class BuiltIns {
 
 	public static void inject(Environment environment) {
 		SymbolTable symbolTable = environment.getSymbolTable();
-		if(environment!=null){
+		if (environment != null) {
 			symbolTable.declareProc("Write", new Write(environment));
 			symbolTable.declareProc("WriteLn", new WriteLn(environment));
 			symbolTable.declareProc("Read", new Read(environment));
 		}
-		symbolTable.declareProc("AssertEqualsInt", new AssertEquals<IntegerType>( new IntegerType() ));
-		symbolTable.declareProc("AssertEqualsBool", new AssertEquals<BooleanType>( new BooleanType() ));
+		symbolTable.declareProc("AssertEqualsInt",
+				new AssertEquals<IntegerType>(new IntegerType()));
+		symbolTable.declareProc("AssertEqualsBool",
+				new AssertEquals<BooleanType>(new BooleanType()));
 	}
-	
-	
+
 	public static class AssertEquals<T extends VarType> implements Procedure {
-		
+
 		private VarType type;
 
-		public AssertEquals( T type){
+		public AssertEquals(T type) {
 			this.type = type;
 		}
-		
+
 		@Override
 		public List<Formal> getFormals() {
 			ArrayList<Formal> formals = new ArrayList<Formal>();
-			formals.add(new FormalVar("expected", this.type	) );
-			formals.add(new FormalVar("actual",	  this.type	) );
+			formals.add(new FormalVar("expected", this.type));
+			formals.add(new FormalVar("actual", this.type));
 			return formals;
 		}
 
 		@Override
 		public void execute(SymbolTable symbolTable) {
 			try {
-				Value expected 	= symbolTable.lookupValue("expected");
-				Value actual 	= symbolTable.lookupValue("actual");
+				Value expected = symbolTable.lookupValue("expected");
+				Value actual = symbolTable.lookupValue("actual");
 				if (expected == null && actual == null) {
-                    return;
+					return;
 				}
 				if (expected != null && expected.equals(actual)) {
-                    return;
+					return;
 				}
-				throw new AssertionError("Expected "+expected + " but got " + actual);
-				
+				throw new AssertionError("Expected " + expected + " but got "
+						+ actual);
+
 			} catch (VariableNotDeclaredException e) {
 				throw new IllegalStateException(e);
 			}
-			
+
 		}
 
 	}
-	
+
 	public static class WriteLn implements Procedure {
 		private PrintWriter out;
 
-		public WriteLn(Environment environment){
-			this.out = new PrintWriter( new BufferedWriter( new OutputStreamWriter(environment.getOut())));
+		public WriteLn(Environment environment) {
+			this.out = new PrintWriter(new BufferedWriter(
+					new OutputStreamWriter(environment.getOut())));
 		}
-		
+
 		@Override
 		public List<Formal> getFormals() {
 			ArrayList<Formal> formals = new ArrayList<Formal>();
@@ -92,16 +95,15 @@ public class BuiltIns {
 		}
 
 	}
-	
-	
+
 	public static class Write implements Procedure {
 		private PrintWriter out;
 
-		public Write(Environment environment){
-			this.out = new PrintWriter( new BufferedWriter(new OutputStreamWriter(environment.getOut())));
+		public Write(Environment environment) {
+			this.out = new PrintWriter(new BufferedWriter(
+					new OutputStreamWriter(environment.getOut())));
 		}
-		
-	
+
 		@Override
 		public List<Formal> getFormals() {
 			ArrayList<Formal> formals = new ArrayList<Formal>();
@@ -119,41 +121,42 @@ public class BuiltIns {
 				throw new IllegalStateException(e);
 			}
 		}
-		
+
 	}
-	
+
 	public static class Read implements Procedure {
 		private BufferedReader in;
 
-		public Read(Environment environment){
-			this.in = new BufferedReader( new InputStreamReader(environment.getIn()));
+		public Read(Environment environment) {
+			this.in = new BufferedReader(new InputStreamReader(
+					environment.getIn()));
 		}
-		
-		
+
 		@Override
 		public List<Formal> getFormals() {
 			ArrayList<Formal> formals = new ArrayList<Formal>();
-			formals.add(new FormalVarRef(new Identifier("in"), new IntegerType()));
+			formals.add(new FormalVarRef(new Identifier("in"),
+					new IntegerType()));
 			return formals;
 		}
 
 		@Override
-		public void execute(SymbolTable symbolTable) throws TypeMismatchException, ImmutableException {
+		public void execute(SymbolTable symbolTable)
+				throws TypeMismatchException, ImmutableException {
 			try {
 				Integer value = Integer.parseInt(this.in.readLine());
 				ValueReference ref = symbolTable.lookupValueReference("in");
 				ref.setValue(new IntegerValue(value));
 			} catch (NumberFormatException e) {
-				throw new RuntimeException(e); //Ay, unchecked exception, maar hier is het wel nodig ivm contract van execute. 
+				throw new RuntimeException(e); // Ay, unchecked exception, maar
+												// hier is het wel nodig ivm
+												// contract van execute.
 			} catch (IOException e) {
 				throw new RuntimeException(e);
-			} 
-			
-		}
-		
-		
-	}
-	
-	
-}
+			}
 
+		}
+
+	}
+
+}

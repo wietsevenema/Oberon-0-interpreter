@@ -12,11 +12,11 @@ public class Environment {
 	private OutputStream out;
 	private InputStream in;
 
-	public Environment(InputStream in, OutputStream out){
-		this.in = in; 
+	public Environment(InputStream in, OutputStream out) {
+		this.in = in;
 		this.out = out;
 		this.symbolTable = new SymbolTable();
-		BuiltIns.inject( this );
+		BuiltIns.inject(this);
 	}
 
 	public SymbolTable getSymbolTable() {
@@ -35,5 +35,5 @@ public class Environment {
 		ModuleEvaluator me = new ModuleEvaluator(symbolTable);
 		me.dispatch(result);
 	}
-	
+
 }

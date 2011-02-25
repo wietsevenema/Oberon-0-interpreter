@@ -27,7 +27,8 @@ public class Interpreter {
 			for (int i = 1; i < args.length; i++) {
 				input += args[i] + newLine;
 			}
-			ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
+			ByteArrayInputStream inputStream = new ByteArrayInputStream(
+					input.getBytes());
 			Reader in = null;
 			try {
 				in = new BufferedReader(new FileReader(filename));
@@ -39,8 +40,9 @@ public class Interpreter {
 					SemanticValue v = (SemanticValue) r;
 
 					if (v.value instanceof Node) {
-						Module result = (Module)v.value;
-						Environment env = new Environment(inputStream, System.out);
+						Module result = (Module) v.value;
+						Environment env = new Environment(inputStream,
+								System.out);
 						BuiltIns.inject(env);
 						env.runModule(result);
 					} else {
@@ -52,8 +54,8 @@ public class Interpreter {
 					if (-1 == err.index) {
 						System.err.println("  Parse error");
 					} else {
-						System.err.println("  " + p.location(err.index)
-								+ ": " + err.msg);
+						System.err.println("  " + p.location(err.index) + ": "
+								+ err.msg);
 					}
 				}
 
@@ -70,7 +72,6 @@ public class Interpreter {
 				}
 			}
 
-			
 		}
 	}
 

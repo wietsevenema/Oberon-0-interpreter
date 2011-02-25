@@ -13,6 +13,7 @@ public interface Formal {
 
 	public abstract void assignParameter(SymbolTable symbolTable,
 			Expression param) throws TypeMismatchException,
-			IdentifierExpectedInParamList, VariableAlreadyDeclaredException, ValueUndefinedException;
+			IdentifierExpectedInParamList, VariableAlreadyDeclaredException,
+			ValueUndefinedException;
 
 }

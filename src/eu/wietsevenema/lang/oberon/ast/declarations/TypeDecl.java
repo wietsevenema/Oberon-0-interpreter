@@ -9,9 +9,9 @@ public class TypeDecl extends Declaration {
 	private Identifier identifier;
 	private VarType type;
 
-	//FIXME i'm wrong. 
+	// FIXME i'm wrong.
 	public TypeDecl(Node id, VarType type) {
-		this.identifier = (Identifier)id;
+		this.identifier = (Identifier) id;
 		this.type = type;
 	}
 

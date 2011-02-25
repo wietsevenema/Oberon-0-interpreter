@@ -3,7 +3,6 @@ package eu.wietsevenema.lang.oberon.ast.expressions;
 import xtc.tree.Node;
 import eu.wietsevenema.lang.oberon.ast.visitors.TransformGenerics;
 
-
 public class TestExpression extends Node {
 
 	private Expression child;
@@ -17,5 +16,4 @@ public class TestExpression extends Node {
 		this.child = (Expression) tg.dispatch(exp);
 	}
 
-	
 }
