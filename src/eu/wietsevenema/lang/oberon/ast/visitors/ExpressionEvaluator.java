@@ -71,20 +71,18 @@ public class ExpressionEvaluator extends Visitor {
 		return new BooleanValue(result);
 	}
 
-	// FIXME lazy eval
 	public BooleanValue visit(LogicalConjunctiveExpression lce)
 			throws ValueUndefinedException {
-		Boolean left = ((BooleanValue) dispatch(lce.getLeft())).getValue();
-		Boolean right = ((BooleanValue) dispatch(lce.getRight())).getValue();
-		return new BooleanValue(left && right);
+		return new BooleanValue(
+				((BooleanValue) dispatch(lce.getLeft())).getValue()
+						&& ((BooleanValue) dispatch(lce.getRight())).getValue());
 	}
 
-	// FIXME lazy eval
 	public BooleanValue visit(LogicalDisjunctiveExpression lde)
 			throws ValueUndefinedException {
-		Boolean left = ((BooleanValue) dispatch(lde.getLeft())).getValue();
-		Boolean right = ((BooleanValue) dispatch(lde.getRight())).getValue();
-		return new BooleanValue(left || right);
+		return new BooleanValue(
+				((BooleanValue) dispatch(lde.getLeft())).getValue()
+						|| ((BooleanValue) dispatch(lde.getRight())).getValue());
 	}
 
 	public BooleanValue visit(LogicalNegationExpression lne)

@@ -1,7 +1,6 @@
 package eu.wietsevenema.lang.oberon.tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
@@ -9,9 +8,12 @@ import org.junit.Test;
 
 import eu.wietsevenema.lang.oberon.ast.declarations.Module;
 import eu.wietsevenema.lang.oberon.ast.expressions.AdditiveExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.BooleanConstant;
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.expressions.IntegerConstant;
+import eu.wietsevenema.lang.oberon.ast.expressions.LogicalConjunctiveExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.LogicalDisjunctiveExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.MultiplicativeExpression;
 import eu.wietsevenema.lang.oberon.ast.visitors.ExpressionEvaluator;
 import eu.wietsevenema.lang.oberon.exceptions.InvalidInputException;
@@ -47,8 +49,41 @@ public class ExpressionEvaluatorTest {
 	}
 
 	@Test
-	public void logicalConnectivesEvaluateLazy() {
-		fail("Not implemented");
+	public void logicalConnectivesShortCircuit() {
+		final class TraceableBooleanConstant extends BooleanConstant {
+			public TraceableBooleanConstant(Boolean value){
+				super(value);
+			}
+			
+			private boolean touched = false;
+			public Boolean getValue() {
+				this.touch();
+				return super.getValue();
+			}
+			public void touch(){
+				this.touched = true; 
+			}
+			public boolean touched(){
+				return this.touched; 
+			}
+		}
+		TraceableBooleanConstant myValue = new TraceableBooleanConstant(true);
+		
+		//Test disjunctive. 
+		Expression exp1 = new LogicalDisjunctiveExpression(new BooleanConstant(true),
+				myValue, "" );
+		ExpressionEvaluator evaluator = new ExpressionEvaluator(
+				new SymbolTable());
+		evaluator.dispatch(exp1);
+		assertEquals(false, myValue.touched());
+		
+		//Test conjunctive. 
+		Expression exp2 = new LogicalConjunctiveExpression(new BooleanConstant(false),
+				myValue, "" );
+		evaluator.dispatch(exp2);
+		assertEquals(false, myValue.touched());
+		
+		
 	}
 
 	@Test
