@@ -27,7 +27,7 @@ VarType Type =
 	;
 
 VarType ArrayType = 
-	"ARRAY":Word exp:EqualityExpression "OF":Word type:Type
+	"ARRAY":Word exp:Expression "OF":Word type:Type
 	{
 		yyValue = new ArrayType( exp, type);
 	}
@@ -42,7 +42,7 @@ List<ConstantDecl> ConstantDecls =
 	;
 
 ConstantDecl ConstantDecl = 
-	id:Identifier void:"=":Symbol exp:EqualityExpression void:";":Symbol 
+	id:Identifier void:"=":Symbol exp:Expression void:";":Symbol 
 	{
 		yyValue = new ConstantDecl(id, exp);
 	}

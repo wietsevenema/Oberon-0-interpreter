@@ -19,18 +19,16 @@ ProcedureCallStatement ProcedureCallStatement =
 	}
  	;
 
-
-
-List<Node> ActualParameters = 
-	act:EqualityExpression acts:( void:",":Symbol EqualityExpression)*
+List<Expression> ActualParameters = 
+	act:Expression acts:( void:",":Symbol Expression)*
        { 
-		yyValue = new Pair<Node>(act, acts).list(); 
+		yyValue = new Pair<Expression>(act, acts).list(); 
 	}
 	;
 
 ElseIfStatement ElseIfStatement =  
 	"ELSIF":Word
-	cond:EqualityExpression
+	cond:Expression
 	"THEN":Word
 	truestats: StatementSequence
 	{
@@ -40,7 +38,7 @@ ElseIfStatement ElseIfStatement =
 
 IfStatement IfStatement = 
 	"IF":Word 
-	cond:EqualityExpression
+	cond:Expression
 	"THEN":Word
 	truestats:StatementSequence 
 	elseifs:(ElseIfStatement)*
@@ -53,7 +51,7 @@ IfStatement IfStatement =
 
 WhileStatement WhileStatement = 
 	"WHILE":Word 
-	cond:EqualityExpression
+	cond:Expression
 	"DO":Word 
 	stats:StatementSequence 
 	"END":Word
@@ -70,7 +68,7 @@ Statement Statement =
 	; 
 
 AssignmentStatement AssignmentStatement = 
-	id:Selector ":=":Symbol exp:EqualityExpression
+	id:Selector ":=":Symbol exp:Expression
 		{
 			yyValue= new AssignmentStatement(id, exp);
 		}

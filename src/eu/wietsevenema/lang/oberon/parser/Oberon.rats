@@ -41,6 +41,8 @@ header {
 
 	import java.util.ArrayList;
 	import java.util.List;
+	
+	import xtc.util.Action;
 }
 
 option withLocation, constant, main(Program);

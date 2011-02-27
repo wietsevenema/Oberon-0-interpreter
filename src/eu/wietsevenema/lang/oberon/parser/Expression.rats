@@ -4,92 +4,57 @@ module eu.wietsevenema.lang.oberon.parser.Expression(
 import Spacing;
 import Symbol;
 import Identifier;
-	
+
+
 /*
-All operators of the same precedence associate from left to right. 
-For example, x-y-z stands for (x-y)-z.
+ * factor = ident selector | number | "(" expression ")" | "~" factor. 
+ */
 
-Operator precedence in Oberon-0. 
----------------------------------------------------------
-| Operator		| Description							|
----------------------------------------------------------
-| ~ 			| Logical negation 						|
----------------------------------------------------------
-| OR 			| Logical disjunction			 		|
----------------------------------------------------------
-| &				| Logical conjunction			 		|
----------------------------------------------------------
-| * DIV MOD 	| product, integer quotient, modulus	|
----------------------------------------------------------
-| + -			| sum, difference						|
----------------------------------------------------------
-| = # < <= > >= | equal, unequal, less, less or equal, 	|
-|				| greater, greater or equal				|
----------------------------------------------------------
-*/
-
-generic EqualityExpression =
-    <Recursion>  EqualityExpression EqualityOperator AdditiveExpression
-  / <Base>      yyValue:AdditiveExpression 
-  ;
-
-generic AdditiveExpression = 
-	  <Recursion> AdditiveExpression AdditiveOperator MultiplicativeExpression
-	/ <Base> yyValue:MultiplicativeExpression
-	;
-
-generic MultiplicativeExpression = 
-	  <Recursion> MultiplicativeExpression MultiplicativeOperator LogicalConjunctiveExpression
-	/ <Base> yyValue:LogicalConjunctiveExpression
-	;
-
-generic LogicalConjunctiveExpression = 
-  	  <Recursion> LogicalConjunctiveExpression "&":Symbol LogicalDisjunctiveExpression
-	/ <Base> yyValue:LogicalDisjunctiveExpression
-	;
-
-generic LogicalDisjunctiveExpression = 
-  	  <Recursion> LogicalDisjunctiveExpression "OR":Symbol UnaryExpression
-	/ <Base> yyValue:UnaryExpression
-	;
-	
-LogicalNegationExpression LogicalNegationExpression =
-	void:"~":Symbol ue:UnaryExpression 
-	{
-    	yyValue = new LogicalNegationExpression((Expression)ue);
-	}
-	;
-
-
-Node UnaryExpression =
-    <LogicalNot> 	yyValue:LogicalNegationExpression
-  / <UnaryPlusMin> 	yyValue:UnaryPlusMin
-  / <Base>       	yyValue:PrimaryExpression
-  ;
-
-UnaryMinExpression UnaryPlusMin = 
-	void:"-":Symbol ue:UnaryExpression 
-	{
-    	yyValue = new UnaryMinExpression((Expression)ue);
-	}
-  / void:"+":Symbol yyValue:UnaryExpression  /* ignore unary plus */
-	;
-
-Node PrimaryExpression =
+Expression Factor =
    <Constant>                 	yyValue:Constant
- / <Selector>             		yyValue:Selector
  / <ParenthesizedExpression> 	yyValue:ParenthesizedExpression
+ / <LogicalNegation>			yyValue:LogicalNegationExpression
+ / <Selector>             		yyValue:Selector 
  ;
 
+LogicalNegationExpression LogicalNegationExpression =
+	"~":Symbol f:Factor 
+	{
+    	yyValue = new LogicalNegationExpression((Expression)f);
+	}
+	;
 
-generic Selector = 
-	<Array> Selector void:"[":Symbol EqualityExpression void:"]":Symbol @ArraySelector 
+/*
+Node Selector = 
+	<Array> Selector void:"[":Symbol Expression void:"]":Symbol @ArraySelector 
   /	<Record> Selector void:".":Symbol Identifier @RecordSelector
   / <Base> yyValue:Identifier
 	;
+*/
 	
-generic ParenthesizedExpression =
-  void:"(":Symbol yyValue:EqualityExpression void:")":Symbol
+Expression Selector 
+	= seed:Identifier actions:SelectorTail*
+	{
+		yyValue = apply(actions,seed);
+	}
+	;
+
+constant Action<Expression> SelectorTail = 
+	"[":Symbol right:Expression "]":Symbol
+	{
+		yyValue = new Action<Expression>(){
+			public Expression run(Expression left){
+				Expression result = new ArraySelector(left, right);
+				result.setLocation(location(yyStart));
+				return result;
+			}
+		};
+	}
+	;
+	
+
+Node ParenthesizedExpression =
+  void:"(":Symbol yyValue:Expression void:")":Symbol
   ;
 
 Node Constant = 
@@ -97,26 +62,148 @@ Node Constant =
   / BooleanConstant 
   ;
 
-String MultiplicativeOperator = 
-	  <Product>		"*":Symbol 
-	/ <Quotient> 	"DIV":Symbol
-	/ <Modulus>		"MOD":Symbol 
+/*
+ * term = factor {("*" | "DIV" | "MOD" | "&") factor}. 
+ */
+Node Term
+	= seed:Factor actions:TermTail*
+	{
+		yyValue = apply(actions, seed);
+	}
+	;
+	
+constant Action<Expression> TermTail =
+	"*":Symbol right:Factor 
+	{
+		yyValue = new Action<Expression>(){
+			public Expression run(Expression left){
+				Expression result = new MultiplicativeExpression(left, right);
+				result.setLocation(location(yyStart));
+				return result;
+			}
+		};
+	}
+	/
+	"DIV":Symbol right:Factor 
+	{
+		yyValue = new Action<Expression>(){
+			public Expression run(Expression left){
+				Expression result = new DivisiveExpression(left, right);
+				result.setLocation(location(yyStart));
+				return result;
+			}
+		};
+	}
+	/
+	"MOD":Symbol right:Factor 
+	{
+		yyValue = new Action<Expression>(){
+			public Expression run(Expression left){
+				Expression result = new ModulusExpression(left, right);
+				result.setLocation(location(yyStart));
+				return result;
+			}
+		};
+	}
+	/
+	"&":Symbol right:Factor 
+	{
+		yyValue = new Action<Expression>(){
+			public Expression run(Expression left){
+				Expression result = new LogicalConjunctiveExpression(left, right);
+				result.setLocation(location(yyStart));
+				return result;
+			}
+		};
+	}
 	;
 
-String AdditiveOperator = 
-	  <Sum>			"+":Symbol 
-	/ <Difference> 	"-":Symbol
+/*
+ * SimpleExpression = ["+"|"-"] term {("+"|"-" | "OR") term}. 
+ */
+Expression SimpleExpression 
+	= seed:UnaryPlusMin actions:SimpleExpressionTail*
+	{
+		yyValue = apply(actions,seed);
+	}
 	;
 
-String EqualityOperator =
-    <Equal>       		"=":Symbol
-  / <NotEqual>    		"#":Symbol
-  / <Less> 		  		"<":Symbol
-  / <LessOrEqual> 		"<=":Symbol
-  / <Greater> 	  	 	">":Symbol
-  / <GreaterOrEqual> 	">=":Symbol
-  ;
+constant Action<Expression> SimpleExpressionTail = 
+	"+":Symbol right:Term
+	{
+		yyValue = new Action<Expression>(){
+			public Expression run(Expression left){
+				Expression result = new AdditiveExpression(left, (Expression) right);
+				result.setLocation(location(yyStart));
+				return result;
+			}
+		};
+	}
+	/
+	"-":Symbol right:Term
+	{
+		yyValue = new Action<Expression>(){
+			public Expression run(Expression left){
+				Expression result = new SubtractiveExpression(left, (Expression) right);
+				result.setLocation(location(yyStart));
+				return result;
+			}
+		};
+	}
+	/
+	"OR":Symbol right:Term
+	{
+		yyValue = new Action<Expression>(){
+			public Expression run(Expression left){
+				Expression result = new LogicalDisjunctiveExpression(left, (Expression) right);
+				result.setLocation(location(yyStart));
+				return result;
+			}
+		};
+	}
+	;
 
+Expression UnaryPlusMin = 
+	void:"-":Symbol ue:Term
+	{
+    	yyValue = new UnaryMinExpression((Expression)ue);
+	}
+  	/ void:"+":Symbol yyValue:Term  /* ignore unary plus */
+	/ yyValue:Term  
+	;
+
+/*
+ * expression = SimpleExpression 
+ * 		[("=" | "#" | "<" | "<=" | ">" | ">=") SimpleExpression].
+ */
+Expression Expression = 
+	left:SimpleExpression "=":Symbol right:SimpleExpression
+	{
+		yyValue = new EqualityExpression(left, right);
+	}
+	/ left:SimpleExpression "#":Symbol right:SimpleExpression
+	{
+		yyValue = new NotExpression(left, right);
+	}
+	/ left:SimpleExpression "<":Symbol right:SimpleExpression
+	{
+		yyValue = new LessExpression(left, right);
+	}
+	/ left:SimpleExpression "<=":Symbol right:SimpleExpression
+	{
+		yyValue = new LessOrEqualExpression(left, right);
+	}
+	/ left:SimpleExpression ">":Symbol right:SimpleExpression
+	{
+		yyValue = new GreaterExpression(left, right);
+	}
+	/ left:SimpleExpression ">=":Symbol right:SimpleExpression
+	{
+		yyValue = new GreaterOrEqualExpression(left, right);
+	}
+	/ yyValue:SimpleExpression
+	;	
+	
 
 IntegerConstant IntegerConstant = nr:DecimalNumeral 
 	 {

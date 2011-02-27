@@ -4,16 +4,16 @@ module eu.wietsevenema.lang.oberon.parser.Identifier(
 import Spacing;
 import Symbol;
 
-Node Identifier = vn:VariableName Spacing
+Identifier Identifier = vn:VariableName Spacing
   	{
 		yyValue = new Identifier(vn);
 	}
 	;
 	
-List<Node> IdentList = 
+List<Identifier> IdentList = 
  	i:Identifier is:( void:",":Symbol Identifier)*
     { 
-		yyValue = new Pair<Node>(i, is).list(); 
+		yyValue = new Pair<Identifier>(i, is).list(); 
 	}
 	;
 
