@@ -44,8 +44,7 @@ public class SymbolTable {
 			return procs.get(symbol);
 		}
 
-		public Value lookupValue(String symbol)
-				throws VariableNotDeclaredException {
+		public Value lookupValue(String symbol) throws VariableNotDeclaredException {
 			ValueReference valueRef = this.lookupValueReference(symbol);
 			if (valueRef == null) {
 				throw new VariableNotDeclaredException();
@@ -70,8 +69,7 @@ public class SymbolTable {
 			return symbols.get(symbol);
 		}
 
-		public void declareValue(String symbol, Value value)
-				throws VariableAlreadyDeclaredException {
+		public void declareValue(String symbol, Value value) throws VariableAlreadyDeclaredException {
 			ValueReference valueRef = this.lookupValueReferenceLocal(symbol);
 			if (valueRef != null) { // Variabele bestaat al in deze scope.
 				throw new VariableAlreadyDeclaredException();
@@ -111,8 +109,7 @@ public class SymbolTable {
 		current = current.parent;
 	}
 
-	public void declareValue(String symbol, Value value)
-			throws VariableAlreadyDeclaredException {
+	public void declareValue(String symbol, Value value) throws VariableAlreadyDeclaredException {
 		this.getCurrent().declareValue(symbol, value);
 	}
 

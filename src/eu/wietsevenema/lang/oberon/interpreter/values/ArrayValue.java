@@ -34,8 +34,7 @@ public class ArrayValue extends Value {
 		int size = this.values.length;
 		ValueReference[] values = new ValueReference[size];
 		for (int i = 0; i < size; i++) {
-			values[i] = new ValueReference((Value) this.values[i].getValue()
-					.clone());
+			values[i] = new ValueReference((Value) this.values[i].getValue().clone());
 		}
 		return new ArrayValue(values);
 	}

@@ -9,14 +9,17 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import xtc.tree.Node;
 import xtc.tree.VisitingException;
 import eu.wietsevenema.lang.oberon.ast.declarations.ConstantDecl;
+import eu.wietsevenema.lang.oberon.ast.declarations.Declarations;
+import eu.wietsevenema.lang.oberon.ast.declarations.ProcedureDecl;
+import eu.wietsevenema.lang.oberon.ast.declarations.TypeDecl;
 import eu.wietsevenema.lang.oberon.ast.declarations.VarDecl;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.expressions.IntegerConstant;
 import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
 import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
+import eu.wietsevenema.lang.oberon.ast.types.TypeAlias;
 import eu.wietsevenema.lang.oberon.ast.visitors.DeclarationEvaluator;
 import eu.wietsevenema.lang.oberon.ast.visitors.StatementEvaluator;
 import eu.wietsevenema.lang.oberon.exceptions.ImmutableException;
@@ -36,7 +39,7 @@ public class DeclarationEvaluatorTest {
 
 	@Test
 	public void testVarDeclaration() throws VariableNotDeclaredException {
-		List<Node> identifiers = new ArrayList<Node>();
+		List<Identifier> identifiers = new ArrayList<Identifier>();
 		identifiers.add(new Identifier("a"));
 		identifiers.add(new Identifier("b"));
 		identifiers.add(new Identifier("c"));
@@ -51,31 +54,65 @@ public class DeclarationEvaluatorTest {
 
 	}
 
-	public void testConstDeclaration() throws VariableNotDeclaredException,
-			ValueUndefinedException {
+	public void testConstDeclaration() throws VariableNotDeclaredException, ValueUndefinedException {
 		Identifier identifier = new Identifier("a");
-		ConstantDecl constDecl = new ConstantDecl(identifier,
-				new IntegerConstant(1));
+		ConstantDecl constDecl = new ConstantDecl(identifier, new IntegerConstant(1));
 
 		DeclarationEvaluator eval = new DeclarationEvaluator(symbolTable);
 		eval.dispatch(constDecl);
 
-		assertEquals(((IntegerValue) symbolTable.lookupValue("a")).getValue(),
-				new Integer(1));
+		assertEquals(((IntegerValue) symbolTable.lookupValue("a")).getValue(), new Integer(1));
+	}
 
+	@Test
+	public void testTypeDeclaration() throws VariableNotDeclaredException, ValueUndefinedException {
+
+		/*
+		 * Declare myType as an alias of Integer.
+		 */
+
+		List<ConstantDecl> cds = new ArrayList<ConstantDecl>();
+		List<TypeDecl> tds = new ArrayList<TypeDecl>();
+		List<VarDecl> vds = new ArrayList<VarDecl>();
+		List<ProcedureDecl> pds = new ArrayList<ProcedureDecl>();
+
+		TypeDecl typeDecl = new TypeDecl(new Identifier("myType"), new IntegerType());
+		tds.add(typeDecl);
+
+		List<Identifier> ids = new ArrayList<Identifier>();
+		ids.add(new Identifier("a"));
+
+		VarDecl varDecl = new VarDecl(ids, new TypeAlias(new Identifier("myType")));
+		vds.add(varDecl);
+
+		Declarations decls = new Declarations(cds, tds, vds, pds);
+
+		DeclarationEvaluator eval = new DeclarationEvaluator(symbolTable);
+		eval.dispatch(decls);
+
+		/*
+		 * Assign 'a' with an integer value. All should be well.
+		 */
+
+		AssignmentStatement assign = new AssignmentStatement(new Identifier("a"), new IntegerConstant(999));
+		StatementEvaluator se = new StatementEvaluator(symbolTable);
+		se.dispatch(assign);
+
+		/*
+		 * After the assign, the value should be assigned.
+		 */
+		assertEquals(((IntegerValue) symbolTable.lookupValue("a")).getValue(), new Integer(999));
 	}
 
 	@Test(expected = ImmutableException.class)
 	public void testAssignConstFails() throws Throwable {
 		Identifier identifier = new Identifier("a");
-		ConstantDecl constDecl = new ConstantDecl(identifier,
-				new IntegerConstant(1));
+		ConstantDecl constDecl = new ConstantDecl(identifier, new IntegerConstant(1));
 
 		DeclarationEvaluator eval = new DeclarationEvaluator(symbolTable);
 		eval.dispatch(constDecl);
 
-		AssignmentStatement assign = new AssignmentStatement(identifier,
-				new IntegerConstant(2));
+		AssignmentStatement assign = new AssignmentStatement(identifier, new IntegerConstant(2));
 
 		try {
 			StatementEvaluator statEval = new StatementEvaluator(symbolTable);

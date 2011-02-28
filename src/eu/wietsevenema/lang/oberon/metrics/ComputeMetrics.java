@@ -30,8 +30,7 @@ public class ComputeMetrics {
 
 	private static void javaNCSSmetrics() throws IOException {
 		javaNCSS("-ncss", "-all", "-recursive", fileList());
-		javaNCSS("-ncss", "-all", "-xml", "-recursive", "-out", "-ncss.xml",
-				fileList());
+		javaNCSS("-ncss", "-all", "-xml", "-recursive", "-out", "-ncss.xml", fileList());
 	}
 
 	private static String fileList() {
@@ -49,8 +48,7 @@ public class ComputeMetrics {
 		jdepend.analyze();
 	}
 
-	private static void jDependXML(String dir, String output)
-			throws IOException {
+	private static void jDependXML(String dir, String output) throws IOException {
 		jdepend.xmlui.JDepend jdepend = new jdepend.xmlui.JDepend();
 		PrintWriter writer = new PrintWriter(new File(output));
 		jdepend.setWriter(writer);

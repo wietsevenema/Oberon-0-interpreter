@@ -1,7 +1,6 @@
 package eu.wietsevenema.lang.oberon.ast.expressions;
 
 import xtc.tree.Node;
-import eu.wietsevenema.lang.oberon.ast.visitors.TransformGenerics;
 
 public class TestExpression extends Node {
 
@@ -11,9 +10,8 @@ public class TestExpression extends Node {
 		return this.child;
 	}
 
-	public TestExpression(Node exp) {
-		TransformGenerics tg = new TransformGenerics();
-		this.child = (Expression) tg.dispatch(exp);
+	public TestExpression(Expression exp) {
+		this.child = exp;
 	}
 
 }

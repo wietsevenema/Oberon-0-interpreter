@@ -21,49 +21,45 @@ public class Util {
 		return Util.class.getResource(relName).getPath();
 	}
 
-	public static Node parseExpressionFile(String absPath) throws IOException,
-			InvalidInputException, ParseException {
+	public static Node parseExpressionFile(String absPath) throws IOException, InvalidInputException, ParseException {
 		return parseFile(absPath, true);
 	}
 
-	public static Node parseModuleFile(String absPath) throws IOException,
-			InvalidInputException, ParseException {
+	public static Node parseModuleFile(String absPath) throws IOException, InvalidInputException, ParseException {
 		return parseFile(absPath, false);
 	}
 
-	public static Node parseModuleString(String text)
-			throws InvalidInputException, ParseException, IOException {
+	public static Node parseModuleString(String text) throws InvalidInputException, ParseException, IOException {
 		return parseString(text, false);
 	}
 
-	public static Node parseExpressionString(String text)
-			throws InvalidInputException, ParseException, IOException {
+	public static Node parseExpressionString(String text) throws InvalidInputException, ParseException, IOException {
 		return parseString(text, true);
 	}
 
-	private static Node parseString(String text, boolean parseExpression)
-			throws InvalidInputException, ParseException, IOException {
+	private static Node parseString(String text, boolean parseExpression) throws InvalidInputException, ParseException,
+			IOException {
 		Reader in = null;
 		String absPath = "";
 		in = new BufferedReader(new StringReader(text));
 		return parse(parseExpression, in, absPath);
 	}
 
-	private static Node parseFile(String absPath, boolean parseExpression)
-			throws IOException, InvalidInputException, ParseException {
+	private static Node parseFile(String absPath, boolean parseExpression) throws IOException, InvalidInputException,
+			ParseException {
 		Reader in = null;
 		in = new BufferedReader(new FileReader(new File(absPath)));
 
 		return parse(parseExpression, in, absPath);
 	}
 
-	private static Node parse(boolean parseExpression, Reader in, String absPath)
-			throws IOException, InvalidInputException, ParseException {
+	private static Node parse(boolean parseExpression, Reader in, String absPath) throws IOException,
+			InvalidInputException, ParseException {
 		Oberon p = new Oberon(in, absPath);
 		Result r;
 
 		if (parseExpression) {
-			r = p.pExpression(0);
+			r = p.pTestExpression(0);
 		} else {
 			r = p.pProgram(0);
 		}
@@ -82,8 +78,7 @@ public class Util {
 			if (-1 == err.index) {
 				throw new ParseException("  Parse error");
 			} else {
-				throw new ParseException("  " + p.location(err.index) + ": "
-						+ err.msg);
+				throw new ParseException("  " + p.location(err.index) + ": " + err.msg);
 			}
 		}
 		in.close();

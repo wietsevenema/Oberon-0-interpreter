@@ -1,14 +1,11 @@
-package eu.wietsevenema.lang.oberon.ast.statements;
+package eu.wietsevenema.lang.oberon.ast.declarations;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import xtc.tree.Node;
-import eu.wietsevenema.lang.oberon.ast.declarations.Declaration;
-import eu.wietsevenema.lang.oberon.ast.declarations.Declarations;
-import eu.wietsevenema.lang.oberon.ast.declarations.FormalVar;
-import eu.wietsevenema.lang.oberon.ast.declarations.FormalVarRef;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
+import eu.wietsevenema.lang.oberon.ast.statements.Statement;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
 import eu.wietsevenema.lang.oberon.ast.visitors.DeclarationEvaluator;
 import eu.wietsevenema.lang.oberon.ast.visitors.StatementEvaluator;
@@ -23,14 +20,11 @@ public class ProcedureDecl extends Declaration implements Procedure {
 	private Declarations declarations;
 	private List<Statement> statements;
 
-	public ProcedureDecl(Node idstart, List<Node> formals,
-			Declarations declarations, List<Statement> statements) {
+	public ProcedureDecl(Node idstart, List<Node> formals, Declarations declarations, List<Statement> statements) {
 		this.identifier = (Identifier) idstart;
 		this.formals = transformFormals(formals);
-		this.declarations = (declarations != null) ? declarations
-				: new Declarations(null, null, null, null);
-		this.statements = (statements != null) ? statements
-				: new ArrayList<Statement>();
+		this.declarations = (declarations != null) ? declarations : new Declarations(null, null, null, null);
+		this.statements = (statements != null) ? statements : new ArrayList<Statement>();
 	}
 
 	public Identifier getIdentifier() {
@@ -72,8 +66,7 @@ public class ProcedureDecl extends Declaration implements Procedure {
 						if (!(identifier instanceof Identifier)) {
 							throw new IllegalStateException();
 						} else {
-							result.add(new FormalVar((Identifier) identifier,
-									(VarType) n.get(2)));
+							result.add(new FormalVar((Identifier) identifier, (VarType) n.get(2)));
 						}
 					}
 				} else { // Reference var.
@@ -81,8 +74,7 @@ public class ProcedureDecl extends Declaration implements Procedure {
 						if (!(identifier instanceof Identifier)) {
 							throw new IllegalStateException();
 						} else {
-							result.add(new FormalVarRef(
-									(Identifier) identifier, (VarType) n.get(2)));
+							result.add(new FormalVarRef((Identifier) identifier, (VarType) n.get(2)));
 						}
 					}
 				}

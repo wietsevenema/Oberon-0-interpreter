@@ -17,8 +17,7 @@ import eu.wietsevenema.lang.oberon.interpreter.Environment;
 public class BuiltinsTest {
 
 	@Test
-	public void testReadWrite() throws IOException, InvalidInputException,
-			ParseException {
+	public void testReadWrite() throws IOException, InvalidInputException, ParseException {
 		String newLine = System.getProperty("line.separator");
 		String expected = "";
 		for (int i = 1; i <= 10; i++) {
@@ -27,8 +26,7 @@ public class BuiltinsTest {
 		ByteArrayInputStream bis = new ByteArrayInputStream(expected.getBytes());
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-		Module result = (Module) Util.parseModuleFile(Util
-				.getAbsFilename("oberon/readwrite.o0"));
+		Module result = (Module) Util.parseModuleFile(Util.getAbsFilename("oberon/readwrite.o0"));
 		Environment env = new Environment(bis, bos);
 		BuiltIns.inject(env);
 		env.runModule(result);
@@ -40,8 +38,7 @@ public class BuiltinsTest {
 	}
 
 	@Test
-	public void testQuicksort() throws IOException, InvalidInputException,
-			ParseException {
+	public void testQuicksort() throws IOException, InvalidInputException, ParseException {
 		String newLine = System.getProperty("line.separator");
 		String input = "";
 		for (int i = 5; i > 0; i--) {
@@ -50,8 +47,7 @@ public class BuiltinsTest {
 		ByteArrayInputStream bis = new ByteArrayInputStream(input.getBytes());
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-		Module result = (Module) Util.parseModuleFile(Util
-				.getAbsFilename("oberon/quicksort.o0"));
+		Module result = (Module) Util.parseModuleFile(Util.getAbsFilename("oberon/quicksort.o0"));
 		Environment env = new Environment(bis, bos);
 		BuiltIns.inject(env);
 		env.runModule(result);

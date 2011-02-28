@@ -11,9 +11,7 @@ public interface Formal {
 
 	public abstract Identifier getIdentifier();
 
-	public abstract void assignParameter(SymbolTable symbolTable,
-			Expression param) throws TypeMismatchException,
-			IdentifierExpectedInParamList, VariableAlreadyDeclaredException,
-			ValueUndefinedException;
+	public abstract void assignParameter(SymbolTable symbolTable, Expression param) throws TypeMismatchException,
+			IdentifierExpectedInParamList, VariableAlreadyDeclaredException, ValueUndefinedException;
 
 }

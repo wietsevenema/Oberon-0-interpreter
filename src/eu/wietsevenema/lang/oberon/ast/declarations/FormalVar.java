@@ -37,9 +37,8 @@ public class FormalVar extends Declaration implements Formal {
 	}
 
 	@Override
-	public void assignParameter(SymbolTable symbolTable, Expression param)
-			throws TypeMismatchException, IdentifierExpectedInParamList,
-			VariableAlreadyDeclaredException, ValueUndefinedException {
+	public void assignParameter(SymbolTable symbolTable, Expression param) throws TypeMismatchException,
+			IdentifierExpectedInParamList, VariableAlreadyDeclaredException, ValueUndefinedException {
 		// This is a value parameter.
 		// 1. Parameter is expression, evaluate
 		// 3. Assign value in local scope.

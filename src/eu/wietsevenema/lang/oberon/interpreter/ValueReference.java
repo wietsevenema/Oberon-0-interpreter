@@ -34,8 +34,7 @@ public class ValueReference {
 	 * Bewust gekozen om constanten niet met subclass op te lossen; is een
 	 * violatie van Liskov substitutie principe.
 	 */
-	public void setValue(Value value) throws TypeMismatchException,
-			ImmutableException {
+	public void setValue(Value value) throws TypeMismatchException, ImmutableException {
 		if (this.isConstant()) {
 			throw new ImmutableException("Setting a constant is not possible.");
 		}

@@ -3,8 +3,6 @@ package eu.wietsevenema.lang.oberon.ast.declarations;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.wietsevenema.lang.oberon.ast.statements.ProcedureDecl;
-
 import xtc.tree.Node;
 
 public class Declarations extends Node {
@@ -14,10 +12,9 @@ public class Declarations extends Node {
 	private List<VarDecl> vars;
 	private List<ProcedureDecl> procedures;
 
-	public Declarations(List<ConstantDecl> cd, List<TypeDecl> td,
-			List<VarDecl> vd, List<ProcedureDecl> pd) {
+	public Declarations(List<ConstantDecl> cd, List<TypeDecl> td, List<VarDecl> vd, List<ProcedureDecl> pd) {
 
-		// FIXME dit kan 1 array zijn!
+		// FIXME dit kan 1 array zijn
 		this.constants = (cd != null) ? cd : new ArrayList<ConstantDecl>();
 		this.types = (td != null) ? td : new ArrayList<TypeDecl>();
 		this.vars = (vd != null) ? vd : new ArrayList<VarDecl>();

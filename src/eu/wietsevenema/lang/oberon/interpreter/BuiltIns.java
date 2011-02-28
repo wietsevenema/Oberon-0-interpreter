@@ -30,10 +30,8 @@ public class BuiltIns {
 			symbolTable.declareProc("WriteLn", new WriteLn(environment));
 			symbolTable.declareProc("Read", new Read(environment));
 		}
-		symbolTable.declareProc("AssertEqualsInt",
-				new AssertEquals<IntegerType>(new IntegerType()));
-		symbolTable.declareProc("AssertEqualsBool",
-				new AssertEquals<BooleanType>(new BooleanType()));
+		symbolTable.declareProc("AssertEqualsInt", new AssertEquals<IntegerType>(new IntegerType()));
+		symbolTable.declareProc("AssertEqualsBool", new AssertEquals<BooleanType>(new BooleanType()));
 	}
 
 	public static class AssertEquals<T extends VarType> implements Procedure {
@@ -63,8 +61,7 @@ public class BuiltIns {
 				if (expected != null && expected.equals(actual)) {
 					return;
 				}
-				throw new AssertionError("Expected " + expected + " but got "
-						+ actual);
+				throw new AssertionError("Expected " + expected + " but got " + actual);
 
 			} catch (VariableNotDeclaredException e) {
 				throw new IllegalStateException(e);
@@ -78,8 +75,7 @@ public class BuiltIns {
 		private PrintWriter out;
 
 		public WriteLn(Environment environment) {
-			this.out = new PrintWriter(new BufferedWriter(
-					new OutputStreamWriter(environment.getOut())));
+			this.out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(environment.getOut())));
 		}
 
 		@Override
@@ -100,8 +96,7 @@ public class BuiltIns {
 		private PrintWriter out;
 
 		public Write(Environment environment) {
-			this.out = new PrintWriter(new BufferedWriter(
-					new OutputStreamWriter(environment.getOut())));
+			this.out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(environment.getOut())));
 		}
 
 		@Override
@@ -128,21 +123,18 @@ public class BuiltIns {
 		private BufferedReader in;
 
 		public Read(Environment environment) {
-			this.in = new BufferedReader(new InputStreamReader(
-					environment.getIn()));
+			this.in = new BufferedReader(new InputStreamReader(environment.getIn()));
 		}
 
 		@Override
 		public List<Formal> getFormals() {
 			ArrayList<Formal> formals = new ArrayList<Formal>();
-			formals.add(new FormalVarRef(new Identifier("in"),
-					new IntegerType()));
+			formals.add(new FormalVarRef(new Identifier("in"), new IntegerType()));
 			return formals;
 		}
 
 		@Override
-		public void execute(SymbolTable symbolTable)
-				throws TypeMismatchException, ImmutableException {
+		public void execute(SymbolTable symbolTable) throws TypeMismatchException, ImmutableException {
 			try {
 				Integer value = Integer.parseInt(this.in.readLine());
 				ValueReference ref = symbolTable.lookupValueReference("in");

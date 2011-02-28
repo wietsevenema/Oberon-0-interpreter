@@ -24,6 +24,10 @@ VarType Type =
 		yyValue = new IntegerType();
 	}
   / yyValue:ArrayType
+  / id:Identifier
+	{
+		yyValue = new TypeAlias(id);
+	}
 	;
 
 VarType ArrayType = 

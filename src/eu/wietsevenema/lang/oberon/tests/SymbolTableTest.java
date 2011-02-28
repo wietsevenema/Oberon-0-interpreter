@@ -42,35 +42,29 @@ public class SymbolTableTest {
 
 	@Test
 	public void testValueReference() throws VariableNotDeclaredException {
-		ValueReference referenceBool2 = symbolTable
-				.lookupValueReference("bool2");
+		ValueReference referenceBool2 = symbolTable.lookupValueReference("bool2");
 		assertNotNull(referenceBool2);
 		symbolTable.declareValueReference("reference-bool2", referenceBool2);
-		assertEquals(symbolTable.lookupValueReference("reference-bool2"),
-				referenceBool2);
-		assertEquals(symbolTable.lookupValue("bool2"),
-				symbolTable.lookupValue("reference-bool2"));
+		assertEquals(symbolTable.lookupValueReference("reference-bool2"), referenceBool2);
+		assertEquals(symbolTable.lookupValue("bool2"), symbolTable.lookupValue("reference-bool2"));
 	}
 
 	@Test(expected = VariableAlreadyDeclaredException.class)
-	public void testDoubleDeclareFails()
-			throws VariableAlreadyDeclaredException {
+	public void testDoubleDeclareFails() throws VariableAlreadyDeclaredException {
 		symbolTable.declareValue("c", new BooleanValue(null));
 		symbolTable.declareValue("c", new BooleanValue(null));
 	}
 
 	@Test
-	public void testDoubleDeclareScoped()
-			throws VariableAlreadyDeclaredException,
-			VariableNotDeclaredException {
+	public void testDoubleDeclareScoped() throws VariableAlreadyDeclaredException, VariableNotDeclaredException {
 		symbolTable.declareValue("c", new BooleanValue(true));
 		symbolTable.enter();
 		symbolTable.declareValue("c", new BooleanValue(false));
 	}
 
 	@Test(expected = ValueUndefinedException.class)
-	public void testValueUndefined() throws VariableAlreadyDeclaredException,
-			VariableNotDeclaredException, ValueUndefinedException {
+	public void testValueUndefined() throws VariableAlreadyDeclaredException, VariableNotDeclaredException,
+			ValueUndefinedException {
 		symbolTable.declareValue("tve.a", new IntegerValue(null));
 		((IntegerValue) symbolTable.lookupValue("tve.a")).getValue();
 	}

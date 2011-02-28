@@ -2,8 +2,6 @@ package eu.wietsevenema.lang.oberon.ast.declarations;
 
 import java.util.List;
 
-import xtc.tree.Node;
-
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
 
@@ -20,8 +18,8 @@ public class VarDecl extends Declaration {
 		return type;
 	}
 
-	public VarDecl(List<Node> ids, VarType type) {
-		this.identifiers = castIds(ids);
+	public VarDecl(List<Identifier> ids, VarType type) {
+		this.identifiers = ids;
 		this.type = type;
 	}
 

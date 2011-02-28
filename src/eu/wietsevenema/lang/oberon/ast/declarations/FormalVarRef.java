@@ -16,9 +16,8 @@ public class FormalVarRef extends FormalVar {
 		super(identifier, type);
 	}
 
-	public void assignParameter(SymbolTable symbolTable, Expression param)
-			throws TypeMismatchException, IdentifierExpectedInParamList,
-			VariableAlreadyDeclaredException {
+	public void assignParameter(SymbolTable symbolTable, Expression param) throws TypeMismatchException,
+			IdentifierExpectedInParamList, VariableAlreadyDeclaredException {
 		// 1. Get reference from parameter symbol (from parent scope)
 		// 2. Assign in local scope with symbol defined in formal.
 

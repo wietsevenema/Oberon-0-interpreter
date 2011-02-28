@@ -29,8 +29,7 @@ public class ValueBuilder extends Visitor {
 
 	public ArrayValue visit(ArrayType arrayType) throws ValueUndefinedException {
 		ExpressionEvaluator exprEval = new ExpressionEvaluator(symbolTable);
-		IntegerValue sizeValue = (IntegerValue) exprEval.dispatch(arrayType
-				.getExpression());
+		IntegerValue sizeValue = (IntegerValue) exprEval.dispatch(arrayType.getExpression());
 		Integer size = sizeValue.getValue();
 		Value template = (Value) this.dispatch(arrayType.getType());
 		ArrayValue result = new ArrayValue(template, size);

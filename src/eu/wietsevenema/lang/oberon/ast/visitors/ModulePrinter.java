@@ -1,6 +1,7 @@
 package eu.wietsevenema.lang.oberon.ast.visitors;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import eu.wietsevenema.lang.oberon.ast.declarations.Declarations;
 import eu.wietsevenema.lang.oberon.ast.declarations.FormalVar;
 import eu.wietsevenema.lang.oberon.ast.declarations.FormalVarRef;
 import eu.wietsevenema.lang.oberon.ast.declarations.Module;
+import eu.wietsevenema.lang.oberon.ast.declarations.ProcedureDecl;
+import eu.wietsevenema.lang.oberon.ast.declarations.TypeDecl;
 import eu.wietsevenema.lang.oberon.ast.declarations.VarDecl;
 import eu.wietsevenema.lang.oberon.ast.expressions.ArraySelector;
 import eu.wietsevenema.lang.oberon.ast.expressions.BinaryExpression;
@@ -20,7 +23,6 @@ import eu.wietsevenema.lang.oberon.ast.expressions.TestExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.UnaryMinExpression;
 import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.ProcedureCallStatement;
-import eu.wietsevenema.lang.oberon.ast.statements.ProcedureDecl;
 import eu.wietsevenema.lang.oberon.ast.statements.WhileStatement;
 
 /**
@@ -33,17 +35,38 @@ import eu.wietsevenema.lang.oberon.ast.statements.WhileStatement;
  */
 public class ModulePrinter extends Visitor {
 
-	public String visit(BinaryExpression binexp) {
-		return "(" + dispatch(binexp.getLeft()) + binexp.getToken()
-				+ dispatch(binexp.getRight()) + ")";
-	}
-
 	public String visit(TestExpression exp) {
 		return (String) dispatch(exp.getChild());
 	}
 
 	public String visit(Expression exp) {
 		return exp.toString();
+	}
+
+	public String visit(BinaryExpression exp) {
+		HashMap<String, String> operators = new HashMap<String, String>();
+
+		operators.put("eu.wietsevenema.lang.oberon.ast.expressions.AdditiveExpression", "+");
+		operators.put("eu.wietsevenema.lang.oberon.ast.expressions.SubtractiveExpression", "-");
+		operators.put("eu.wietsevenema.lang.oberon.ast.expressions.DivisiveExpression", "DIV");
+		operators.put("eu.wietsevenema.lang.oberon.ast.expressions.ModulusExpression", "MOD");
+		operators.put("eu.wietsevenema.lang.oberon.ast.expressions.EqualityExpression", "=");
+		operators.put("eu.wietsevenema.lang.oberon.ast.expressions.GreaterExpression", ">");
+		operators.put("eu.wietsevenema.lang.oberon.ast.expressions.GreaterOrEqualExpression", ">=");
+		operators.put("eu.wietsevenema.lang.oberon.ast.expressions.LessExpression", "<");
+		operators.put("eu.wietsevenema.lang.oberon.ast.expressions.NotExpression", "#");
+		operators.put("eu.wietsevenema.lang.oberon.ast.expressions.LessOrEqualExpression", "<=");
+		operators.put("eu.wietsevenema.lang.oberon.ast.expressions.LogicalConjunctiveExpression", "&");
+		operators.put("eu.wietsevenema.lang.oberon.ast.expressions.LogicalDisjunctiveExpression", "OR");
+		operators.put("eu.wietsevenema.lang.oberon.ast.expressions.MultiplicativeExpression", "*");
+
+		String className = exp.getClass().getCanonicalName();
+		if (operators.containsKey(className)) {
+			return "(" + this.dispatch(exp.getLeft()) + operators.get(className) + this.dispatch(exp.getRight()) + ")";
+		} else {
+			throw new IllegalStateException("Operator for binary expression " + className + " unknown.");
+		}
+
 	}
 
 	public String visit(ArraySelector as) {
@@ -60,12 +83,13 @@ public class ModulePrinter extends Visitor {
 
 	public String visit(Declarations decls) {
 		String result = "";
-		for (ConstantDecl cd : decls.getConstants()) {
-			result += dispatch(cd);
-		}
-
+		
+		
+		result += joinNodes(decls.getConstants(), ";");
+		result += joinNodes(decls.getTypes(), ";");
 		result += joinNodes(decls.getVars(), ";");
 
+				
 		for (ProcedureDecl pd : decls.getProcedures()) {
 			result += dispatch(pd);
 		}
@@ -78,6 +102,12 @@ public class ModulePrinter extends Visitor {
 		result += ": " + vd.getType();
 		return result;
 	}
+	
+	public String visit(TypeDecl td) {
+		String result = "TYPE " + td.getIdentifier() + "=" + td.getType() ;
+		return result;
+	}
+	
 
 	public String visit(ProcedureDecl pd) {
 		String result = "PROCEDURE " + pd.getIdentifier().getName() + "(";
@@ -93,8 +123,7 @@ public class ModulePrinter extends Visitor {
 	}
 
 	public String visit(AssignmentStatement as) {
-		return as.getIdentifier().getName() + ":="
-				+ dispatch(as.getExpression());
+		return as.getIdentifier().getName() + ":=" + dispatch(as.getExpression());
 	}
 
 	public String visit(FormalVar fv) {

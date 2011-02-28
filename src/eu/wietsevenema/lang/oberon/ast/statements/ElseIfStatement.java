@@ -2,7 +2,6 @@ package eu.wietsevenema.lang.oberon.ast.statements;
 
 import java.util.List;
 
-import xtc.tree.Node;
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
 
 public class ElseIfStatement extends Statement {
@@ -10,8 +9,8 @@ public class ElseIfStatement extends Statement {
 	private List<Statement> trueStatements;
 	private Expression condition;
 
-	public ElseIfStatement(Node condition, List<Statement> trueStatements) {
-		this.condition = transformExpression(condition);
+	public ElseIfStatement(Expression condition, List<Statement> trueStatements) {
+		this.condition = condition;
 		this.trueStatements = trueStatements;
 	}
 

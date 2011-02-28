@@ -1,17 +1,15 @@
 package eu.wietsevenema.lang.oberon.ast.types;
 
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
-import eu.wietsevenema.lang.oberon.ast.visitors.TransformGenerics;
-import xtc.tree.Node;
+import eu.wietsevenema.lang.oberon.exceptions.NotImplementedException;
 
 public class ArrayType extends VarType {
 
 	private Expression expression;
 	private VarType type;
 
-	public ArrayType(Node exp, VarType type) {
-		TransformGenerics tg = new TransformGenerics();
-		this.expression = (Expression) tg.dispatch(exp);
+	public ArrayType(Expression exp, VarType type) {
+		this.expression = exp;
 		this.type = type;
 	}
 
@@ -25,9 +23,7 @@ public class ArrayType extends VarType {
 
 	@Override
 	public String toString() {
-		// FIXME
-		// Auto-generated method stub
-		return null;
+		throw new NotImplementedException();
 	}
 
 }

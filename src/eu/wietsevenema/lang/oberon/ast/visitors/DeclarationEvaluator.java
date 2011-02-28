@@ -2,13 +2,15 @@ package eu.wietsevenema.lang.oberon.ast.visitors;
 
 import java.util.List;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import xtc.tree.Visitor;
 import eu.wietsevenema.lang.oberon.ast.declarations.ConstantDecl;
 import eu.wietsevenema.lang.oberon.ast.declarations.Declarations;
+import eu.wietsevenema.lang.oberon.ast.declarations.ProcedureDecl;
 import eu.wietsevenema.lang.oberon.ast.declarations.TypeDecl;
 import eu.wietsevenema.lang.oberon.ast.declarations.VarDecl;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
-import eu.wietsevenema.lang.oberon.ast.statements.ProcedureDecl;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
@@ -61,7 +63,7 @@ public class DeclarationEvaluator extends Visitor {
 	}
 
 	public void visit(TypeDecl typeDecl) {
-		throw new RuntimeException("Type declarations not yet implemented");
+		throw new NotImplementedException();
 	}
 
 	public void visit(VarDecl varDecl) throws VariableAlreadyDeclaredException {

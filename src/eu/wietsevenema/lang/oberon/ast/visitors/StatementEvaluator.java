@@ -34,17 +34,14 @@ public class StatementEvaluator extends Visitor {
 		this.symbolTable = symbolTable;
 	}
 
-	public void visit(AssignmentStatement assign)
-			throws VariableNotDeclaredException, TypeMismatchException,
+	public void visit(AssignmentStatement assign) throws VariableNotDeclaredException, TypeMismatchException,
 			ImmutableException {
 		// 1. Retrieve existing reference.
 		ValueReferenceResolver resolv = new ValueReferenceResolver(symbolTable);
-		ValueReference currentValRef = (ValueReference) resolv.dispatch(assign
-				.getIdentifier());
+		ValueReference currentValRef = (ValueReference) resolv.dispatch(assign.getIdentifier());
 
 		if (currentValRef == null) {
-			throw new VariableNotDeclaredException("Variable not declared. "
-					+ assign.getLocation().toString());
+			throw new VariableNotDeclaredException("Variable not declared. " + assign.getLocation().toString());
 		}
 
 		// 2. Evaluate expression
@@ -56,19 +53,15 @@ public class StatementEvaluator extends Visitor {
 
 	}
 
-	public void visit(ProcedureCallStatement pCall)
-			throws WrongNumberOfArgsException, IdentifierExpectedInParamList,
-			VariableAlreadyDeclaredException, VariableNotDeclaredException,
-			TypeMismatchException, ProcedureUndefinedException,
-			ValueUndefinedException, ImmutableException {
+	public void visit(ProcedureCallStatement pCall) throws WrongNumberOfArgsException, IdentifierExpectedInParamList,
+			VariableAlreadyDeclaredException, VariableNotDeclaredException, TypeMismatchException,
+			ProcedureUndefinedException, ValueUndefinedException, ImmutableException {
 
 		// Find procedure node.
-		Procedure procedure = (Procedure) symbolTable.lookupProc(pCall
-				.getIdentifier().getName());
+		Procedure procedure = (Procedure) symbolTable.lookupProc(pCall.getIdentifier().getName());
 
 		if (procedure == null) {
-			throw new ProcedureUndefinedException("Procedure "
-					+ pCall.getIdentifier().getName() + " undefined.");
+			throw new ProcedureUndefinedException("Procedure " + pCall.getIdentifier().getName() + " undefined.");
 		}
 
 		// Enter scope.
@@ -92,8 +85,7 @@ public class StatementEvaluator extends Visitor {
 
 	}
 
-	public void visit(IfStatement ifStatement) throws TypeMismatchException,
-			ValueUndefinedException {
+	public void visit(IfStatement ifStatement) throws TypeMismatchException, ValueUndefinedException {
 
 		if (evalCondition(ifStatement.getCondition())) {
 			// 1. Als de if matched, evalueren we die statement en stoppen de
@@ -101,8 +93,7 @@ public class StatementEvaluator extends Visitor {
 			visitStatements(ifStatement.getTrueStatements());
 			return;
 		} else {
-			for (Iterator<ElseIfStatement> iterator = ifStatement.getElseIfs()
-					.iterator(); iterator.hasNext();) {
+			for (Iterator<ElseIfStatement> iterator = ifStatement.getElseIfs().iterator(); iterator.hasNext();) {
 				ElseIfStatement elseif = (ElseIfStatement) iterator.next();
 
 				if (evalCondition(elseif.getCondition())) {
@@ -131,15 +122,13 @@ public class StatementEvaluator extends Visitor {
 		}
 	}
 
-	private boolean evalCondition(Expression exp) throws TypeMismatchException,
-			ValueUndefinedException {
+	private boolean evalCondition(Expression exp) throws TypeMismatchException, ValueUndefinedException {
 		ExpressionEvaluator expEval = new ExpressionEvaluator(symbolTable);
 		BooleanValue result = (BooleanValue) expEval.dispatch(exp);
 		return result.getValue();
 	}
 
-	public void visit(WhileStatement whilestat) throws TypeMismatchException,
-			ValueUndefinedException {
+	public void visit(WhileStatement whilestat) throws TypeMismatchException, ValueUndefinedException {
 		StatementEvaluator statEval = new StatementEvaluator(symbolTable);
 
 		while (evalCondition(whilestat.getCondition())) {

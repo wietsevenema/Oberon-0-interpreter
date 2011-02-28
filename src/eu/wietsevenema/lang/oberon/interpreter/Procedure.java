@@ -9,7 +9,6 @@ public interface Procedure {
 
 	public abstract List<Formal> getFormals();
 
-	public abstract void execute(SymbolTable symbolTable)
-			throws TypeMismatchException, ImmutableException;
+	public abstract void execute(SymbolTable symbolTable) throws TypeMismatchException, ImmutableException;
 
 }
