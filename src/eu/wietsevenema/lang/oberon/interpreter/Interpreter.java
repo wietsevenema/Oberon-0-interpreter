@@ -40,7 +40,6 @@ public class Interpreter {
 					if (v.value instanceof Node) {
 						Module result = (Module) v.value;
 						Environment env = new Environment(inputStream, System.out);
-						BuiltIns.inject(env);
 						env.runModule(result);
 					} else {
 						throw new InvalidInputException();

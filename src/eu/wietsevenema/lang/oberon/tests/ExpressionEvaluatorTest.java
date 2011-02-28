@@ -20,9 +20,8 @@ import eu.wietsevenema.lang.oberon.ast.expressions.SubtractiveExpression;
 import eu.wietsevenema.lang.oberon.ast.visitors.ExpressionEvaluator;
 import eu.wietsevenema.lang.oberon.exceptions.InvalidInputException;
 import eu.wietsevenema.lang.oberon.exceptions.ParseException;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
-import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
-import eu.wietsevenema.lang.oberon.interpreter.BuiltIns;
 import eu.wietsevenema.lang.oberon.interpreter.Environment;
 import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
@@ -101,7 +100,7 @@ public class ExpressionEvaluatorTest {
 	}
 
 	@Test
-	public void testSimpleIdentifier() throws ValueUndefinedException, VariableAlreadyDeclaredException {
+	public void testSimpleIdentifier() throws ValueUndefinedException, SymbolAlreadyDeclaredException {
 		Scope scope = new Scope();
 		scope.declareValue("a", new IntegerValue(40));
 
@@ -113,10 +112,9 @@ public class ExpressionEvaluatorTest {
 	}
 
 	@Test
-	public void testArrays() throws IOException, InvalidInputException, ParseException {
+	public void testArrays() throws IOException, InvalidInputException, ParseException, SymbolAlreadyDeclaredException {
 		Module result = (Module) Util.parseModuleFile(Util.getAbsFilename("oberon/expr/arrays.o0"));
 		Environment env = new Environment(System.in, System.out);
-		BuiltIns.inject(env);
 		env.runModule(result);
 	}
 

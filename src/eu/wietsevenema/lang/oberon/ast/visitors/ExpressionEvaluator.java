@@ -22,7 +22,7 @@ import eu.wietsevenema.lang.oberon.ast.expressions.NotExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.SubtractiveExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.UnaryMinExpression;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
-import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolNotDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableUndefinedException;
 import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
@@ -159,7 +159,7 @@ public class ExpressionEvaluator extends Visitor {
 		return new IntegerValue(ic.getValue());
 	}
 
-	public Value visit(Identifier id) throws VariableUndefinedException, VariableNotDeclaredException {
+	public Value visit(Identifier id) throws VariableUndefinedException, SymbolNotDeclaredException {
 		Value result = (Value) this.scope.lookupValue(id.getName());
 
 		if (result == null) {

@@ -6,7 +6,7 @@ import eu.wietsevenema.lang.oberon.ast.types.VarType;
 import eu.wietsevenema.lang.oberon.ast.visitors.ValueReferenceResolver;
 import eu.wietsevenema.lang.oberon.exceptions.IdentifierExpectedInParamList;
 import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
-import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 
@@ -17,7 +17,7 @@ public class FormalVarRef extends FormalVar {
 	}
 
 	public void assignParameter(Scope scope, Expression param) throws TypeMismatchException,
-			IdentifierExpectedInParamList, VariableAlreadyDeclaredException {
+			IdentifierExpectedInParamList, SymbolAlreadyDeclaredException {
 		// 1. Get reference from parameter symbol (from parent scope)
 		// 2. Assign in local scope with symbol defined in formal.
 

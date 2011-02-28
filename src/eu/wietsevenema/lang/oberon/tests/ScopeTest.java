@@ -2,13 +2,14 @@ package eu.wietsevenema.lang.oberon.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
-import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
-import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolAlreadyDeclaredException;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolNotDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 import eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue;
@@ -28,13 +29,13 @@ public class ScopeTest {
 	}
 
 	@Test
-	public void testLookup() throws VariableNotDeclaredException {
+	public void testLookup() throws SymbolNotDeclaredException {
 		assertNotNull(scope.lookupValue("int2"));
 		assertNotNull(scope.lookupValue("bool2"));
 	}
 
 	@Test
-	public void testValueReference() throws VariableNotDeclaredException {
+	public void testValueReference() throws SymbolNotDeclaredException, SymbolAlreadyDeclaredException {
 		ValueReference referenceBool2 = scope.lookupValueReference("bool2");
 		assertNotNull(referenceBool2);
 		scope.declareValueReference("reference-bool2", referenceBool2);
@@ -42,21 +43,26 @@ public class ScopeTest {
 		assertEquals(scope.lookupValue("bool2"), scope.lookupValue("reference-bool2"));
 	}
 
-	@Test(expected = VariableAlreadyDeclaredException.class)
-	public void testDoubleDeclareFails() throws VariableAlreadyDeclaredException {
+	@Test(expected = SymbolAlreadyDeclaredException.class)
+	public void testDoubleDeclareFails() throws SymbolAlreadyDeclaredException {
 		scope.declareValue("c", new BooleanValue(null));
 		scope.declareValue("c", new BooleanValue(null));
 	}
 
 	@Test
-	public void testDoubleDeclareScoped() throws VariableAlreadyDeclaredException, VariableNotDeclaredException {
+	public void testDoubleDeclareScoped() throws SymbolAlreadyDeclaredException, SymbolNotDeclaredException {
 		scope.declareValue("c", new BooleanValue(true));
 		scope = new Scope(scope);
 		scope.declareValue("c", new BooleanValue(false));
 	}
 
+	@Test(expected = SymbolAlreadyDeclaredException.class)
+	public void testProceduresAndVariablesShareScope() {
+		fail("Not implemented");
+	}
+
 	@Test(expected = ValueUndefinedException.class)
-	public void testValueUndefined() throws VariableAlreadyDeclaredException, VariableNotDeclaredException,
+	public void testValueUndefined() throws SymbolAlreadyDeclaredException, SymbolNotDeclaredException,
 			ValueUndefinedException {
 		scope.declareValue("tve.a", new IntegerValue(null));
 		((IntegerValue) scope.lookupValue("tve.a")).getValue();

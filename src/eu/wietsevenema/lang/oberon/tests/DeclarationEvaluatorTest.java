@@ -24,7 +24,7 @@ import eu.wietsevenema.lang.oberon.ast.visitors.DeclarationEvaluator;
 import eu.wietsevenema.lang.oberon.ast.visitors.StatementEvaluator;
 import eu.wietsevenema.lang.oberon.exceptions.ImmutableException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
-import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolNotDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 
@@ -38,7 +38,7 @@ public class DeclarationEvaluatorTest {
 	}
 
 	@Test
-	public void testVarDeclaration() throws VariableNotDeclaredException {
+	public void testVarDeclaration() throws SymbolNotDeclaredException {
 		List<Identifier> identifiers = new ArrayList<Identifier>();
 		identifiers.add(new Identifier("a"));
 		identifiers.add(new Identifier("b"));
@@ -54,7 +54,7 @@ public class DeclarationEvaluatorTest {
 
 	}
 
-	public void testConstDeclaration() throws VariableNotDeclaredException, ValueUndefinedException {
+	public void testConstDeclaration() throws SymbolNotDeclaredException, ValueUndefinedException {
 		Identifier identifier = new Identifier("a");
 		ConstantDecl constDecl = new ConstantDecl(identifier, new IntegerConstant(1));
 
@@ -65,7 +65,7 @@ public class DeclarationEvaluatorTest {
 	}
 
 	@Test
-	public void testTypeDeclaration() throws VariableNotDeclaredException, ValueUndefinedException {
+	public void testTypeDeclaration() throws SymbolNotDeclaredException, ValueUndefinedException {
 
 		/*
 		 * Declare myType as an alias of Integer.

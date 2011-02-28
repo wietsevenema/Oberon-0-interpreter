@@ -16,8 +16,8 @@ import eu.wietsevenema.lang.oberon.exceptions.IdentifierExpectedInParamList;
 import eu.wietsevenema.lang.oberon.exceptions.ImmutableException;
 import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
-import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
-import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolAlreadyDeclaredException;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolNotDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.WrongNumberOfArgsException;
 import eu.wietsevenema.lang.oberon.interpreter.Formal;
 import eu.wietsevenema.lang.oberon.interpreter.Procedure;
@@ -34,14 +34,14 @@ public class StatementEvaluator extends Visitor {
 		this.scope = scope;
 	}
 
-	public void visit(AssignmentStatement assign) throws VariableNotDeclaredException, TypeMismatchException,
+	public void visit(AssignmentStatement assign) throws SymbolNotDeclaredException, TypeMismatchException,
 			ImmutableException {
 		// 1. Retrieve existing reference.
 		ValueReferenceResolver resolv = new ValueReferenceResolver(scope);
 		ValueReference currentValRef = (ValueReference) resolv.dispatch(assign.getIdentifier());
 
 		if (currentValRef == null) {
-			throw new VariableNotDeclaredException("Variable not declared. " + assign.getLocation().toString());
+			throw new SymbolNotDeclaredException("Variable not declared. " + assign.getLocation().toString());
 		}
 
 		// 2. Evaluate expression
@@ -54,7 +54,7 @@ public class StatementEvaluator extends Visitor {
 	}
 
 	public void visit(ProcedureCallStatement pCall) throws WrongNumberOfArgsException, IdentifierExpectedInParamList,
-			VariableAlreadyDeclaredException, VariableNotDeclaredException, TypeMismatchException,
+			SymbolAlreadyDeclaredException, SymbolNotDeclaredException, TypeMismatchException,
 			ProcedureUndefinedException, ValueUndefinedException, ImmutableException {
 
 		// Find procedure node.

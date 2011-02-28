@@ -7,7 +7,7 @@ import eu.wietsevenema.lang.oberon.ast.visitors.ExpressionEvaluator;
 import eu.wietsevenema.lang.oberon.exceptions.IdentifierExpectedInParamList;
 import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
-import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.Formal;
 import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.values.Value;
@@ -38,7 +38,7 @@ public class FormalVar extends Declaration implements Formal {
 
 	@Override
 	public void assignParameter(Scope scope, Expression param) throws TypeMismatchException,
-			IdentifierExpectedInParamList, VariableAlreadyDeclaredException, ValueUndefinedException {
+			IdentifierExpectedInParamList, SymbolAlreadyDeclaredException, ValueUndefinedException {
 		// This is a value parameter.
 		// 1. Parameter is expression, evaluate
 		// 3. Assign value in local scope.

@@ -5,13 +5,13 @@ import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.exceptions.IdentifierExpectedInParamList;
 import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
-import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolAlreadyDeclaredException;
 
 public interface Formal {
 
 	public abstract Identifier getIdentifier();
 
 	public abstract void assignParameter(Scope scope, Expression param) throws TypeMismatchException,
-			IdentifierExpectedInParamList, VariableAlreadyDeclaredException, ValueUndefinedException;
+			IdentifierExpectedInParamList, SymbolAlreadyDeclaredException, ValueUndefinedException;
 
 }

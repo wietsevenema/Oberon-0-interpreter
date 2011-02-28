@@ -6,6 +6,7 @@ import eu.wietsevenema.lang.oberon.ast.types.BooleanType;
 import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
 import eu.wietsevenema.lang.oberon.ast.types.TypeAlias;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
+import eu.wietsevenema.lang.oberon.exceptions.TypeNotDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.values.ArrayValue;
@@ -29,7 +30,7 @@ public class ValueBuilder extends Visitor {
 		return new BooleanValue(null);
 	}
 
-	public Value visit(TypeAlias typeAlias) {
+	public Value visit(TypeAlias typeAlias) throws TypeNotDeclaredException {
 		VarType type = scope.lookupType(typeAlias.getIdentifier().getName());
 		return (Value) dispatch(type);
 	}

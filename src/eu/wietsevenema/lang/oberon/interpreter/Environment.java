@@ -5,6 +5,7 @@ import java.io.OutputStream;
 
 import eu.wietsevenema.lang.oberon.ast.declarations.Module;
 import eu.wietsevenema.lang.oberon.ast.visitors.ModuleEvaluator;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolAlreadyDeclaredException;
 
 public class Environment {
 
@@ -12,7 +13,7 @@ public class Environment {
 	private OutputStream out;
 	private InputStream in;
 
-	public Environment(InputStream in, OutputStream out) {
+	public Environment(InputStream in, OutputStream out) throws SymbolAlreadyDeclaredException {
 		this.in = in;
 		this.out = out;
 		this.scope = new Scope();

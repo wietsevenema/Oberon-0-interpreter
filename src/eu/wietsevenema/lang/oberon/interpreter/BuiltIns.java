@@ -16,14 +16,15 @@ import eu.wietsevenema.lang.oberon.ast.types.BooleanType;
 import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
 import eu.wietsevenema.lang.oberon.exceptions.ImmutableException;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
-import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolNotDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class BuiltIns {
 
-	public static void inject(Environment environment) {
+	public static void inject(Environment environment) throws SymbolAlreadyDeclaredException {
 		Scope scope = environment.getScope();
 		if (environment != null) {
 			scope.declareProc("Write", new Write(environment));
@@ -63,7 +64,7 @@ public class BuiltIns {
 				}
 				throw new AssertionError("Expected " + expected + " but got " + actual);
 
-			} catch (VariableNotDeclaredException e) {
+			} catch (SymbolNotDeclaredException e) {
 				throw new IllegalStateException(e);
 			}
 
@@ -112,7 +113,7 @@ public class BuiltIns {
 				Value result = scope.lookupValue("out");
 				this.out.print(result.toString());
 				this.out.flush();
-			} catch (VariableNotDeclaredException e) {
+			} catch (SymbolNotDeclaredException e) {
 				throw new IllegalStateException(e);
 			}
 		}
@@ -134,7 +135,7 @@ public class BuiltIns {
 		}
 
 		@Override
-		public void execute(Scope scope) throws TypeMismatchException, ImmutableException {
+		public void execute(Scope scope) throws TypeMismatchException, ImmutableException, SymbolNotDeclaredException {
 			try {
 				Integer value = Integer.parseInt(this.in.readLine());
 				ValueReference ref = scope.lookupValueReference("in");

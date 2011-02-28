@@ -16,7 +16,6 @@ import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.expressions.IntegerConstant;
 import eu.wietsevenema.lang.oberon.ast.expressions.LessExpression;
-import eu.wietsevenema.lang.oberon.ast.expressions.ProcedureUndefinedException;
 import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.ProcedureCallStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.Statement;
@@ -25,10 +24,9 @@ import eu.wietsevenema.lang.oberon.ast.visitors.ModuleEvaluator;
 import eu.wietsevenema.lang.oberon.ast.visitors.StatementEvaluator;
 import eu.wietsevenema.lang.oberon.exceptions.InvalidInputException;
 import eu.wietsevenema.lang.oberon.exceptions.ParseException;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolAlreadyDeclaredException;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolNotDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
-import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
-import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
-import eu.wietsevenema.lang.oberon.interpreter.BuiltIns;
 import eu.wietsevenema.lang.oberon.interpreter.Environment;
 import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue;
@@ -44,8 +42,8 @@ public class StatementEvaluatorTest {
 	}
 
 	@Test
-	public void testAssignment() throws VariableAlreadyDeclaredException, ValueUndefinedException,
-			VariableNotDeclaredException {
+	public void testAssignment() throws SymbolAlreadyDeclaredException, ValueUndefinedException,
+			SymbolNotDeclaredException {
 		// Declare vars
 		scope.declareValue("a", new IntegerValue(null));
 		scope.declareValue("b", new BooleanValue(null));
@@ -64,8 +62,8 @@ public class StatementEvaluatorTest {
 	}
 
 	@Test
-	public void testSecondAssignment() throws ValueUndefinedException, VariableNotDeclaredException,
-			VariableAlreadyDeclaredException {
+	public void testSecondAssignment() throws ValueUndefinedException, SymbolNotDeclaredException,
+			SymbolAlreadyDeclaredException {
 		scope.declareValue("a", new IntegerValue(null));
 		AssignmentStatement first = new AssignmentStatement(new Identifier("a"), new IntegerConstant(2));
 
@@ -78,7 +76,7 @@ public class StatementEvaluatorTest {
 		assertEquals(((IntegerValue) scope.lookupValue("a")).getValue(), new Integer(3));
 	}
 
-	@Test(expected = ProcedureUndefinedException.class)
+	@Test(expected = SymbolNotDeclaredException.class)
 	public void testCallNotExistingProcedureFails() throws Throwable {
 		Statement call = new ProcedureCallStatement(new Identifier("idonotexist"), new ArrayList<Expression>());
 		StatementEvaluator statEval = new StatementEvaluator(scope);
@@ -90,8 +88,8 @@ public class StatementEvaluatorTest {
 	}
 
 	@Test
-	public void testWhileStatement() throws VariableAlreadyDeclaredException, ValueUndefinedException,
-			VariableNotDeclaredException {
+	public void testWhileStatement() throws SymbolAlreadyDeclaredException, ValueUndefinedException,
+			SymbolNotDeclaredException {
 
 		Expression condition = new LessExpression(new Identifier("count"), new IntegerConstant(5));
 
@@ -120,7 +118,7 @@ public class StatementEvaluatorTest {
 
 	@Test
 	public void testWhileStatement2() throws InvalidInputException, ParseException, IOException,
-			ValueUndefinedException, VariableNotDeclaredException {
+			ValueUndefinedException, SymbolNotDeclaredException {
 		String whileprog = "MODULE While;	" + "	VAR t1: INTEGER; t2 : BOOLEAN;" + "BEGIN" + " t1 := 0;"
 				+ " WHILE t1 <= 5" + " DO" + "	t1  := t1 + 1;" + "	t2 := TRUE" + " END " + "END While.";
 
@@ -132,18 +130,16 @@ public class StatementEvaluatorTest {
 	}
 
 	@Test
-	public void testIfStatement() throws IOException, InvalidInputException, ParseException {
+	public void testIfStatement() throws IOException, InvalidInputException, ParseException, SymbolAlreadyDeclaredException {
 		Module result = (Module) Util.parseModuleFile(Util.getAbsFilename("oberon/ifstatement.o0"));
 		Environment env = new Environment(System.in, System.out);
-		BuiltIns.inject(env);
 		env.runModule(result);
 	}
 
 	@Test
-	public void testAssignStatement() throws IOException, InvalidInputException, ParseException {
+	public void testAssignStatement() throws IOException, InvalidInputException, ParseException, SymbolAlreadyDeclaredException {
 		Module result = (Module) Util.parseModuleFile(Util.getAbsFilename("oberon/statements/assignment.o0"));
 		Environment env = new Environment(System.in, System.out);
-		BuiltIns.inject(env);
 		env.runModule(result);
 	}
 

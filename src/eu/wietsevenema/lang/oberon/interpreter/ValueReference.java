@@ -4,7 +4,7 @@ import eu.wietsevenema.lang.oberon.exceptions.ImmutableException;
 import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
 import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
-public class ValueReference {
+public class ValueReference implements Bindable {
 
 	private Value value;
 	private boolean constant = false;

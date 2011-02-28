@@ -10,7 +10,7 @@ import eu.wietsevenema.lang.oberon.ast.declarations.TypeDecl;
 import eu.wietsevenema.lang.oberon.ast.declarations.VarDecl;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
-import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 import eu.wietsevenema.lang.oberon.interpreter.values.Value;
@@ -46,11 +46,11 @@ public class DeclarationEvaluator extends Visitor {
 
 	}
 
-	public void visit(ProcedureDecl procDecl) {
+	public void visit(ProcedureDecl procDecl) throws SymbolAlreadyDeclaredException {
 		scope.declareProc(procDecl.getIdentifier().getName(), procDecl);
 	}
 
-	public void visit(ConstantDecl constantDecl) {
+	public void visit(ConstantDecl constantDecl) throws SymbolAlreadyDeclaredException {
 		Identifier identifier = constantDecl.getIdentifier();
 
 		ExpressionEvaluator exprEval = new ExpressionEvaluator(scope);
@@ -64,7 +64,7 @@ public class DeclarationEvaluator extends Visitor {
 		scope.declareType(typeDecl.getIdentifier().getName(), typeDecl.getType());
 	}
 
-	public void visit(VarDecl varDecl) throws VariableAlreadyDeclaredException {
+	public void visit(VarDecl varDecl) throws SymbolAlreadyDeclaredException {
 		List<Identifier> identifiers = varDecl.getIdentifiers();
 		VarType type = varDecl.getType();
 

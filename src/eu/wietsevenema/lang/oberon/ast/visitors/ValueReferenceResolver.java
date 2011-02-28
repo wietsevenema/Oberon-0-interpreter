@@ -3,6 +3,7 @@ package eu.wietsevenema.lang.oberon.ast.visitors;
 import xtc.tree.Visitor;
 import eu.wietsevenema.lang.oberon.ast.expressions.ArraySelector;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
+import eu.wietsevenema.lang.oberon.exceptions.SymbolNotDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
@@ -17,7 +18,7 @@ public class ValueReferenceResolver extends Visitor {
 		this.scope = scope;
 	}
 
-	public ValueReference visit(Identifier id) {
+	public ValueReference visit(Identifier id) throws SymbolNotDeclaredException {
 		return scope.lookupValueReference(id.getName());
 	}
 
