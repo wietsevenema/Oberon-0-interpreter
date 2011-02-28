@@ -1,0 +1,7 @@
+MODULE TypeAlias;
+	TYPE myType = INTEGER;
+	VAR a: myType;
+	
+	BEGIN 
+		a := 999
+	END TypeAlias.
