@@ -8,36 +8,65 @@
 
 package eu.wietsevenema.lang.oberon.parser;
 
-import java.io.Reader;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.OutputStreamWriter;
 import java.io.IOException;
-
-import xtc.util.Pair;
-
-import xtc.tree.Locatable;
-import xtc.tree.Node;
-import xtc.tree.GNode;
-import xtc.tree.Printer;
-
-import xtc.parser.ParserBase;
-import xtc.parser.Column;
-import xtc.parser.Result;
-import xtc.parser.SemanticValue;
-import xtc.parser.ParseError;
-
-import eu.wietsevenema.lang.oberon.ast.declarations.*;
-import eu.wietsevenema.lang.oberon.ast.expressions.*;
-import eu.wietsevenema.lang.oberon.ast.statements.*;
-import eu.wietsevenema.lang.oberon.ast.types.*;
-
+import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import xtc.parser.Column;
+import xtc.parser.ParseError;
+import xtc.parser.ParserBase;
+import xtc.parser.Result;
+import xtc.parser.SemanticValue;
+import xtc.tree.GNode;
+import xtc.tree.Locatable;
+import xtc.tree.Node;
+import xtc.tree.Printer;
 import xtc.util.Action;
+import xtc.util.Pair;
+import eu.wietsevenema.lang.oberon.ast.declarations.ConstantDecl;
+import eu.wietsevenema.lang.oberon.ast.declarations.Declarations;
+import eu.wietsevenema.lang.oberon.ast.declarations.Module;
+import eu.wietsevenema.lang.oberon.ast.declarations.ProcedureDecl;
+import eu.wietsevenema.lang.oberon.ast.declarations.TypeDecl;
+import eu.wietsevenema.lang.oberon.ast.declarations.VarDecl;
+import eu.wietsevenema.lang.oberon.ast.expressions.AdditiveExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.ArraySelector;
+import eu.wietsevenema.lang.oberon.ast.expressions.BooleanConstant;
+import eu.wietsevenema.lang.oberon.ast.expressions.DivisiveExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.EqualityExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
+import eu.wietsevenema.lang.oberon.ast.expressions.GreaterExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.GreaterOrEqualExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
+import eu.wietsevenema.lang.oberon.ast.expressions.IntegerConstant;
+import eu.wietsevenema.lang.oberon.ast.expressions.LessExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.LessOrEqualExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.LogicalConjunctiveExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.LogicalDisjunctiveExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.LogicalNegationExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.ModulusExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.MultiplicativeExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.NotExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.SubtractiveExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.TestExpression;
+import eu.wietsevenema.lang.oberon.ast.expressions.UnaryMinExpression;
+import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
+import eu.wietsevenema.lang.oberon.ast.statements.ElseIfStatement;
+import eu.wietsevenema.lang.oberon.ast.statements.IfStatement;
+import eu.wietsevenema.lang.oberon.ast.statements.ProcedureCallStatement;
+import eu.wietsevenema.lang.oberon.ast.statements.Statement;
+import eu.wietsevenema.lang.oberon.ast.statements.WhileStatement;
+import eu.wietsevenema.lang.oberon.ast.types.ArrayType;
+import eu.wietsevenema.lang.oberon.ast.types.BooleanType;
+import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
+import eu.wietsevenema.lang.oberon.ast.types.TypeAlias;
+import eu.wietsevenema.lang.oberon.ast.types.VarType;
 
 /**
  * Packrat parser for grammar <code>eu.wietsevenema.lang.oberon.parser.Oberon</code>.

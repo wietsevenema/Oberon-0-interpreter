@@ -3,7 +3,6 @@ package eu.wietsevenema.lang.oberon.interpreter;
 import java.util.HashMap;
 import java.util.Map;
 
-import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;

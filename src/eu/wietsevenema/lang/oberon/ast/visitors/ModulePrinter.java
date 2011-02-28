@@ -7,7 +7,6 @@ import java.util.List;
 
 import xtc.tree.Node;
 import xtc.tree.Visitor;
-import eu.wietsevenema.lang.oberon.ast.declarations.ConstantDecl;
 import eu.wietsevenema.lang.oberon.ast.declarations.Declarations;
 import eu.wietsevenema.lang.oberon.ast.declarations.FormalVar;
 import eu.wietsevenema.lang.oberon.ast.declarations.FormalVarRef;

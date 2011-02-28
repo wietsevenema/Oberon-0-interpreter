@@ -2,8 +2,6 @@ package eu.wietsevenema.lang.oberon.ast.visitors;
 
 import java.util.List;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import xtc.tree.Visitor;
 import eu.wietsevenema.lang.oberon.ast.declarations.ConstantDecl;
 import eu.wietsevenema.lang.oberon.ast.declarations.Declarations;
