@@ -3,6 +3,8 @@ package eu.wietsevenema.lang.oberon.interpreter;
 import java.util.HashMap;
 import java.util.Map;
 
+import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
+import eu.wietsevenema.lang.oberon.ast.types.VarType;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.values.Value;
@@ -14,8 +16,9 @@ public class SymbolTable {
 		String name;
 		Scope parent;
 
-		Map<String, ValueReference> symbols = new HashMap<String, ValueReference>();
-		Map<String, Procedure> procs = new HashMap<String, Procedure>();
+		private Map<String, ValueReference> symbols = new HashMap<String, ValueReference>();
+		private Map<String, Procedure> procs = new HashMap<String, Procedure>();
+		private Map<String, VarType> types = new HashMap<String, VarType>();
 
 		public Scope() {
 		}
@@ -43,7 +46,19 @@ public class SymbolTable {
 		private Procedure lookupProcLocal(String symbol) {
 			return procs.get(symbol);
 		}
-
+		
+		public VarType lookupType(String symbol) {
+			VarType result = this.lookupTypeLocal(symbol);
+			if (result == null && this.parent != null) {
+				result = parent.lookupType(symbol);
+			}
+			return result;
+		}
+		
+		private VarType lookupTypeLocal(String symbol) {
+			return types.get(symbol);
+		}		
+		
 		public Value lookupValue(String symbol) throws VariableNotDeclaredException {
 			ValueReference valueRef = this.lookupValueReference(symbol);
 			if (valueRef == null) {
@@ -86,6 +101,13 @@ public class SymbolTable {
 			assert proc != null;
 			procs.put(symbol, proc);
 		}
+
+		public void declareType(String symbol, VarType type) {
+			assert type != null;
+			types.put(symbol, type);
+		}
+
+		
 
 	}
 
@@ -139,6 +161,14 @@ public class SymbolTable {
 
 	public Scope getParent() {
 		return this.current.getParent();
+	}
+
+	public void declareType(String symbol, VarType type) {
+		this.getCurrent().declareType(symbol, type);
+	}
+
+	public VarType lookupType(String symbol) {
+		return this.getCurrent().lookupType(symbol);
 	}
 
 }

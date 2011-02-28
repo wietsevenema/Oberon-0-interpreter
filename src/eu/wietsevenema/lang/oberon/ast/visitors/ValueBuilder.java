@@ -4,6 +4,8 @@ import xtc.tree.Visitor;
 import eu.wietsevenema.lang.oberon.ast.types.ArrayType;
 import eu.wietsevenema.lang.oberon.ast.types.BooleanType;
 import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
+import eu.wietsevenema.lang.oberon.ast.types.TypeAlias;
+import eu.wietsevenema.lang.oberon.ast.types.VarType;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
 import eu.wietsevenema.lang.oberon.interpreter.values.ArrayValue;
@@ -26,7 +28,12 @@ public class ValueBuilder extends Visitor {
 	public BooleanValue visit(BooleanType booleanType) {
 		return new BooleanValue(null);
 	}
-
+	
+	public Value visit(TypeAlias typeAlias){
+		VarType type = symbolTable.lookupType(typeAlias.getIdentifier().getName());
+		return (Value)dispatch(type);
+	}
+	
 	public ArrayValue visit(ArrayType arrayType) throws ValueUndefinedException {
 		ExpressionEvaluator exprEval = new ExpressionEvaluator(symbolTable);
 		IntegerValue sizeValue = (IntegerValue) exprEval.dispatch(arrayType.getExpression());

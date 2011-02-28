@@ -63,7 +63,7 @@ public class DeclarationEvaluator extends Visitor {
 	}
 
 	public void visit(TypeDecl typeDecl) {
-		throw new NotImplementedException();
+		symbolTable.declareType(typeDecl.getIdentifier().getName(), typeDecl.getType());
 	}
 
 	public void visit(VarDecl varDecl) throws VariableAlreadyDeclaredException {
