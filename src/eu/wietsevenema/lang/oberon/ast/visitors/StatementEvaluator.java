@@ -21,23 +21,23 @@ import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.WrongNumberOfArgsException;
 import eu.wietsevenema.lang.oberon.interpreter.Formal;
 import eu.wietsevenema.lang.oberon.interpreter.Procedure;
-import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 import eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class StatementEvaluator extends Visitor {
 
-	SymbolTable symbolTable;
+	Scope scope;
 
-	public StatementEvaluator(SymbolTable symbolTable) {
-		this.symbolTable = symbolTable;
+	public StatementEvaluator(Scope scope) {
+		this.scope = scope;
 	}
 
 	public void visit(AssignmentStatement assign) throws VariableNotDeclaredException, TypeMismatchException,
 			ImmutableException {
 		// 1. Retrieve existing reference.
-		ValueReferenceResolver resolv = new ValueReferenceResolver(symbolTable);
+		ValueReferenceResolver resolv = new ValueReferenceResolver(scope);
 		ValueReference currentValRef = (ValueReference) resolv.dispatch(assign.getIdentifier());
 
 		if (currentValRef == null) {
@@ -45,7 +45,7 @@ public class StatementEvaluator extends Visitor {
 		}
 
 		// 2. Evaluate expression
-		ExpressionEvaluator eval = new ExpressionEvaluator(symbolTable);
+		ExpressionEvaluator eval = new ExpressionEvaluator(scope);
 		Value value = (Value) eval.dispatch(assign.getExpression());
 
 		// 3. Assign new value
@@ -58,14 +58,14 @@ public class StatementEvaluator extends Visitor {
 			ProcedureUndefinedException, ValueUndefinedException, ImmutableException {
 
 		// Find procedure node.
-		Procedure procedure = (Procedure) symbolTable.lookupProc(pCall.getIdentifier().getName());
+		Procedure procedure = (Procedure) scope.lookupProc(pCall.getIdentifier().getName());
 
 		if (procedure == null) {
 			throw new ProcedureUndefinedException("Procedure " + pCall.getIdentifier().getName() + " undefined.");
 		}
 
 		// Enter scope.
-		symbolTable.enter();
+		scope = new Scope(scope);
 
 		List<Expression> parameters = pCall.getParameters();
 		List<Formal> formals = procedure.getFormals();
@@ -75,13 +75,13 @@ public class StatementEvaluator extends Visitor {
 		}
 		for (int i = 0; i < formals.size(); i++) {
 			Formal formal = formals.get(i);
-			formal.assignParameter(symbolTable, parameters.get(i));
+			formal.assignParameter(scope, parameters.get(i));
 		}
 
-		procedure.execute(symbolTable);
-
-		// Exit scope.
-		symbolTable.exit();
+		procedure.execute(scope);
+		
+		//Exit scope
+		scope = scope.getParent();
 
 	}
 
@@ -115,7 +115,7 @@ public class StatementEvaluator extends Visitor {
 
 	private void visitStatements(List<Statement> statements) {
 		if (!statements.isEmpty()) {
-			StatementEvaluator statEval = new StatementEvaluator(symbolTable);
+			StatementEvaluator statEval = new StatementEvaluator(scope);
 			for (Statement stat : statements) {
 				statEval.dispatch(stat);
 			}
@@ -123,13 +123,13 @@ public class StatementEvaluator extends Visitor {
 	}
 
 	private boolean evalCondition(Expression exp) throws TypeMismatchException, ValueUndefinedException {
-		ExpressionEvaluator expEval = new ExpressionEvaluator(symbolTable);
+		ExpressionEvaluator expEval = new ExpressionEvaluator(scope);
 		BooleanValue result = (BooleanValue) expEval.dispatch(exp);
 		return result.getValue();
 	}
 
 	public void visit(WhileStatement whilestat) throws TypeMismatchException, ValueUndefinedException {
-		StatementEvaluator statEval = new StatementEvaluator(symbolTable);
+		StatementEvaluator statEval = new StatementEvaluator(scope);
 
 		while (evalCondition(whilestat.getCondition())) {
 			for (Statement s : whilestat.getStatements()) {

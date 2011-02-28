@@ -11,16 +11,16 @@ import eu.wietsevenema.lang.oberon.ast.declarations.VarDecl;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
-import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class DeclarationEvaluator extends Visitor {
 
-	SymbolTable symbolTable;
+	Scope scope;
 
-	public DeclarationEvaluator(SymbolTable symbolTable) {
-		this.symbolTable = symbolTable;
+	public DeclarationEvaluator(Scope scope) {
+		this.scope = scope;
 	}
 
 	public void visit(Declarations decls) {
@@ -47,33 +47,33 @@ public class DeclarationEvaluator extends Visitor {
 	}
 
 	public void visit(ProcedureDecl procDecl) {
-		symbolTable.declareProc(procDecl.getIdentifier().getName(), procDecl);
+		scope.declareProc(procDecl.getIdentifier().getName(), procDecl);
 	}
 
 	public void visit(ConstantDecl constantDecl) {
 		Identifier identifier = constantDecl.getIdentifier();
 
-		ExpressionEvaluator exprEval = new ExpressionEvaluator(symbolTable);
+		ExpressionEvaluator exprEval = new ExpressionEvaluator(scope);
 		Value value = (Value) exprEval.dispatch(constantDecl.getExpression());
 
 		ValueReference constRef = ValueReference.createConstant(value);
-		symbolTable.declareValueReference(identifier.getName(), constRef);
+		scope.declareValueReference(identifier.getName(), constRef);
 	}
 
 	public void visit(TypeDecl typeDecl) {
-		symbolTable.declareType(typeDecl.getIdentifier().getName(), typeDecl.getType());
+		scope.declareType(typeDecl.getIdentifier().getName(), typeDecl.getType());
 	}
 
 	public void visit(VarDecl varDecl) throws VariableAlreadyDeclaredException {
 		List<Identifier> identifiers = varDecl.getIdentifiers();
 		VarType type = varDecl.getType();
 
-		ValueBuilder builder = new ValueBuilder(symbolTable);
+		ValueBuilder builder = new ValueBuilder(scope);
 
 		for (Identifier id : identifiers) {
 			Value value = (Value) builder.dispatch(type);
 			String symbol = id.getName();
-			symbolTable.declareValue(symbol, value);
+			scope.declareValue(symbol, value);
 		}
 	}
 

@@ -24,14 +24,14 @@ import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 public class BuiltIns {
 
 	public static void inject(Environment environment) {
-		SymbolTable symbolTable = environment.getSymbolTable();
+		Scope scope = environment.getScope();
 		if (environment != null) {
-			symbolTable.declareProc("Write", new Write(environment));
-			symbolTable.declareProc("WriteLn", new WriteLn(environment));
-			symbolTable.declareProc("Read", new Read(environment));
+			scope.declareProc("Write", new Write(environment));
+			scope.declareProc("WriteLn", new WriteLn(environment));
+			scope.declareProc("Read", new Read(environment));
 		}
-		symbolTable.declareProc("AssertEqualsInt", new AssertEquals<IntegerType>(new IntegerType()));
-		symbolTable.declareProc("AssertEqualsBool", new AssertEquals<BooleanType>(new BooleanType()));
+		scope.declareProc("AssertEqualsInt", new AssertEquals<IntegerType>(new IntegerType()));
+		scope.declareProc("AssertEqualsBool", new AssertEquals<BooleanType>(new BooleanType()));
 	}
 
 	public static class AssertEquals<T extends VarType> implements Procedure {
@@ -51,10 +51,10 @@ public class BuiltIns {
 		}
 
 		@Override
-		public void execute(SymbolTable symbolTable) {
+		public void execute(Scope scope) {
 			try {
-				Value expected = symbolTable.lookupValue("expected");
-				Value actual = symbolTable.lookupValue("actual");
+				Value expected = scope.lookupValue("expected");
+				Value actual = scope.lookupValue("actual");
 				if (expected == null && actual == null) {
 					return;
 				}
@@ -85,7 +85,7 @@ public class BuiltIns {
 		}
 
 		@Override
-		public void execute(SymbolTable symbolTable) {
+		public void execute(Scope scope) {
 			this.out.println();
 			this.out.flush();
 		}
@@ -107,9 +107,9 @@ public class BuiltIns {
 		}
 
 		@Override
-		public void execute(SymbolTable symbolTable) {
+		public void execute(Scope scope) {
 			try {
-				Value result = symbolTable.lookupValue("out");
+				Value result = scope.lookupValue("out");
 				this.out.print(result.toString());
 				this.out.flush();
 			} catch (VariableNotDeclaredException e) {
@@ -134,10 +134,10 @@ public class BuiltIns {
 		}
 
 		@Override
-		public void execute(SymbolTable symbolTable) throws TypeMismatchException, ImmutableException {
+		public void execute(Scope scope) throws TypeMismatchException, ImmutableException {
 			try {
 				Integer value = Integer.parseInt(this.in.readLine());
-				ValueReference ref = symbolTable.lookupValueReference("in");
+				ValueReference ref = scope.lookupValueReference("in");
 				ref.setValue(new IntegerValue(value));
 			} catch (NumberFormatException e) {
 				throw new RuntimeException(e); // Ay, unchecked exception, maar

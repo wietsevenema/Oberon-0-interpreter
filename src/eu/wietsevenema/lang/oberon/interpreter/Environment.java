@@ -8,19 +8,19 @@ import eu.wietsevenema.lang.oberon.ast.visitors.ModuleEvaluator;
 
 public class Environment {
 
-	private SymbolTable symbolTable;
+	private Scope scope;
 	private OutputStream out;
 	private InputStream in;
 
 	public Environment(InputStream in, OutputStream out) {
 		this.in = in;
 		this.out = out;
-		this.symbolTable = new SymbolTable();
+		this.scope = new Scope();
 		BuiltIns.inject(this);
 	}
 
-	public SymbolTable getSymbolTable() {
-		return symbolTable;
+	public Scope getScope() {
+		return scope;
 	}
 
 	public OutputStream getOut() {
@@ -32,7 +32,7 @@ public class Environment {
 	}
 
 	public void runModule(Module result) {
-		ModuleEvaluator me = new ModuleEvaluator(symbolTable);
+		ModuleEvaluator me = new ModuleEvaluator(scope);
 		me.dispatch(result);
 	}
 

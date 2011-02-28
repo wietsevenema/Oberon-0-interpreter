@@ -9,7 +9,7 @@ import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.Formal;
-import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class FormalVar extends Declaration implements Formal {
@@ -37,16 +37,16 @@ public class FormalVar extends Declaration implements Formal {
 	}
 
 	@Override
-	public void assignParameter(SymbolTable symbolTable, Expression param) throws TypeMismatchException,
+	public void assignParameter(Scope scope, Expression param) throws TypeMismatchException,
 			IdentifierExpectedInParamList, VariableAlreadyDeclaredException, ValueUndefinedException {
 		// This is a value parameter.
 		// 1. Parameter is expression, evaluate
 		// 3. Assign value in local scope.
-		ExpressionEvaluator exprEval = new ExpressionEvaluator(symbolTable);
+		ExpressionEvaluator exprEval = new ExpressionEvaluator(scope);
 		Value result = (Value) exprEval.dispatch(param);
 
 		String symbol = this.getIdentifier().getName();
-		symbolTable.declareValue(symbol, (Value) result.clone()); // Deep copy
+		scope.declareValue(symbol, (Value) result.clone()); // Deep copy
 																	// param.
 
 	}

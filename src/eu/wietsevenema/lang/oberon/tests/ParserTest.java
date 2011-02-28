@@ -13,7 +13,7 @@ import eu.wietsevenema.lang.oberon.exceptions.InvalidInputException;
 import eu.wietsevenema.lang.oberon.exceptions.ParseException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
-import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 
 public class ParserTest {
@@ -51,7 +51,7 @@ public class ParserTest {
 	public void testSwapProcedure() throws IOException, InvalidInputException, ParseException, ValueUndefinedException,
 			VariableNotDeclaredException {
 		Node result = Util.parseModuleFile(Util.getAbsFilename("oberon/swap.o0"));
-		SymbolTable st = new SymbolTable();
+		Scope st = new Scope();
 		ModuleEvaluator me = new ModuleEvaluator(st);
 		me.dispatch(result);
 

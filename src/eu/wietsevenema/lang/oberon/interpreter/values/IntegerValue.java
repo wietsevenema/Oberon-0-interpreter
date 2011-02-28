@@ -3,7 +3,7 @@ package eu.wietsevenema.lang.oberon.interpreter.values;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 
 public class IntegerValue extends Value {
-
+	
 	private Integer value;
 
 	public IntegerValue(Integer i) {

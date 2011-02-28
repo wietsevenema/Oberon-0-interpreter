@@ -11,7 +11,7 @@ import eu.wietsevenema.lang.oberon.ast.visitors.DeclarationEvaluator;
 import eu.wietsevenema.lang.oberon.ast.visitors.StatementEvaluator;
 import eu.wietsevenema.lang.oberon.interpreter.Formal;
 import eu.wietsevenema.lang.oberon.interpreter.Procedure;
-import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.interpreter.Scope;
 
 public class ProcedureDecl extends Declaration implements Procedure {
 
@@ -84,13 +84,13 @@ public class ProcedureDecl extends Declaration implements Procedure {
 	}
 
 	@Override
-	public void execute(SymbolTable symbolTable) {
+	public void execute(Scope scope) {
 		// Process declarations.
-		DeclarationEvaluator declEval = new DeclarationEvaluator(symbolTable);
+		DeclarationEvaluator declEval = new DeclarationEvaluator(scope);
 		declEval.dispatch(this.getDeclarations());
 
 		// Execute statements.
-		StatementEvaluator statEval = new StatementEvaluator(symbolTable);
+		StatementEvaluator statEval = new StatementEvaluator(scope);
 		for (Statement s : this.getStatements()) {
 			statEval.dispatch(s);
 		}

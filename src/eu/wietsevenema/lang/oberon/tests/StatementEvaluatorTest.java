@@ -30,58 +30,58 @@ import eu.wietsevenema.lang.oberon.exceptions.VariableAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 import eu.wietsevenema.lang.oberon.interpreter.BuiltIns;
 import eu.wietsevenema.lang.oberon.interpreter.Environment;
-import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 
 public class StatementEvaluatorTest {
 
-	private SymbolTable symbolTable;
+	private Scope scope;
 
 	@Before
 	public void setUp() {
-		this.symbolTable = new SymbolTable();
+		this.scope = new Scope();
 	}
 
 	@Test
 	public void testAssignment() throws VariableAlreadyDeclaredException, ValueUndefinedException,
 			VariableNotDeclaredException {
 		// Declare vars
-		symbolTable.declareValue("a", new IntegerValue(null));
-		symbolTable.declareValue("b", new BooleanValue(null));
+		scope.declareValue("a", new IntegerValue(null));
+		scope.declareValue("b", new BooleanValue(null));
 
 		// Construct assignment statements
 		AssignmentStatement as1 = new AssignmentStatement(new Identifier("a"), new IntegerConstant(2));
 
 		AssignmentStatement as2 = new AssignmentStatement(new Identifier("b"), new BooleanConstant(true));
 
-		StatementEvaluator se = new StatementEvaluator(symbolTable);
+		StatementEvaluator se = new StatementEvaluator(scope);
 		se.dispatch(as1);
 		se.dispatch(as2);
 
-		assertEquals(((IntegerValue) symbolTable.lookupValue("a")).getValue(), new Integer(2));
-		assertEquals(((BooleanValue) symbolTable.lookupValue("b")).getValue(), new Boolean(true));
+		assertEquals(((IntegerValue) scope.lookupValue("a")).getValue(), new Integer(2));
+		assertEquals(((BooleanValue) scope.lookupValue("b")).getValue(), new Boolean(true));
 	}
 
 	@Test
 	public void testSecondAssignment() throws ValueUndefinedException, VariableNotDeclaredException,
 			VariableAlreadyDeclaredException {
-		symbolTable.declareValue("a", new IntegerValue(null));
+		scope.declareValue("a", new IntegerValue(null));
 		AssignmentStatement first = new AssignmentStatement(new Identifier("a"), new IntegerConstant(2));
 
 		AssignmentStatement second = new AssignmentStatement(new Identifier("a"), new IntegerConstant(3));
 
-		StatementEvaluator se = new StatementEvaluator(symbolTable);
+		StatementEvaluator se = new StatementEvaluator(scope);
 		se.dispatch(first);
-		assertEquals(((IntegerValue) symbolTable.lookupValue("a")).getValue(), new Integer(2));
+		assertEquals(((IntegerValue) scope.lookupValue("a")).getValue(), new Integer(2));
 		se.dispatch(second);
-		assertEquals(((IntegerValue) symbolTable.lookupValue("a")).getValue(), new Integer(3));
+		assertEquals(((IntegerValue) scope.lookupValue("a")).getValue(), new Integer(3));
 	}
 
 	@Test(expected = ProcedureUndefinedException.class)
 	public void testCallNotExistingProcedureFails() throws Throwable {
 		Statement call = new ProcedureCallStatement(new Identifier("idonotexist"), new ArrayList<Expression>());
-		StatementEvaluator statEval = new StatementEvaluator(symbolTable);
+		StatementEvaluator statEval = new StatementEvaluator(scope);
 		try {
 			statEval.dispatch(call);
 		} catch (VisitingException e) {
@@ -106,15 +106,15 @@ public class StatementEvaluatorTest {
 
 		WhileStatement whilestat = new WhileStatement(condition, statements);
 
-		symbolTable.declareValue("count", new IntegerValue(0));
-		symbolTable.declareValue("touch", new BooleanValue(false));
+		scope.declareValue("count", new IntegerValue(0));
+		scope.declareValue("touch", new BooleanValue(false));
 
-		StatementEvaluator eval = new StatementEvaluator(symbolTable);
+		StatementEvaluator eval = new StatementEvaluator(scope);
 
 		eval.dispatch(whilestat);
 
-		assertEquals(new Integer(5), ((IntegerValue) symbolTable.lookupValue("count")).getValue());
-		assertEquals(new Boolean(true), ((BooleanValue) symbolTable.lookupValue("touch")).getValue());
+		assertEquals(new Integer(5), ((IntegerValue) scope.lookupValue("count")).getValue());
+		assertEquals(new Boolean(true), ((BooleanValue) scope.lookupValue("touch")).getValue());
 
 	}
 
@@ -124,11 +124,11 @@ public class StatementEvaluatorTest {
 		String whileprog = "MODULE While;	" + "	VAR t1: INTEGER; t2 : BOOLEAN;" + "BEGIN" + " t1 := 0;"
 				+ " WHILE t1 <= 5" + " DO" + "	t1  := t1 + 1;" + "	t2 := TRUE" + " END " + "END While.";
 
-		ModuleEvaluator me = new ModuleEvaluator(symbolTable);
+		ModuleEvaluator me = new ModuleEvaluator(scope);
 		me.dispatch(Util.parseModuleString(whileprog));
 
-		assertEquals(new Boolean(true), ((BooleanValue) symbolTable.lookupValue("t2")).getValue());
-		assertEquals(new Integer(6), ((IntegerValue) symbolTable.lookupValue("t1")).getValue());
+		assertEquals(new Boolean(true), ((BooleanValue) scope.lookupValue("t2")).getValue());
+		assertEquals(new Integer(6), ((IntegerValue) scope.lookupValue("t1")).getValue());
 	}
 
 	@Test

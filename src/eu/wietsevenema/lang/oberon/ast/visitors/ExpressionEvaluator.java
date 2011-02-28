@@ -24,7 +24,7 @@ import eu.wietsevenema.lang.oberon.ast.expressions.UnaryMinExpression;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableUndefinedException;
-import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 import eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
@@ -32,17 +32,21 @@ import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class ExpressionEvaluator extends Visitor {
 
-	SymbolTable symbolTable;
+	Scope scope;
 
-	public ExpressionEvaluator(SymbolTable symbolTable) {
-		this.symbolTable = symbolTable;
+	public ExpressionEvaluator(Scope scope) {
+		this.scope = scope;
 	}
 
 	public IntegerValue visit(AdditiveExpression ae) throws ClassCastException, ValueUndefinedException {
-		Integer left = ((IntegerValue) dispatch(ae.getLeft())).getValue();
-		Integer right = ((IntegerValue) dispatch(ae.getRight())).getValue();
+		try {
+			Integer left = ((IntegerValue) dispatch(ae.getLeft())).getValue();
+			Integer right = ((IntegerValue) dispatch(ae.getRight())).getValue();
+			return new IntegerValue(left + right);
+		} catch (ValueUndefinedException e) {
+			throw new ValueUndefinedException("Value undefined at " + ae.getLocation());
+		}
 
-		return new IntegerValue(left + right);
 	}
 
 	public IntegerValue visit(SubtractiveExpression se) throws ValueUndefinedException {
@@ -141,7 +145,7 @@ public class ExpressionEvaluator extends Visitor {
 	}
 
 	public Value visit(ArraySelector as) {
-		ValueReferenceResolver resolv = new ValueReferenceResolver(symbolTable);
+		ValueReferenceResolver resolv = new ValueReferenceResolver(scope);
 		ValueReference result = (ValueReference) resolv.dispatch(as);
 		return result.getValue();
 	}
@@ -156,7 +160,7 @@ public class ExpressionEvaluator extends Visitor {
 	}
 
 	public Value visit(Identifier id) throws VariableUndefinedException, VariableNotDeclaredException {
-		Value result = (Value) this.symbolTable.lookupValue(id.getName());
+		Value result = (Value) this.scope.lookupValue(id.getName());
 
 		if (result == null) {
 			throw new VariableUndefinedException(id.getName() + "undefined.");

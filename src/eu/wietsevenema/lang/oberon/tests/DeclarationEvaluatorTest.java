@@ -25,16 +25,16 @@ import eu.wietsevenema.lang.oberon.ast.visitors.StatementEvaluator;
 import eu.wietsevenema.lang.oberon.exceptions.ImmutableException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableNotDeclaredException;
-import eu.wietsevenema.lang.oberon.interpreter.SymbolTable;
+import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 
 public class DeclarationEvaluatorTest {
 
-	SymbolTable symbolTable;
+	Scope scope;
 
 	@Before
 	public void setUp() throws Exception {
-		symbolTable = new SymbolTable();
+		scope = new Scope();
 	}
 
 	@Test
@@ -45,12 +45,12 @@ public class DeclarationEvaluatorTest {
 		identifiers.add(new Identifier("c"));
 		VarDecl varDecl = new VarDecl(identifiers, new IntegerType());
 
-		DeclarationEvaluator eval = new DeclarationEvaluator(symbolTable);
+		DeclarationEvaluator eval = new DeclarationEvaluator(scope);
 		eval.dispatch(varDecl);
 
-		assertNotNull(symbolTable.lookupValue("a"));
-		assertNotNull(symbolTable.lookupValue("b"));
-		assertNotNull(symbolTable.lookupValue("c"));
+		assertNotNull(scope.lookupValue("a"));
+		assertNotNull(scope.lookupValue("b"));
+		assertNotNull(scope.lookupValue("c"));
 
 	}
 
@@ -58,10 +58,10 @@ public class DeclarationEvaluatorTest {
 		Identifier identifier = new Identifier("a");
 		ConstantDecl constDecl = new ConstantDecl(identifier, new IntegerConstant(1));
 
-		DeclarationEvaluator eval = new DeclarationEvaluator(symbolTable);
+		DeclarationEvaluator eval = new DeclarationEvaluator(scope);
 		eval.dispatch(constDecl);
 
-		assertEquals(((IntegerValue) symbolTable.lookupValue("a")).getValue(), new Integer(1));
+		assertEquals(((IntegerValue) scope.lookupValue("a")).getValue(), new Integer(1));
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class DeclarationEvaluatorTest {
 
 		Declarations decls = new Declarations(cds, tds, vds, pds);
 
-		DeclarationEvaluator eval = new DeclarationEvaluator(symbolTable);
+		DeclarationEvaluator eval = new DeclarationEvaluator(scope);
 		eval.dispatch(decls);
 
 		/*
@@ -95,13 +95,13 @@ public class DeclarationEvaluatorTest {
 		 */
 
 		AssignmentStatement assign = new AssignmentStatement(new Identifier("a"), new IntegerConstant(999));
-		StatementEvaluator se = new StatementEvaluator(symbolTable);
+		StatementEvaluator se = new StatementEvaluator(scope);
 		se.dispatch(assign);
 
 		/*
 		 * After the assign, the value should be assigned.
 		 */
-		assertEquals(((IntegerValue) symbolTable.lookupValue("a")).getValue(), new Integer(999));
+		assertEquals(((IntegerValue) scope.lookupValue("a")).getValue(), new Integer(999));
 	}
 
 	@Test(expected = ImmutableException.class)
@@ -109,13 +109,13 @@ public class DeclarationEvaluatorTest {
 		Identifier identifier = new Identifier("a");
 		ConstantDecl constDecl = new ConstantDecl(identifier, new IntegerConstant(1));
 
-		DeclarationEvaluator eval = new DeclarationEvaluator(symbolTable);
+		DeclarationEvaluator eval = new DeclarationEvaluator(scope);
 		eval.dispatch(constDecl);
 
 		AssignmentStatement assign = new AssignmentStatement(identifier, new IntegerConstant(2));
 
 		try {
-			StatementEvaluator statEval = new StatementEvaluator(symbolTable);
+			StatementEvaluator statEval = new StatementEvaluator(scope);
 			statEval.dispatch(assign);
 		} catch (VisitingException e) {
 			throw e.getCause();
