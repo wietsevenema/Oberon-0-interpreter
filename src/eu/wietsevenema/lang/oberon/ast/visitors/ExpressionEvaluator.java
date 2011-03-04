@@ -1,6 +1,7 @@
 package eu.wietsevenema.lang.oberon.ast.visitors;
 
 import xtc.tree.Visitor;
+import eu.wietsevenema.lang.oberon.ast.declarations.RecordSelector;
 import eu.wietsevenema.lang.oberon.ast.expressions.AdditiveExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.ArraySelector;
 import eu.wietsevenema.lang.oberon.ast.expressions.BooleanConstant;
@@ -21,8 +22,8 @@ import eu.wietsevenema.lang.oberon.ast.expressions.MultiplicativeExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.NotExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.SubtractiveExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.UnaryMinExpression;
-import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.SymbolNotDeclaredException;
+import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableUndefinedException;
 import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
@@ -145,8 +146,14 @@ public class ExpressionEvaluator extends Visitor {
 	}
 
 	public Value visit(ArraySelector as) {
-		ValueReferenceResolver resolv = new ValueReferenceResolver(scope);
-		ValueReference result = (ValueReference) resolv.dispatch(as);
+		ValueReferenceResolver resolver = new ValueReferenceResolver(scope);
+		ValueReference result = (ValueReference) resolver.dispatch(as);
+		return result.getValue();
+	}
+	
+	public Value visit(RecordSelector rs) {
+		ValueReferenceResolver resolver = new ValueReferenceResolver(scope);
+		ValueReference result = (ValueReference) resolver.dispatch(rs);
 		return result.getValue();
 	}
 

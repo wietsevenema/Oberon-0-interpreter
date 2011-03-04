@@ -50,4 +50,9 @@ public class BooleanValue extends Value {
 		}
 	}
 
+	@Override
+	public void init() {
+		this.value = false;
+	}
+
 }

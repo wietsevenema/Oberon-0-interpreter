@@ -1,6 +1,6 @@
 package eu.wietsevenema.lang.oberon.ast.expressions;
 
-public class Identifier extends Expression {
+public class Identifier extends Expression implements Comparable<Identifier> {
 
 	String name;
 
@@ -14,6 +14,11 @@ public class Identifier extends Expression {
 
 	public String toString() {
 		return this.name;
+	}
+
+	@Override
+	public int compareTo(Identifier o) {
+		return this.getName().compareTo(o.getName());
 	}
 
 }

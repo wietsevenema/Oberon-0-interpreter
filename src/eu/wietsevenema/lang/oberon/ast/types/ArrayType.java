@@ -21,9 +21,5 @@ public class ArrayType extends VarType {
 		return type;
 	}
 
-	@Override
-	public String toString() {
-		throw new NotImplementedException();
-	}
 
 }

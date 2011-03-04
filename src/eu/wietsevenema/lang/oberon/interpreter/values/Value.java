@@ -6,9 +6,12 @@ abstract public class Value {
 	abstract public boolean equals(Object o);
 
 	@Override
-	abstract public String toString();
-
-	@Override
 	abstract public Object clone();
+	
+	/**
+	 * Init value to a sensible default. Used in array and record initialisation.
+	 */
+	abstract public void init();
+	
 
 }

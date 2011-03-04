@@ -24,13 +24,6 @@ LogicalNegationExpression LogicalNegationExpression =
 	}
 	;
 
-/*
-Node Selector = 
-	<Array> Selector void:"[":Symbol Expression void:"]":Symbol @ArraySelector 
-  /	<Record> Selector void:".":Symbol Identifier @RecordSelector
-  / <Base> yyValue:Identifier
-	;
-*/
 	
 Expression Selector 
 	= seed:Identifier actions:SelectorTail*
@@ -45,6 +38,16 @@ constant Action<Expression> SelectorTail =
 		yyValue = new Action<Expression>(){
 			public Expression run(Expression left){
 				Expression result = new ArraySelector(left, right);
+				result.setLocation(location(yyStart));
+				return result;
+			}
+		};
+	}
+	/ ".":Symbol key:Identifier
+	{
+		yyValue = new Action<Expression>(){
+			public Expression run(Expression left){
+				Expression result = new RecordSelector(left, key);
 				result.setLocation(location(yyStart));
 				return result;
 			}

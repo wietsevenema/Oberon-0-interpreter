@@ -15,9 +15,5 @@ public class TypeAlias extends VarType {
 		return identifier;
 	}
 
-	@Override
-	public String toString() {
-		return "" + this.identifier;
-	}
 
 }

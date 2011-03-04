@@ -1,7 +1,6 @@
 package eu.wietsevenema.lang.oberon.tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
@@ -164,14 +163,20 @@ public class ParserTest {
 
 	@Test
 	public void testRecordType() throws IOException, InvalidInputException, ParseException {
-		fail("Not implemented");
-		// Node result =
-		// Util.parseModuleFile(Util.getAbsFilename("oberon/parser/typealias.o0"));
-		// JSONSerializer serializer = new JSONSerializer().transform(new
-		// ObjectTransformer(), "*");
-		// String actual = serializer.serialize( result );
-		// assertEquals("MODULE TypeAlias;TYPE myType=INTEGER;TYPE secondType=BOOLEANVAR a: myTypeBEGINa:=999END TypeAlias.",
-		// actual);
+		Node result = Util.parseModuleFile(Util.getAbsFilename("oberon/parser/record.o0"));
+		ModulePrinter printer = new ModulePrinter();
+		String actual = (String) printer.dispatch(result);
+		String expected = "Module[Record,Declarations[{},{},{VarDecl[{globalPerson},"
+				+ "RecordType[{Age:INTEGER,Length:INTEGER,Subscribed:BOOLEAN}]],"
+				+ "VarDecl[{input},INTEGER]},"
+				+ "{ProcedureDecl[test,{FormalVarRef[person,RecordType[{Age:INTEGER,Length:INTEGER,Subscribed:BOOLEAN}]]},"
+				+ "Declarations[{},{},{},{}],{" + "AssignmentStatement[RecordSelector[person,Age],18],"
+				+ "AssignmentStatement[RecordSelector[person,Length],188],"
+				+ "AssignmentStatement[RecordSelector[person,Subscribed],false]}]}],"
+				+ "{AssignmentStatement[RecordSelector[globalPerson,Age],0],"
+				+ "AssignmentStatement[RecordSelector[globalPerson,Length],0],"
+				+ "AssignmentStatement[RecordSelector[globalPerson,Subscribed],false]}]";
+		assertEquals(expected, actual);
 	}
 
 }

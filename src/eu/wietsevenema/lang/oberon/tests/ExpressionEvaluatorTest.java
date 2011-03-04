@@ -117,5 +117,20 @@ public class ExpressionEvaluatorTest {
 		Environment env = new Environment(System.in, System.out);
 		env.runModule(result);
 	}
+	
+	@Test
+	public void testRecords() throws IOException, InvalidInputException, ParseException, SymbolAlreadyDeclaredException {
+		Module result = (Module) Util.parseModuleFile(Util.getAbsFilename("oberon/expr/record.o0"));
+		Environment env = new Environment(System.in, System.out);
+		env.runModule(result);
+	}
+	
+	@Test
+	public void testInitialisation() throws IOException, InvalidInputException, ParseException, SymbolAlreadyDeclaredException {
+		Module result = (Module) Util.parseModuleFile(Util.getAbsFilename("oberon/expr/initialisation.o0"));
+		Environment env = new Environment(System.in, System.out);
+		env.runModule(result);
+	}
+	
 
 }

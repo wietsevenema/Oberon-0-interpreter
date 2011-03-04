@@ -6,8 +6,8 @@ public class IntegerValue extends Value {
 	
 	private Integer value;
 
-	public IntegerValue(Integer i) {
-		this.value = i;
+	public IntegerValue(Integer value) {
+		this.value = value;
 	}
 
 	public void setValue(Integer value) {
@@ -48,6 +48,11 @@ public class IntegerValue extends Value {
 		} else {
 			return new IntegerValue(value.intValue());
 		}
+	}
+
+	@Override
+	public void init() {
+		this.value = 0;
 	}
 
 }

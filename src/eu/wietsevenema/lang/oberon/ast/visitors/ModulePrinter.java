@@ -3,6 +3,7 @@ package eu.wietsevenema.lang.oberon.ast.visitors;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import xtc.tree.Node;
 import xtc.tree.Visitor;
@@ -10,6 +11,7 @@ import eu.wietsevenema.lang.oberon.ast.declarations.Declarations;
 import eu.wietsevenema.lang.oberon.ast.declarations.FormalVar;
 import eu.wietsevenema.lang.oberon.ast.declarations.Module;
 import eu.wietsevenema.lang.oberon.ast.declarations.ProcedureDecl;
+import eu.wietsevenema.lang.oberon.ast.declarations.RecordSelector;
 import eu.wietsevenema.lang.oberon.ast.declarations.TypeDecl;
 import eu.wietsevenema.lang.oberon.ast.declarations.VarDecl;
 import eu.wietsevenema.lang.oberon.ast.expressions.ArraySelector;
@@ -23,31 +25,46 @@ import eu.wietsevenema.lang.oberon.ast.expressions.UnaryMinExpression;
 import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.ProcedureCallStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.WhileStatement;
+import eu.wietsevenema.lang.oberon.ast.types.BooleanType;
+import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
+import eu.wietsevenema.lang.oberon.ast.types.RecordType;
+import eu.wietsevenema.lang.oberon.ast.types.TypeAlias;
+import eu.wietsevenema.lang.oberon.ast.types.VarType;
 
 /**
  * JSON like printer van AST.
+ * 
  * @author wietse
- *
+ * 
  */
 public class ModulePrinter extends Visitor {
 
 	public String visit(TestExpression exp) {
-		return (String)dispatch(exp.getChild());
+		return (String) dispatch(exp.getChild());
 	}
 
-	public String visit( IntegerConstant ic){
+	public String visit(IntegerConstant ic) {
 		return "" + ic.getValue();
 	}
-	
-	public String visit( BooleanConstant ic){
-		if(ic.getValue()){
+
+	public String visit(BooleanConstant ic) {
+		if (ic.getValue()) {
 			return "true";
 		} else {
 			return "false";
 		}
 	}
-	
-	public String visit( Identifier id){
+
+	public String visit(RecordType record) {
+		ArrayList<String> entries = new ArrayList<String>();
+		for (Map.Entry<Identifier, VarType> entry : record.entrySet()) {
+			entries.add(dispatch(entry.getKey()) + ":" + dispatch(entry.getValue()));
+		}
+		
+		return printNode(record, "{" + join(entries, ",") + "}");
+	}
+
+	public String visit(Identifier id) {
 		return id.getName();
 	}
 
@@ -57,6 +74,10 @@ public class ModulePrinter extends Visitor {
 
 	public String visit(ArraySelector as) {
 		return printNode(as, (String) dispatch(as.getLeft()), (String) dispatch(as.getIndex()));
+	}
+
+	public String visit(RecordSelector rs) {
+		return printNode(rs, (String) dispatch(rs.getLeft()), (String) dispatch(rs.getKey()));
 	}
 
 	private String printNode(Node parent) {
@@ -104,12 +125,24 @@ public class ModulePrinter extends Visitor {
 				printNodes(decls.getVars()), printNodes(decls.getProcedures()));
 	}
 
+	public String visit(IntegerType it){
+		return "INTEGER";
+	}
+	
+	public String visit(BooleanType bt){
+		return "BOOLEAN";
+	}
+	
+	public String visit(TypeAlias ta){
+		return ta.getIdentifier().getName();
+	}
+	
 	public String visit(VarDecl vd) {
-		return printNode(vd, printNodes(vd.getIdentifiers()), vd.getType() + ""); 
+		return printNode(vd, printNodes(vd.getIdentifiers()), (String) dispatch(vd.getType()));
 	}
 
 	public String visit(TypeDecl td) {
-		return printNode(td, td.getIdentifier().getName(), ""+td.getType());
+		return printNode(td, td.getIdentifier().getName(), "" + dispatch(td.getType()));
 	}
 
 	public String visit(ProcedureDecl pd) {
@@ -123,7 +156,7 @@ public class ModulePrinter extends Visitor {
 	}
 
 	public String visit(FormalVar fv) {
-		return printNode(fv, fv.getIdentifier().getName(), fv.getType() + "");
+		return printNode(fv, fv.getIdentifier().getName(), dispatch(fv.getType()) + "");
 	}
 
 	public String visit(Module m) {

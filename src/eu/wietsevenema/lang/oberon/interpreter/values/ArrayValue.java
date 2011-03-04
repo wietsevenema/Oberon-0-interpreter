@@ -23,12 +23,7 @@ public class ArrayValue extends Value {
 		return false;
 	}
 
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Override
 	public Object clone() {
 		int size = this.values.length;
@@ -42,5 +37,12 @@ public class ArrayValue extends Value {
 	public ValueReference getReference(int index) {
 		return values[index];
 	}
+
+	@Override
+	public void init() {
+		//This value is initialised by design. 
+	}
+
+
 
 }
