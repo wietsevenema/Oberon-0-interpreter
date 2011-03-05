@@ -1,6 +1,8 @@
 package eu.wietsevenema.lang.oberon.interpreter.values;
 
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
@@ -35,6 +37,12 @@ public class RecordValue extends Value {
 		return this.values.get(id);
 	}
 
+	
+	public Set<Entry<Identifier,ValueReference>> entrySet() {
+		return values.entrySet();
+	}
+		
+	
 	@Override
 	public void init() {
 		//This value is initialised by design. 

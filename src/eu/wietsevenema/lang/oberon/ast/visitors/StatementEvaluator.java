@@ -2,9 +2,11 @@ package eu.wietsevenema.lang.oberon.ast.visitors;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import xtc.tree.Visitor;
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
+import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.expressions.ProcedureUndefinedException;
 import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.ElseIfStatement;
@@ -12,18 +14,20 @@ import eu.wietsevenema.lang.oberon.ast.statements.IfStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.ProcedureCallStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.Statement;
 import eu.wietsevenema.lang.oberon.ast.statements.WhileStatement;
+import eu.wietsevenema.lang.oberon.ast.statements.WithStatement;
 import eu.wietsevenema.lang.oberon.exceptions.IdentifierExpectedInParamList;
 import eu.wietsevenema.lang.oberon.exceptions.ImmutableException;
-import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
-import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.SymbolAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.SymbolNotDeclaredException;
+import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
+import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.WrongNumberOfArgsException;
 import eu.wietsevenema.lang.oberon.interpreter.Formal;
 import eu.wietsevenema.lang.oberon.interpreter.Procedure;
 import eu.wietsevenema.lang.oberon.interpreter.Scope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 import eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue;
+import eu.wietsevenema.lang.oberon.interpreter.values.RecordValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class StatementEvaluator extends Visitor {
@@ -84,6 +88,31 @@ public class StatementEvaluator extends Visitor {
 		scope = scope.getParent();
 
 	}
+	
+	public void visit( WithStatement withStatement) throws SymbolAlreadyDeclaredException{
+		ExpressionEvaluator exprEval = new ExpressionEvaluator(scope);
+		RecordValue record = (RecordValue) exprEval.dispatch(withStatement.getRecord());
+		
+		//Enter new scope and expose members of record. 
+		scope = new Scope(scope);
+		for( Entry<Identifier, ValueReference> entry : record.entrySet() ){
+			Identifier id = entry.getKey();
+			ValueReference reference = entry.getValue();
+			String symbol = id.getName();
+			scope.declareValueReference(symbol, reference);
+		}
+		
+		//Execute all statements
+		StatementEvaluator statEval = new StatementEvaluator(scope);
+		for(Statement stat: withStatement.getStatements()){
+			statEval.dispatch(stat);
+		}
+		
+		//Exit scope
+		scope = scope.getParent();
+		
+	}
+	
 
 	public void visit(IfStatement ifStatement) throws TypeMismatchException, ValueUndefinedException {
 

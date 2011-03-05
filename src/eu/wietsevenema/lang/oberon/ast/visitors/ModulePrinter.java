@@ -25,6 +25,7 @@ import eu.wietsevenema.lang.oberon.ast.expressions.UnaryMinExpression;
 import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.ProcedureCallStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.WhileStatement;
+import eu.wietsevenema.lang.oberon.ast.statements.WithStatement;
 import eu.wietsevenema.lang.oberon.ast.types.BooleanType;
 import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
 import eu.wietsevenema.lang.oberon.ast.types.RecordType;
@@ -99,6 +100,8 @@ public class ModulePrinter extends Visitor {
 	private String printNode(Node parent, String child1, String child2, String child3, String child4) {
 		return printNode(parent) + "[" + child1 + "," + child2 + "," + child3 + "," + child4 + "]";
 	}
+	
+	
 
 	private String printNodes(List<? extends Node> ns) {
 		if (ns.isEmpty()) {
@@ -170,6 +173,11 @@ public class ModulePrinter extends Visitor {
 
 	public String visit(WhileStatement whileStat) {
 		return printNode(whileStat, (String) dispatch(whileStat.getCondition()), printNodes(whileStat.getStatements()));
+	}
+	
+	
+	public String visit(WithStatement whileStat) {
+		return printNode(whileStat, (String) dispatch(whileStat.getRecord()), printNodes(whileStat.getStatements()));
 	}
 
 	private static String join(List<String> s, String delimiter) {

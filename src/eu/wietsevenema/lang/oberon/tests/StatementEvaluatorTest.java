@@ -137,6 +137,13 @@ public class StatementEvaluatorTest {
 	}
 
 	@Test
+	public void testWithStatement() throws IOException, InvalidInputException, ParseException, SymbolAlreadyDeclaredException {
+		Module result = (Module) Util.parseModuleFile(Util.getAbsFilename("oberon/statements/with.o0"));
+		Environment env = new Environment(System.in, System.out);
+		env.runModule(result);
+	}
+	
+	@Test
 	public void testAssignStatement() throws IOException, InvalidInputException, ParseException, SymbolAlreadyDeclaredException {
 		Module result = (Module) Util.parseModuleFile(Util.getAbsFilename("oberon/statements/assignment.o0"));
 		Environment env = new Environment(System.in, System.out);

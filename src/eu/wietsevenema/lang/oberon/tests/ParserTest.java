@@ -179,4 +179,15 @@ public class ParserTest {
 		assertEquals(expected, actual);
 	}
 
+	@Test
+	public void testWithStatement() throws IOException, InvalidInputException, ParseException {
+		Node result = Util.parseModuleFile(Util.getAbsFilename("oberon/parser/with.o0"));
+		ModulePrinter printer = new ModulePrinter();
+		String actual = (String) printer.dispatch(result);
+		String expected = "Module[With,Declarations[{},{},{},{}],{WithStatement[arecord,{"
+				+ "AssignmentStatement[member1,AdditiveExpression[2,2]]," + "AssignmentStatement[member2,false]}"
+				+ "]}]";
+		assertEquals(expected, actual);
+	}
+
 }

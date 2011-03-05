@@ -27,13 +27,13 @@ public class Scope {
 		return parent;
 	}
 
-	public VarType lookupType(String symbol) throws TypeNotDeclaredException {
+	public VarType lookupType(String symbol) throws TypeNotDeclaredException {		
 		VarType result = types.get(symbol);
 		if (result == null && this.parent != null) {
 			result = parent.lookupType(symbol);
 		}
 		if (result == null) {
-			throw new TypeNotDeclaredException();
+			throw new TypeNotDeclaredException("Type '" + symbol + "' is not a builtin type nor declared.");
 		}
 		return result;
 	}

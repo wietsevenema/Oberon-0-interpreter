@@ -36,6 +36,18 @@ ElseIfStatement ElseIfStatement =
 	}
 	;
 
+WithStatement WithStatement = 
+	"WITH":Word
+	record:Expression
+	"DO":Word
+	stats:StatementSequence 
+	"END":Word
+	{
+		yyValue = new WithStatement( record, stats);
+	}
+	; 
+
+
 IfStatement IfStatement = 
 	"IF":Word 
 	cond:Expression
@@ -64,6 +76,7 @@ Statement Statement =
 	yyValue:AssignmentStatement
   / yyValue:WhileStatement
   / yyValue:IfStatement
+  / yyValue:WithStatement
   / yyValue:ProcedureCallStatement
 	; 
 
