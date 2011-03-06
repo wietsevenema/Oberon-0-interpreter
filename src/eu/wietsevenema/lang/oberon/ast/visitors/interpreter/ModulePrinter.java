@@ -1,4 +1,4 @@
-package eu.wietsevenema.lang.oberon.ast.visitors;
+package eu.wietsevenema.lang.oberon.ast.visitors.interpreter;
 
 import java.util.ArrayList;
 import java.util.Iterator;

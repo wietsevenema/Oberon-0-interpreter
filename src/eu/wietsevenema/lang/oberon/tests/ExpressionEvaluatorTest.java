@@ -17,13 +17,13 @@ import eu.wietsevenema.lang.oberon.ast.expressions.LogicalConjunctiveExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.LogicalDisjunctiveExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.ModulusExpression;
 import eu.wietsevenema.lang.oberon.ast.expressions.SubtractiveExpression;
-import eu.wietsevenema.lang.oberon.ast.visitors.ExpressionEvaluator;
+import eu.wietsevenema.lang.oberon.ast.visitors.interpreter.ExpressionEvaluator;
 import eu.wietsevenema.lang.oberon.exceptions.InvalidInputException;
 import eu.wietsevenema.lang.oberon.exceptions.ParseException;
 import eu.wietsevenema.lang.oberon.exceptions.SymbolAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.interpreter.Environment;
-import eu.wietsevenema.lang.oberon.interpreter.Scope;
+import eu.wietsevenema.lang.oberon.interpreter.InterpreterScope;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 
 public class ExpressionEvaluatorTest {
@@ -31,7 +31,7 @@ public class ExpressionEvaluatorTest {
 	@Test
 	public void testSimpleAddition() throws ValueUndefinedException {
 		Expression exp = new AdditiveExpression(new IntegerConstant(1), new IntegerConstant(3));
-		ExpressionEvaluator evaluator = new ExpressionEvaluator(new Scope());
+		ExpressionEvaluator evaluator = new ExpressionEvaluator(new InterpreterScope());
 		IntegerValue result = (IntegerValue) evaluator.dispatch(exp);
 		assertEquals(new Integer(4), result.getValue());
 	}
@@ -40,7 +40,7 @@ public class ExpressionEvaluatorTest {
 	public void testNestedAddition() throws ValueUndefinedException {
 		Expression exp = new AdditiveExpression(new IntegerConstant(1), new SubtractiveExpression(new IntegerConstant(
 				10), new IntegerConstant(12)));
-		ExpressionEvaluator evaluator = new ExpressionEvaluator(new Scope());
+		ExpressionEvaluator evaluator = new ExpressionEvaluator(new InterpreterScope());
 		IntegerValue result = (IntegerValue) evaluator.dispatch(exp);
 		assertEquals(new Integer(1 + (10 - 12)), result.getValue());
 	}
@@ -71,7 +71,7 @@ public class ExpressionEvaluatorTest {
 
 		// Test disjunctive.
 		Expression exp1 = new LogicalDisjunctiveExpression(new BooleanConstant(true), myValue);
-		ExpressionEvaluator evaluator = new ExpressionEvaluator(new Scope());
+		ExpressionEvaluator evaluator = new ExpressionEvaluator(new InterpreterScope());
 		evaluator.dispatch(exp1);
 		assertEquals(false, myValue.touched());
 
@@ -88,7 +88,7 @@ public class ExpressionEvaluatorTest {
 
 		Expression mod = new ModulusExpression(new IntegerConstant(6), new IntegerConstant(4));
 
-		ExpressionEvaluator evaluator = new ExpressionEvaluator(new Scope());
+		ExpressionEvaluator evaluator = new ExpressionEvaluator(new InterpreterScope());
 		IntegerValue divResult = (IntegerValue) evaluator.dispatch(div);
 		IntegerValue modResult = (IntegerValue) evaluator.dispatch(mod);
 
@@ -101,7 +101,7 @@ public class ExpressionEvaluatorTest {
 
 	@Test
 	public void testSimpleIdentifier() throws ValueUndefinedException, SymbolAlreadyDeclaredException {
-		Scope scope = new Scope();
+		InterpreterScope scope = new InterpreterScope();
 		scope.declareValue("a", new IntegerValue(40));
 
 		Expression exp = new AdditiveExpression(new IntegerConstant(2), new Identifier("a"));

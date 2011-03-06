@@ -1,4 +1,4 @@
-package eu.wietsevenema.lang.oberon.ast.visitors;
+package eu.wietsevenema.lang.oberon.ast.visitors.interpreter;
 
 import xtc.tree.Visitor;
 import eu.wietsevenema.lang.oberon.ast.declarations.RecordSelector;
@@ -25,7 +25,7 @@ import eu.wietsevenema.lang.oberon.ast.expressions.UnaryMinExpression;
 import eu.wietsevenema.lang.oberon.exceptions.SymbolNotDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.VariableUndefinedException;
-import eu.wietsevenema.lang.oberon.interpreter.Scope;
+import eu.wietsevenema.lang.oberon.interpreter.InterpreterScope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 import eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
@@ -33,9 +33,9 @@ import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class ExpressionEvaluator extends Visitor {
 
-	Scope scope;
+	InterpreterScope scope;
 
-	public ExpressionEvaluator(Scope scope) {
+	public ExpressionEvaluator(InterpreterScope scope) {
 		this.scope = scope;
 	}
 
@@ -96,7 +96,7 @@ public class ExpressionEvaluator extends Visitor {
 		return new BooleanValue(left < right);
 	}
 
-	// FIXME
+
 	public BooleanValue visit(EqualityExpression ee) throws ValueUndefinedException {
 		Integer left = ((IntegerValue) dispatch(ee.getLeft())).getValue();
 		Integer right = ((IntegerValue) dispatch(ee.getRight())).getValue();

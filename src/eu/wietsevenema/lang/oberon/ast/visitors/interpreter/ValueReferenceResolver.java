@@ -1,4 +1,4 @@
-package eu.wietsevenema.lang.oberon.ast.visitors;
+package eu.wietsevenema.lang.oberon.ast.visitors.interpreter;
 
 import xtc.tree.Visitor;
 import eu.wietsevenema.lang.oberon.ast.declarations.RecordSelector;
@@ -6,7 +6,7 @@ import eu.wietsevenema.lang.oberon.ast.expressions.ArraySelector;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.exceptions.SymbolNotDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
-import eu.wietsevenema.lang.oberon.interpreter.Scope;
+import eu.wietsevenema.lang.oberon.interpreter.InterpreterScope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 import eu.wietsevenema.lang.oberon.interpreter.values.ArrayValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
@@ -14,9 +14,9 @@ import eu.wietsevenema.lang.oberon.interpreter.values.RecordValue;
 
 public class ValueReferenceResolver extends Visitor {
 
-	private Scope scope;
+	private InterpreterScope scope;
 
-	public ValueReferenceResolver(Scope scope) {
+	public ValueReferenceResolver(InterpreterScope scope) {
 		this.scope = scope;
 	}
 

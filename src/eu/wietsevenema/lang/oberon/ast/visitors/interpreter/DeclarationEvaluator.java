@@ -1,4 +1,4 @@
-package eu.wietsevenema.lang.oberon.ast.visitors;
+package eu.wietsevenema.lang.oberon.ast.visitors.interpreter;
 
 import java.util.List;
 
@@ -11,15 +11,15 @@ import eu.wietsevenema.lang.oberon.ast.declarations.VarDecl;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
 import eu.wietsevenema.lang.oberon.exceptions.SymbolAlreadyDeclaredException;
-import eu.wietsevenema.lang.oberon.interpreter.Scope;
+import eu.wietsevenema.lang.oberon.interpreter.InterpreterScope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class DeclarationEvaluator extends Visitor {
 
-	Scope scope;
+	InterpreterScope scope;
 
-	public DeclarationEvaluator(Scope scope) {
+	public DeclarationEvaluator(InterpreterScope scope) {
 		this.scope = scope;
 	}
 

@@ -24,8 +24,7 @@ import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class BuiltIns {
 
-	public static void inject(Environment environment) throws SymbolAlreadyDeclaredException {
-		Scope scope = environment.getScope();
+	public static void inject(Environment environment,Scope scope) throws SymbolAlreadyDeclaredException {
 		if (environment != null) {
 			scope.declareProc("Write", new Write(environment));
 			scope.declareProc("WriteLn", new WriteLn(environment));
@@ -52,7 +51,7 @@ public class BuiltIns {
 		}
 
 		@Override
-		public void execute(Scope scope) {
+		public void execute(InterpreterScope scope) {
 			try {
 				Value expected = scope.lookupValue("expected");
 				Value actual = scope.lookupValue("actual");
@@ -86,7 +85,7 @@ public class BuiltIns {
 		}
 
 		@Override
-		public void execute(Scope scope) {
+		public void execute(InterpreterScope scope) {
 			this.out.println();
 			this.out.flush();
 		}
@@ -108,7 +107,7 @@ public class BuiltIns {
 		}
 
 		@Override
-		public void execute(Scope scope) {
+		public void execute(InterpreterScope scope) {
 			try {
 				Value result = scope.lookupValue("out");
 				this.out.print(result.toString());
@@ -135,7 +134,7 @@ public class BuiltIns {
 		}
 
 		@Override
-		public void execute(Scope scope) throws TypeMismatchException, ImmutableException, SymbolNotDeclaredException {
+		public void execute(InterpreterScope scope) throws TypeMismatchException, ImmutableException, SymbolNotDeclaredException {
 			try {
 				Integer value = Integer.parseInt(this.in.readLine());
 				ValueReference ref = scope.lookupValueReference("in");

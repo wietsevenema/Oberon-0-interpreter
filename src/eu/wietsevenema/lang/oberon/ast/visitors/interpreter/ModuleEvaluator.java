@@ -1,4 +1,4 @@
-package eu.wietsevenema.lang.oberon.ast.visitors;
+package eu.wietsevenema.lang.oberon.ast.visitors.interpreter;
 
 import java.util.List;
 
@@ -6,13 +6,13 @@ import xtc.tree.Visitor;
 import eu.wietsevenema.lang.oberon.ast.declarations.Declarations;
 import eu.wietsevenema.lang.oberon.ast.declarations.Module;
 import eu.wietsevenema.lang.oberon.ast.statements.Statement;
-import eu.wietsevenema.lang.oberon.interpreter.Scope;
+import eu.wietsevenema.lang.oberon.interpreter.InterpreterScope;
 
 public class ModuleEvaluator extends Visitor {
 
-	Scope scope;
+	InterpreterScope scope;
 
-	public ModuleEvaluator(Scope scope) {
+	public ModuleEvaluator(InterpreterScope scope) {
 		this.scope = scope;
 	}
 

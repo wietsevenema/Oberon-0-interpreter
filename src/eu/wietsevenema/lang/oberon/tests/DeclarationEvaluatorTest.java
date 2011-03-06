@@ -20,21 +20,21 @@ import eu.wietsevenema.lang.oberon.ast.expressions.IntegerConstant;
 import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
 import eu.wietsevenema.lang.oberon.ast.types.IntegerType;
 import eu.wietsevenema.lang.oberon.ast.types.TypeAlias;
-import eu.wietsevenema.lang.oberon.ast.visitors.DeclarationEvaluator;
-import eu.wietsevenema.lang.oberon.ast.visitors.StatementEvaluator;
+import eu.wietsevenema.lang.oberon.ast.visitors.interpreter.DeclarationEvaluator;
+import eu.wietsevenema.lang.oberon.ast.visitors.interpreter.StatementEvaluator;
 import eu.wietsevenema.lang.oberon.exceptions.ImmutableException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.SymbolNotDeclaredException;
-import eu.wietsevenema.lang.oberon.interpreter.Scope;
+import eu.wietsevenema.lang.oberon.interpreter.InterpreterScope;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 
 public class DeclarationEvaluatorTest {
 
-	Scope scope;
+	InterpreterScope scope;
 
 	@Before
 	public void setUp() throws Exception {
-		scope = new Scope();
+		scope = new InterpreterScope();
 	}
 
 	@Test

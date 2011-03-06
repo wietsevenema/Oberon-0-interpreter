@@ -10,20 +10,20 @@ import org.junit.Test;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.SymbolAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.SymbolNotDeclaredException;
-import eu.wietsevenema.lang.oberon.interpreter.Scope;
+import eu.wietsevenema.lang.oberon.interpreter.InterpreterScope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 import eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 
 public class ScopeTest {
 
-	Scope scope;
+	InterpreterScope scope;
 
 	@Before
 	public void setUp() throws Exception {
-		scope = new Scope();
+		scope = new InterpreterScope();
 		scope.declareValue("bool2", new BooleanValue(true));
-		scope = new Scope(scope);
+		scope = new InterpreterScope(scope);
 		scope.declareValue("int2", new IntegerValue(-1));
 
 	}
@@ -52,15 +52,11 @@ public class ScopeTest {
 	@Test
 	public void testDoubleDeclareScoped() throws SymbolAlreadyDeclaredException, SymbolNotDeclaredException {
 		scope.declareValue("c", new BooleanValue(true));
-		scope = new Scope(scope);
+		scope = new InterpreterScope(scope);
 		scope.declareValue("c", new BooleanValue(false));
 	}
 
-	@Test(expected = SymbolAlreadyDeclaredException.class)
-	public void testProceduresAndVariablesShareScope() {
-		fail("Not implemented");
-	}
-
+	
 	@Test(expected = ValueUndefinedException.class)
 	public void testValueUndefined() throws SymbolAlreadyDeclaredException, SymbolNotDeclaredException,
 			ValueUndefinedException {

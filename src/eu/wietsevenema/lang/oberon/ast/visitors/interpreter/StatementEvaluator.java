@@ -1,4 +1,4 @@
-package eu.wietsevenema.lang.oberon.ast.visitors;
+package eu.wietsevenema.lang.oberon.ast.visitors.interpreter;
 
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +24,7 @@ import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.exceptions.WrongNumberOfArgsException;
 import eu.wietsevenema.lang.oberon.interpreter.Formal;
 import eu.wietsevenema.lang.oberon.interpreter.Procedure;
-import eu.wietsevenema.lang.oberon.interpreter.Scope;
+import eu.wietsevenema.lang.oberon.interpreter.InterpreterScope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 import eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.RecordValue;
@@ -32,9 +32,9 @@ import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class StatementEvaluator extends Visitor {
 
-	Scope scope;
+	InterpreterScope scope;
 
-	public StatementEvaluator(Scope scope) {
+	public StatementEvaluator(InterpreterScope scope) {
 		this.scope = scope;
 	}
 
@@ -69,7 +69,7 @@ public class StatementEvaluator extends Visitor {
 		}
 
 		// Enter scope.
-		scope = new Scope(scope);
+		scope = new InterpreterScope(scope);
 
 		List<Expression> parameters = pCall.getParameters();
 		List<Formal> formals = procedure.getFormals();
@@ -94,7 +94,7 @@ public class StatementEvaluator extends Visitor {
 		RecordValue record = (RecordValue) exprEval.dispatch(withStatement.getRecord());
 		
 		//Enter new scope and expose members of record. 
-		scope = new Scope(scope);
+		scope = new InterpreterScope(scope);
 		for( Entry<Identifier, ValueReference> entry : record.entrySet() ){
 			Identifier id = entry.getKey();
 			ValueReference reference = entry.getValue();

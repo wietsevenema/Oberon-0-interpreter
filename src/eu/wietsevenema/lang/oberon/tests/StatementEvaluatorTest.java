@@ -20,25 +20,25 @@ import eu.wietsevenema.lang.oberon.ast.statements.AssignmentStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.ProcedureCallStatement;
 import eu.wietsevenema.lang.oberon.ast.statements.Statement;
 import eu.wietsevenema.lang.oberon.ast.statements.WhileStatement;
-import eu.wietsevenema.lang.oberon.ast.visitors.ModuleEvaluator;
-import eu.wietsevenema.lang.oberon.ast.visitors.StatementEvaluator;
+import eu.wietsevenema.lang.oberon.ast.visitors.interpreter.ModuleEvaluator;
+import eu.wietsevenema.lang.oberon.ast.visitors.interpreter.StatementEvaluator;
 import eu.wietsevenema.lang.oberon.exceptions.InvalidInputException;
 import eu.wietsevenema.lang.oberon.exceptions.ParseException;
 import eu.wietsevenema.lang.oberon.exceptions.SymbolAlreadyDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.SymbolNotDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
 import eu.wietsevenema.lang.oberon.interpreter.Environment;
-import eu.wietsevenema.lang.oberon.interpreter.Scope;
+import eu.wietsevenema.lang.oberon.interpreter.InterpreterScope;
 import eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.IntegerValue;
 
 public class StatementEvaluatorTest {
 
-	private Scope scope;
+	private InterpreterScope scope;
 
 	@Before
 	public void setUp() {
-		this.scope = new Scope();
+		this.scope = new InterpreterScope();
 	}
 
 	@Test

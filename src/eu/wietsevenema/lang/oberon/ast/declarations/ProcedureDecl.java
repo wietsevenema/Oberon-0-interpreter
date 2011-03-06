@@ -7,11 +7,11 @@ import xtc.tree.Node;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.statements.Statement;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
-import eu.wietsevenema.lang.oberon.ast.visitors.DeclarationEvaluator;
-import eu.wietsevenema.lang.oberon.ast.visitors.StatementEvaluator;
+import eu.wietsevenema.lang.oberon.ast.visitors.interpreter.DeclarationEvaluator;
+import eu.wietsevenema.lang.oberon.ast.visitors.interpreter.StatementEvaluator;
 import eu.wietsevenema.lang.oberon.interpreter.Formal;
 import eu.wietsevenema.lang.oberon.interpreter.Procedure;
-import eu.wietsevenema.lang.oberon.interpreter.Scope;
+import eu.wietsevenema.lang.oberon.interpreter.InterpreterScope;
 
 public class ProcedureDecl extends Declaration implements Procedure {
 
@@ -84,7 +84,7 @@ public class ProcedureDecl extends Declaration implements Procedure {
 	}
 
 	@Override
-	public void execute(Scope scope) {
+	public void execute(InterpreterScope scope) {
 		// Process declarations.
 		DeclarationEvaluator declEval = new DeclarationEvaluator(scope);
 		declEval.dispatch(this.getDeclarations());

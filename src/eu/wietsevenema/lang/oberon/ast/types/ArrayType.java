@@ -1,7 +1,6 @@
 package eu.wietsevenema.lang.oberon.ast.types;
 
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
-import eu.wietsevenema.lang.oberon.exceptions.NotImplementedException;
 
 public class ArrayType extends VarType {
 
@@ -21,5 +20,17 @@ public class ArrayType extends VarType {
 		return type;
 	}
 
+	@Override
+	public boolean equals(Object that) {
+		if(that instanceof ArrayType){
+			ArrayType arrayType = (ArrayType) that; 
+			if(arrayType.getType().equals(this.getType()) ){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 
 }

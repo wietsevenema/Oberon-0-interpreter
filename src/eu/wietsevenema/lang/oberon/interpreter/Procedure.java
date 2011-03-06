@@ -10,6 +10,6 @@ public interface Procedure extends Bindable {
 
 	public abstract List<Formal> getFormals();
 
-	public abstract void execute(Scope scope) throws TypeMismatchException, ImmutableException, SymbolNotDeclaredException;
+	public abstract void execute(InterpreterScope scope) throws TypeMismatchException, ImmutableException, SymbolNotDeclaredException;
 
 }

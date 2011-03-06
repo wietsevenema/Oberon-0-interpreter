@@ -3,11 +3,11 @@ package eu.wietsevenema.lang.oberon.ast.declarations;
 import eu.wietsevenema.lang.oberon.ast.expressions.Expression;
 import eu.wietsevenema.lang.oberon.ast.expressions.Identifier;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
-import eu.wietsevenema.lang.oberon.ast.visitors.ValueReferenceResolver;
+import eu.wietsevenema.lang.oberon.ast.visitors.interpreter.ValueReferenceResolver;
 import eu.wietsevenema.lang.oberon.exceptions.IdentifierExpectedInParamList;
 import eu.wietsevenema.lang.oberon.exceptions.TypeMismatchException;
 import eu.wietsevenema.lang.oberon.exceptions.SymbolAlreadyDeclaredException;
-import eu.wietsevenema.lang.oberon.interpreter.Scope;
+import eu.wietsevenema.lang.oberon.interpreter.InterpreterScope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 
 public class FormalVarRef extends FormalVar {
@@ -16,7 +16,7 @@ public class FormalVarRef extends FormalVar {
 		super(identifier, type);
 	}
 
-	public void assignParameter(Scope scope, Expression param) throws TypeMismatchException,
+	public void assignParameter(InterpreterScope scope, Expression param) throws TypeMismatchException,
 			IdentifierExpectedInParamList, SymbolAlreadyDeclaredException {
 		// 1. Get reference from parameter symbol (from parent scope)
 		// 2. Assign in local scope with symbol defined in formal.

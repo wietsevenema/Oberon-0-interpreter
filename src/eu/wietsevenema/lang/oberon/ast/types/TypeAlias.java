@@ -15,5 +15,14 @@ public class TypeAlias extends VarType {
 		return identifier;
 	}
 
+	@Override
+	public boolean equals(Object that) {
+		if(!(that instanceof TypeAlias)){
+			return false;
+		}
+		TypeAlias thatTypeAlias = (TypeAlias) that; 
+		return thatTypeAlias.getIdentifier().equals(identifier);	
+	}
+
 
 }

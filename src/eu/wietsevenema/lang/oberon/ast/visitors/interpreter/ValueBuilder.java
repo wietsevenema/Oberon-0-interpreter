@@ -1,4 +1,4 @@
-package eu.wietsevenema.lang.oberon.ast.visitors;
+package eu.wietsevenema.lang.oberon.ast.visitors.interpreter;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -14,7 +14,7 @@ import eu.wietsevenema.lang.oberon.ast.types.TypeAlias;
 import eu.wietsevenema.lang.oberon.ast.types.VarType;
 import eu.wietsevenema.lang.oberon.exceptions.TypeNotDeclaredException;
 import eu.wietsevenema.lang.oberon.exceptions.ValueUndefinedException;
-import eu.wietsevenema.lang.oberon.interpreter.Scope;
+import eu.wietsevenema.lang.oberon.interpreter.InterpreterScope;
 import eu.wietsevenema.lang.oberon.interpreter.ValueReference;
 import eu.wietsevenema.lang.oberon.interpreter.values.ArrayValue;
 import eu.wietsevenema.lang.oberon.interpreter.values.BooleanValue;
@@ -24,9 +24,9 @@ import eu.wietsevenema.lang.oberon.interpreter.values.Value;
 
 public class ValueBuilder extends Visitor {
 
-	private Scope scope;
+	private InterpreterScope scope;
 
-	public ValueBuilder(Scope scope) {
+	public ValueBuilder(InterpreterScope scope) {
 		this.scope = scope;
 	}
 
